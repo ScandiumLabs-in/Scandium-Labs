@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataset Report — v2_10000</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff; color: #000; line-height: 1.6;
+    max-width: 1000px; margin: 0 auto; padding: 3rem 2rem;
+}
+h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.25rem; }
+h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 2rem 0 1rem; }
+h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 0.75rem; }
+.meta { font-size: 0.85rem; color: #666; margin-bottom: 2rem; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+.card { border: 1px solid #000; padding: 1.25rem; }
+.card-title { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 0.75rem; }
+.stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid #eee; }
+.stat-row:last-child { border-bottom: none; }
+.stat-label { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #666; }
+.stat-value { font-size: 0.9rem; font-weight: 600; color: #000; }
+.bar-container { width: 100%; height: 6px; background: #eee; margin: 0.25rem 0 0.75rem; }
+.bar-fill { height: 6px; background: #000; }
+.badge { display: inline-block; border: 1px solid #000; padding: 0.15rem 0.6rem; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0.15rem; }
+.hash { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; color: #666; }
+.footer { font-size: 0.65rem; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #000; }
+</style>
+</head>
+<body>
+
+<h1>v2_10000</h1>
+<div class="meta">
+    Generated: 2026-06-29 00:41
+    &middot; Hash: <span class="hash">337622f57be03ccf</span>
+    &middot; Sources: mp
+</div>
+
+<h2>Overview</h2>
+<div class="grid">
+    <div class="card">
+        <div class="card-title">Structures</div>
+        <div style="font-size:3rem;font-weight:800;letter-spacing:-0.03em;">3635</div>
+    </div>
+    <div class="card">
+        <div class="card-title">Split</div>
+        <div class="stat-row"><span class="stat-label">Train</span><span class="stat-value">2814</span></div>
+        <div class="stat-row"><span class="stat-label">Val</span><span class="stat-value">255</span></div>
+        <div class="stat-row"><span class="stat-label">Test</span><span class="stat-value">566</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Composition</div>
+        <div class="stat-row"><span class="stat-label">Unique formulas</span><span class="stat-value">432</span></div>
+        <div class="stat-row"><span class="stat-label">Unique elements</span><span class="stat-value">79</span></div>
+        <div class="stat-row"><span class="stat-label">Atoms/struct</span><span class="stat-value">23.3 ± 25.1</span></div>
+    </div>
+    <div class="card">
+        <div class="card-title">Elements</div>
+        <div><span class="badge">Ac</span><span class="badge">Ag</span><span class="badge">Al</span><span class="badge">As</span><span class="badge">Au</span><span class="badge">B</span><span class="badge">Ba</span><span class="badge">Bi</span><span class="badge">Br</span><span class="badge">C</span><span class="badge">Ca</span><span class="badge">Cd</span><span class="badge">Ce</span><span class="badge">Cl</span><span class="badge">Co</span><span class="badge">Cr</span><span class="badge">Cs</span><span class="badge">Cu</span><span class="badge">Dy</span><span class="badge">Er</span><span class="badge">Eu</span><span class="badge">F</span><span class="badge">Fe</span><span class="badge">Ga</span><span class="badge">Gd</span><span class="badge">Ge</span><span class="badge">H</span><span class="badge">Hf</span><span class="badge">Hg</span><span class="badge">Ho</span></div>
+        <div style="margin-top:0.5rem;font-size:0.75rem;color:#999;">more...</div>
+    </div>
+</div>
+
+<h2>Crystal Systems</h2>
+<div class="card">
+    <div class="stat-row"><span class="stat-label">Hexagonal</span><span class="stat-value">519</span></div><div class="bar-container"><div class="bar-fill" style="width:100.0%"></div></div><div class="stat-row"><span class="stat-label">Triclinic</span><span class="stat-value">332</span></div><div class="bar-container"><div class="bar-fill" style="width:64.0%"></div></div><div class="stat-row"><span class="stat-label">Orthorhombic</span><span class="stat-value">83</span></div><div class="bar-container"><div class="bar-fill" style="width:16.0%"></div></div><div class="stat-row"><span class="stat-label">Tetragonal</span><span class="stat-value">26</span></div><div class="bar-container"><div class="bar-fill" style="width:5.0%"></div></div><div class="stat-row"><span class="stat-label">Monoclinic</span><span class="stat-value">22</span></div><div class="bar-container"><div class="bar-fill" style="width:4.2%"></div></div><div class="stat-row"><span class="stat-label">Cubic</span><span class="stat-value">18</span></div><div class="bar-container"><div class="bar-fill" style="width:3.5%"></div></div>
+</div>
+
+<h2>Target Distributions</h2>
+<div class="grid">
+    
+        <div class="card">
+            <div class="card-title">formation_energy</div>
+            <div class="stat-row"><span class="stat-label">Count</span><span class="stat-value">1000</span></div>
+            <div class="stat-row"><span class="stat-label">Mean ± Std</span><span class="stat-value">-0.8389 ± 0.9217</span></div>
+            <div class="stat-row"><span class="stat-label">Range</span><span class="stat-value">[-3.9382, 4.7116]</span></div>
+            <div class="stat-row"><span class="stat-label">Median</span><span class="stat-value">-0.5077</span></div>
+            <div class="stat-row"><span class="stat-label">Missing</span><span class="stat-value">2635/3635</span></div>
+            <div style="margin-top:1rem;"><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:5.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:13.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:15.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:6.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:5.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:7.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:8.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:8.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:8.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:4.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:9.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:10.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:64.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:100.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:22.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:7.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:4.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div></div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">energy_above_hull</div>
+            <div class="stat-row"><span class="stat-label">Count</span><span class="stat-value">1000</span></div>
+            <div class="stat-row"><span class="stat-label">Mean ± Std</span><span class="stat-value">0.2731 ± 0.3858</span></div>
+            <div class="stat-row"><span class="stat-label">Range</span><span class="stat-value">[0.0000, 4.7118]</span></div>
+            <div class="stat-row"><span class="stat-label">Median</span><span class="stat-value">0.1940</span></div>
+            <div class="stat-row"><span class="stat-label">Missing</span><span class="stat-value">2635/3635</span></div>
+            <div style="margin-top:1rem;"><div style="width:100.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:68.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:74.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:44.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:42.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:7.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:5.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:5.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.7%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.4%;height:20px;background:#000;margin:1px 0;"></div></div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">band_gap</div>
+            <div class="stat-row"><span class="stat-label">Count</span><span class="stat-value">1000</span></div>
+            <div class="stat-row"><span class="stat-label">Mean ± Std</span><span class="stat-value">0.7009 ± 1.2281</span></div>
+            <div class="stat-row"><span class="stat-label">Range</span><span class="stat-value">[0.0000, 5.5854]</span></div>
+            <div class="stat-row"><span class="stat-label">Median</span><span class="stat-value">0.0000</span></div>
+            <div class="stat-row"><span class="stat-label">Missing</span><span class="stat-value">2635/3635</span></div>
+            <div style="margin-top:1rem;"><div style="width:100.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:8.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:4.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.4%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.9%;height:20px;background:#000;margin:1px 0;"></div><div style="width:3.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.6%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:2.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:1.1%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.5%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.8%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.2%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.0%;height:20px;background:#000;margin:1px 0;"></div><div style="width:0.3%;height:20px;background:#000;margin:1px 0;"></div></div>
+        </div>
+        
+</div>
+
+<h2>Normalizer</h2>
+<div class="card">
+
+    <div class="stat-row"><span class="stat-label">formation_energy</span><span class="stat-value">mean=-0.9856, std=0.7838</span></div>
+
+    <div class="stat-row"><span class="stat-label">energy_above_hull</span><span class="stat-value">mean=0.1840, std=0.3556</span></div>
+
+    <div class="stat-row"><span class="stat-label">band_gap</span><span class="stat-value">mean=1.3032, std=1.3211</span></div>
+</div>
+
+<div class="footer">
+    Scandium Labs &middot; v2_10000 &middot; Auto-generated report
+</div>
+
+</body>
+</html>
