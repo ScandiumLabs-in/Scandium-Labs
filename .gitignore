@@ -18,3 +18,7 @@ session_summary.md
 frontend/node_modules/
 benchmark_report_*.csv
 api_logs.txt
+datasets/*/dataset_cache.pt
+datasets/*/split_indices.pt
+datasets/*/prebuilt_graphs.pt
+datasets/*/raw/

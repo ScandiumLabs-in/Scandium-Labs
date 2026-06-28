@@ -12,6 +12,16 @@ import sys, os, json, time, hashlib, warnings
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 warnings.filterwarnings('ignore')
 
+# Load .env for API keys
+env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
+if os.path.exists(env_path):
+    with open(env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
 import argparse
 import numpy as np
 import pandas as pd
@@ -70,6 +80,8 @@ def parse_args():
                         help="Target number of structures")
     parser.add_argument("--output", type=str, required=True,
                         help="Output directory (e.g. datasets/v2_10000)")
+    parser.add_argument("--api-key", type=str, default=None,
+                        help="Materials Project API key (default: from MP_API_KEY env or .env)")
     parser.add_argument("--elements", nargs="+", default=None,
                         help="Element filter (default: broad solid-electrolyte-relevant set)")
     parser.add_argument("--min-atoms", type=int, default=2)
@@ -108,11 +120,31 @@ def compute_dataset_hash(structures, targets):
 
 
 def download_from_mp(elements, target, api_key=None):
-    print(f"[MP] Downloading up to {target} structures...")
-    collector = MaterialsProjectCollector(api_key=api_key)
-    docs = collector.collect(elements=elements, fields=MP_FIELDS, max_results=target)
-    print(f"[MP] Got {len(docs)} documents")
-    return docs
+    print(f"[MP] Downloading up to {target} structures across {len(elements)} elements...")
+    api_key = api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
+    from mp_api.client import MPRester
+    all_docs = []
+    seen_ids = set()
+    chunks = max(1, min(target // 1000, 10))
+    for i in range(0, len(elements), 3):
+        batch = elements[i:i+3]
+        try:
+            with MPRester(api_key) as mpr:
+                docs = mpr.materials.summary.search(
+                    elements=batch, fields=MP_FIELDS, num_chunks=chunks
+                )
+            new_docs = [d for d in docs if d.material_id not in seen_ids]
+            for d in docs:
+                seen_ids.add(d.material_id)
+            all_docs.extend(new_docs)
+            import time
+            time.sleep(0.3)
+        except Exception as e:
+            print(f"  [MP] Error for {batch}: {e}")
+        if len(seen_ids) >= target:
+            break
+    print(f"[MP] Got {len(all_docs)} unique documents ({len(seen_ids)} total seen)")
+    return all_docs
 
 
 def download_from_oqmd(target):
@@ -154,26 +186,38 @@ def extract_mp_data(docs):
     skipped = 0
     seen_ids = set()
     for doc in docs:
-        mid = getattr(doc, "material_id", None)
+        if isinstance(doc, dict):
+            mid = doc.get("material_id")
+            s_dict = doc.get("structure")
+            ef = doc.get("formation_energy_per_atom")
+            eah = doc.get("energy_above_hull")
+            bg = doc.get("band_gap")
+        else:
+            mid = getattr(doc, "material_id", None)
+            s_dict = getattr(doc, "structure", None)
+            ef = getattr(doc, "formation_energy_per_atom", None)
+            eah = getattr(doc, "energy_above_hull", None)
+            bg = getattr(doc, "band_gap", None)
         if mid and mid in seen_ids:
             skipped += 1
             continue
         if mid:
             seen_ids.add(mid)
         try:
-            s = doc.structure
+            if isinstance(s_dict, dict):
+                from pymatgen.core import Structure
+                s = Structure.from_dict(s_dict)
+            else:
+                s = s_dict
         except Exception:
             skipped += 1
             continue
-        ef = getattr(doc, "formation_energy_per_atom", None)
         if ef is None or np.isnan(ef):
             skipped += 1
             continue
         structures.append(s)
         targets["formation_energy"].append(float(ef))
-        eah = getattr(doc, "energy_above_hull", None)
         targets["energy_above_hull"].append(float(eah) if eah is not None and not np.isnan(eah) else float("nan"))
-        bg = getattr(doc, "band_gap", None)
         targets["band_gap"].append(float(bg) if bg is not None and not np.isnan(bg) else float("nan"))
         targets["log_ionic_conductivity"].append(float("nan"))
         targets["activation_energy"].append(float("nan"))
@@ -282,20 +326,38 @@ def build_dataset_report(structures, targets, elements_used, output_dir):
             "min": float(np.min(vals)) if vals else None,
             "max": float(np.max(vals)) if vals else None,
         }
+    max_plot = 1000
     unique_formulas = set()
     unique_elements = set()
     crystal_systems = {}
     n_atoms_list = []
-    for s in structures:
-        unique_formulas.add(s.composition.reduced_formula)
-        for e in s.composition.elements:
-            unique_elements.add(str(e))
+    for s in structures[:max_plot]:
         try:
-            cs = s.lattice.system
-            crystal_systems[cs] = crystal_systems.get(cs, 0) + 1
+            unique_formulas.add(s.composition.reduced_formula)
+            for e in s.composition.elements:
+                unique_elements.add(str(e))
+            try:
+                a, b, c = s.lattice.abc
+                al, be, ga = s.lattice.angles
+                tol = 0.05
+                if abs(a - b) < tol and abs(b - c) < tol and abs(al - 90) < tol and abs(be - 90) < tol and abs(ga - 90) < tol:
+                    cs = "Cubic"
+                elif abs(a - b) < tol and abs(al - 90) < tol and abs(be - 90) < tol and abs(ga - 120) < tol:
+                    cs = "Hexagonal"
+                elif abs(a - b) < tol and abs(al - 90) < tol and abs(be - 90) < tol and abs(ga - 90) < tol:
+                    cs = "Tetragonal"
+                elif abs(al - 90) < tol and abs(be - 90) < tol and abs(ga - 90) < tol:
+                    cs = "Orthorhombic"
+                elif abs(al - 90) < tol and abs(ga - 90) < tol:
+                    cs = "Monoclinic"
+                else:
+                    cs = "Triclinic"
+                crystal_systems[cs] = crystal_systems.get(cs, 0) + 1
+            except Exception:
+                pass
+            n_atoms_list.append(len(s))
         except Exception:
             pass
-        n_atoms_list.append(len(s))
     report["formulas"] = {
         "n_unique": len(unique_formulas),
         "ratio_unique": len(unique_formulas) / len(structures) if structures else 0,
@@ -304,12 +366,12 @@ def build_dataset_report(structures, targets, elements_used, output_dir):
         "n_unique": len(unique_elements),
         "list": sorted(unique_elements),
     }
-    report["crystal_systems"] = crystal_systems
+    report["crystal_systems"] = crystal_systems if crystal_systems else {}
     report["n_atoms"] = {
-        "mean": float(np.mean(n_atoms_list)),
-        "std": float(np.std(n_atoms_list)),
-        "min": int(np.min(n_atoms_list)),
-        "max": int(np.max(n_atoms_list)),
+        "mean": float(np.mean(n_atoms_list)) if n_atoms_list else 0,
+        "std": float(np.std(n_atoms_list)) if n_atoms_list else 0,
+        "min": int(np.min(n_atoms_list)) if n_atoms_list else 0,
+        "max": int(np.max(n_atoms_list)) if n_atoms_list else 0,
     }
     report_path = Path(output_dir) / "dataset_report.json"
     with open(report_path, "w") as f:
@@ -349,6 +411,8 @@ def main():
 
     t_start = time.time()
     elements = args.elements or DEFAULT_ELEMENTS
+    api_key = args.api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
+    os.environ.setdefault("MP_API_KEY", api_key or "")
 
     # --- Step 1: Download ---
     if not args.skip_download:
@@ -359,12 +423,29 @@ def main():
         for source in args.sources:
             print(f"\n--- Downloading from {source.upper()} ---")
             t0 = time.time()
-            source_data[source] = pipeline_steps[source](args.target, elements if source == "mp" else None)
+            if source == "mp":
+                source_data[source] = download_from_mp(elements, args.target, api_key=api_key)
+            elif source == "oqmd":
+                source_data[source] = download_from_oqmd(args.target)
+            elif source == "jarvis":
+                source_data[source] = download_from_jarvis(args.target)
+            elif source == "aflow":
+                source_data[source] = download_from_aflow(args.target)
+            elif source == "nomad":
+                source_data[source] = download_from_nomad(args.target)
             print(f"  Time: {time.time() - t0:.1f}s")
         raw_path = output_dir / "raw"
         raw_path.mkdir(exist_ok=True)
         for source, data in source_data.items():
-            torch.save(data, str(raw_path / f"{source}_raw.pt"))
+            serializable = []
+            for d in data:
+                if hasattr(d, "dict"):
+                    serializable.append(d.dict())
+                elif hasattr(d, "__dict__"):
+                    serializable.append(d.__dict__)
+                else:
+                    serializable.append(d)
+            torch.save(serializable, str(raw_path / f"{source}_raw.pt"))
         print(f"[Cache] Raw data saved to {raw_path}")
     else:
         print("[Skip] Download skipped, loading from cache...")
@@ -419,7 +500,10 @@ def main():
     # --- Step 6: Split ---
     print(f"\n--- Splitting ---")
     n = len(structures)
-    if n < 10:
+    if n == 0:
+        print(f"  Warning: no structures to split")
+        split = {"train": [], "val": [], "test": []}
+    elif n < 10:
         print(f"  Warning: only {n} structures, using random split")
         indices = np.random.RandomState(args.seed).permutation(n)
         split = {
@@ -429,7 +513,7 @@ def main():
         }
     else:
         from src.data.dataset import SolidElectrolyteDataset
-        dummy_dataset = type("Dummy", (), {"structures": structures})()
+        dummy_dataset = type("Dummy", (), {"structures": structures, "__len__": lambda self: len(self.structures)})()
         train_idx, val_idx, test_idx = composition_based_split(
             dummy_dataset, args.val_ratio, args.test_ratio
         )

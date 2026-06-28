@@ -1,0 +1,63 @@
+{
+  "version": "v2_1000_smoketest",
+  "dataset_hash": "0f6e4ee98a28c357",
+  "timestamp": "2026-06-28T23:38:11.184341",
+  "sources": [
+    "mp"
+  ],
+  "elements_requested": [
+    "Li",
+    "Na",
+    "K",
+    "Mg",
+    "Ca",
+    "Sr",
+    "Ba"
+  ],
+  "n_structures": 1008,
+  "n_train": 798,
+  "n_val": 105,
+  "n_test": 105,
+  "min_atoms": 2,
+  "max_atoms": 100,
+  "ef_range": [
+    -10.0,
+    5.0
+  ],
+  "deduplicated": true,
+  "normalized": true,
+  "graphs_cached": false,
+  "config": {
+    "sources": [
+      "mp"
+    ],
+    "target": 1000,
+    "output": "datasets/v2_1000_smoketest",
+    "api_key": null,
+    "elements": [
+      "Li",
+      "Na",
+      "K",
+      "Mg",
+      "Ca",
+      "Sr",
+      "Ba"
+    ],
+    "min_atoms": 2,
+    "max_atoms": 100,
+    "ef_range": [
+      -10.0,
+      5.0
+    ],
+    "val_ratio": 0.1,
+    "test_ratio": 0.1,
+    "deduplicate": true,
+    "normalize": true,
+    "cache_graphs": false,
+    "seed": 42,
+    "max_neighbors": 16,
+    "cutoff": 8.0,
+    "hidden_dim": 128,
+    "skip_download": true
+  }
+}

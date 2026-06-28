@@ -8,10 +8,13 @@ class MaterialsProjectCollector:
     def __init__(self, api_key: str = None):
         self.api_key = api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
 
-    def collect(self, elements: list = None, fields: list = None, max_results: int = 50000) -> pd.DataFrame:
+    def collect(self, elements: list = None, fields: list = None,
+                max_results: int = 50000, num_chunks: int = None) -> pd.DataFrame:
         from mp_api.client import MPRester
         if not self.api_key:
             return pd.DataFrame()
+        if num_chunks is None:
+            num_chunks = min(max(1, max_results // 1000), 5)
         with MPRester(self.api_key) as mpr:
             docs = mpr.materials.summary.search(
                 elements=elements or ["Li"],
@@ -20,7 +23,7 @@ class MaterialsProjectCollector:
                     "formation_energy_per_atom", "energy_above_hull",
                     "band_gap", "volume", "density", "symmetry", "is_stable"
                 ],
-                num_chunks=max_results // 1000
+                num_chunks=num_chunks
             )
         return pd.DataFrame([d.dict() for d in docs])
 

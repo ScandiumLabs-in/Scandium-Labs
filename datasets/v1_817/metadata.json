@@ -1,0 +1,29 @@
+{
+  "version": "v1_817",
+  "dataset_hash": "a4ffffa2f1f6",
+  "timestamp": "2026-06-28T16:07:06",
+  "sources": ["mp", "oqmd"],
+  "elements_requested": ["Li", "Na", "K", "Rb", "Cs", "Mg", "Ca", "Sr", "Ba"],
+  "n_structures": 817,
+  "n_train": 653,
+  "n_val": 82,
+  "n_test": 82,
+  "min_atoms": 2,
+  "max_atoms": 200,
+  "ef_range": [-10.0, 5.0],
+  "deduplicated": true,
+  "normalized": true,
+  "graphs_cached": true,
+  "data_location": "data/processed/",
+  "baseline_checkpoint": "checkpoints/best_model.pt",
+  "baseline_metrics": {
+    "formation_energy_mae": 0.2474,
+    "formation_energy_r2": 0.442,
+    "energy_above_hull_mae": 0.0592,
+    "energy_above_hull_r2": -1.688,
+    "band_gap_mae": 1.1874,
+    "band_gap_r2": 0.299
+  },
+  "git_tag": "v1.0-baseline",
+  "git_commit": "1a41ccf"
+}
