@@ -1,0 +1,25 @@
+deployment:
+  api:
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+    cors_origins: ["*"]
+
+  database:
+    url: "postgresql://user:pass@postgres:5432/scandium"
+    pool_size: 10
+
+  redis:
+    url: "redis://redis:6379/0"
+
+  inference:
+    model_path: "/models/best_model.pt"
+    device: "cuda"
+    use_mc_dropout: true
+    mc_samples: 20
+    batch_size: 32
+
+  storage:
+    type: "s3"
+    bucket: "scandium-results"
+    endpoint: null

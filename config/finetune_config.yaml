@@ -1,0 +1,58 @@
+model:
+  name: "ScandiumPINNGNN-v1-finetune"
+  atom_feat_dim: 92
+  edge_feat_dim: 64
+  hidden_dim: 128
+  num_alignn_layers: 2
+  num_transformer_layers: 1
+  num_attention_heads: 4
+  dropout: 0.1
+  mc_dropout_samples: 20
+  use_pretrained_alignn: false
+
+graph:
+  cutoff: 8.0
+  max_neighbors: 32
+  rbf_type: "bessel"
+  num_rbf: 64
+  num_sbf: 8
+
+tasks:
+  - name: "log_ionic_conductivity"
+    scale: "log10"
+    weight: 1.0
+    unit: "log(S/cm)"
+  - name: "formation_energy"
+    scale: "linear"
+    weight: 1.0
+    unit: "eV/atom"
+  - name: "energy_above_hull"
+    scale: "linear"
+    weight: 0.8
+    unit: "eV/atom"
+  - name: "activation_energy"
+    scale: "linear"
+    weight: 0.6
+    unit: "eV"
+  - name: "band_gap"
+    scale: "linear"
+    weight: 0.4
+    unit: "eV"
+
+pinn:
+  lambda_data: 1.0
+  lambda_physics: 0.1
+  lambda_arrhenius: 0.05
+  lambda_thermodynamic: 0.05
+
+training:
+  batch_size: 64
+  learning_rate: 0.0001
+  warmup_steps: 1000
+  max_epochs: 300
+  patience: 30
+  scheduler: "cosine_with_restarts"
+  optimizer: "AdamW"
+  weight_decay: 0.00001
+  gradient_clip: 1.0
+  mixed_precision: true

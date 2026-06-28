@@ -1,0 +1,50 @@
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+
+datasets:
+  materials_project:
+    enabled: true
+    api_key: null
+    elements: ["Li"]
+    fields:
+      - material_id
+      - formula_pretty
+      - structure
+      - formation_energy_per_atom
+      - energy_above_hull
+      - band_gap
+      - total_magnetization
+      - volume
+      - density
+      - symmetry
+      - is_stable
+
+  jarvis_dft:
+    enabled: true
+    dataset_name: "dft_3d"
+
+  oqmd:
+    enabled: true
+    api_url: "https://oqmd.org/oqmdapi/formationenergy"
+    limit: 100000
+
+cleaning:
+  min_atoms: 2
+  max_atoms: 200
+  formation_energy_range: [-10, 5]
+  structure_matching:
+    ltol: 0.2
+    stol: 0.3
+    angle_tol: 5
+
+split:
+  val_ratio: 0.1
+  test_ratio: 0.1
+  split_by: "composition"
+
+filters:
+  sulfide_only: false
+  li_containing: true
+  stability_threshold: null

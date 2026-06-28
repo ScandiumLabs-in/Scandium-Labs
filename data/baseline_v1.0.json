@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "date": "2026-06-28",
+  "dataset": {
+    "total_structures": 817,
+    "source": "Materials Project + OQMD (cached)",
+    "train_split": 653,
+    "val_split": 82,
+    "test_split": 82,
+    "split_file": "data/processed/split_indices.pt",
+    "targets": {
+      "formation_energy": {"labeled": 817, "nan": 0},
+      "energy_above_hull": {"labeled": 817, "nan": 0},
+      "band_gap": {"labeled": 817, "nan": 0},
+      "log_ionic_conductivity": {"labeled": 0, "nan": 817},
+      "activation_energy": {"labeled": 0, "nan": 817}
+    }
+  },
+  "model": {
+    "architecture": "ScandiumPINNGNN",
+    "hidden_dim": 128,
+    "num_alignn_layers": 2,
+    "num_transformer_layers": 1,
+    "num_attention_heads": 4,
+    "dropout": 0.1,
+    "atom_feat_dim": 92,
+    "edge_feat_dim": 64,
+    "num_sbf": 32,
+    "total_params": 742379
+  },
+  "training": {
+    "epochs": 87,
+    "batch_size": 8,
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-5,
+    "gradient_clip": 1.0,
+    "max_neighbors": 16,
+    "cutoff": 8.0,
+    "pretrained_encoder": false
+  },
+  "test_metrics": {
+    "formation_energy_mae": 0.2474,
+    "energy_above_hull_mae": 0.0592,
+    "band_gap_mae": 1.1874,
+    "log_ionic_conductivity": "no_labels",
+    "activation_energy": "no_labels"
+  },
+  "normalizer_stats": {
+    "formation_energy": {"mean": -1.4734, "std": 0.6012},
+    "energy_above_hull": {"mean": 0.0974, "std": 0.3087},
+    "band_gap": {"mean": 1.7154, "std": 1.6921}
+  },
+  "predictions_sample": {
+    "LiF": {"formation_energy": -2.108, "energy_above_hull": 0.177, "band_gap": 3.795},
+    "NaCl": {"formation_energy": -1.954, "energy_above_hull": 0.412, "band_gap": 2.126},
+    "MgO": {"formation_energy": -2.156, "energy_above_hull": 0.168, "band_gap": 2.768},
+    "CsCl": {"formation_energy": -2.402, "energy_above_hull": 0.102, "band_gap": 3.863}
+  },
+  "pipeline_bugs_fixed": [
+    "target_name_mismatch: dataset stored y_form_energy, trainer looked for y_formation_energy",
+    "feature_engineer_no_truncation: featurize() only padded, never truncated",
+    "loss_task_weights_ignored: per-task weights from config never applied",
+    "trainer_missing_num_sbf: load_data() didn't pass num_sbf to builder",
+    "trainer_missing_collate_fn: DataLoader lacked collate_fn for PyG batching",
+    "torch_load_weights_only: PyTorch 2.6 default broke dataset loading",
+    "wandb_gate: unconditional wandb.log crashed when not initialized",
+    "checkpoint_config_format: engine expected nested config['model'] key"
+  ]
+}
