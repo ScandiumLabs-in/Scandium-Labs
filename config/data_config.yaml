@@ -6,7 +6,7 @@ data:
 datasets:
   materials_project:
     enabled: true
-    api_key: null
+    api_key: "${MP_API_KEY}"
     elements: ["Li"]
     fields:
       - material_id

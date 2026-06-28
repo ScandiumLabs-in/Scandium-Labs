@@ -1,3 +1,4 @@
+import os
 import requests
 import pandas as pd
 from pathlib import Path
@@ -5,7 +6,7 @@ from pathlib import Path
 
 class MaterialsProjectCollector:
     def __init__(self, api_key: str = None):
-        self.api_key = api_key
+        self.api_key = api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
 
     def collect(self, elements: list = None, fields: list = None, max_results: int = 50000) -> pd.DataFrame:
         from mp_api.client import MPRester
