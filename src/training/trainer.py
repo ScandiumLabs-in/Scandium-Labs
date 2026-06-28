@@ -13,10 +13,11 @@ from src.training.losses import PINNLoss
 
 
 class ScandiumTrainer:
-    def __init__(self, config_path):
+    def __init__(self, config_path, data_dir="data/processed"):
         with open(config_path) as f:
             self.config = yaml.safe_load(f)
 
+        self.data_dir = Path(data_dir)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.scaler = GradScaler()
         self.best_val_loss = float('inf')
@@ -305,7 +306,7 @@ class ScandiumTrainer:
         from pathlib import Path
         import torch
 
-        processed_dir = Path("data/processed")
+        processed_dir = self.data_dir
         cache_file = processed_dir / "dataset_cache.pt"
         split_file = processed_dir / "split_indices.pt"
 

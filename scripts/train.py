@@ -29,7 +29,7 @@ def main():
         mp.spawn(train_worker, args=(args, config), nprocs=args.gpus)
     else:
         from src.training.trainer import ScandiumTrainer
-        trainer = ScandiumTrainer(args.config)
+        trainer = ScandiumTrainer(args.config, data_dir=args.data_dir)
         model, metrics = trainer.train()
 
         print("\n=== FINAL TEST RESULTS ===")
