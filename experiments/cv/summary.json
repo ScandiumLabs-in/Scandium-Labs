@@ -1,0 +1,254 @@
+{
+  "n_folds": 5,
+  "n_total": 817,
+  "config": {
+    "atom_feat_dim": 92,
+    "edge_feat_dim": 64,
+    "hidden_dim": 128,
+    "num_alignn_layers": 2,
+    "num_transformer_layers": 1,
+    "num_attention_heads": 4,
+    "dropout": 0.1,
+    "mc_dropout_samples": 20,
+    "use_pretrained_alignn": false,
+    "tasks": [
+      "formation_energy",
+      "energy_above_hull",
+      "band_gap"
+    ]
+  },
+  "batch_size": 8,
+  "max_epochs": 100,
+  "patience": 15,
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "task_weights": {
+    "formation_energy": 1.0,
+    "energy_above_hull": 0.8,
+    "band_gap": 0.4
+  },
+  "folds": [
+    {
+      "fold_id": 0,
+      "n_train": 653,
+      "n_val": 164,
+      "best_epoch": 51,
+      "total_epochs": 67,
+      "total_time_s": 286.2,
+      "best_val_loss": 1.1671589016914368,
+      "formation_energy_mae": 0.3111872673034668,
+      "formation_energy_rmse": 0.49805710725932045,
+      "formation_energy_r2": 0.4465455412864685,
+      "formation_energy_n": 164,
+      "energy_above_hull_mae": 0.10014577955007553,
+      "energy_above_hull_rmse": 0.33258072882312456,
+      "energy_above_hull_r2": 0.11390805244445801,
+      "energy_above_hull_n": 164,
+      "band_gap_mae": 1.0767738819122314,
+      "band_gap_rmse": 1.421588994699834,
+      "band_gap_r2": 0.31589341163635254,
+      "band_gap_n": 164
+    },
+    {
+      "fold_id": 1,
+      "n_train": 653,
+      "n_val": 164,
+      "best_epoch": 7,
+      "total_epochs": 23,
+      "total_time_s": 103.2,
+      "best_val_loss": 1.0419939217113314,
+      "formation_energy_mae": 0.3049917221069336,
+      "formation_energy_rmse": 0.39071627504171585,
+      "formation_energy_r2": 0.5002926588058472,
+      "formation_energy_n": 164,
+      "energy_above_hull_mae": 0.07821790128946304,
+      "energy_above_hull_rmse": 0.22573557758043972,
+      "energy_above_hull_r2": 0.16755640506744385,
+      "energy_above_hull_n": 164,
+      "band_gap_mae": 1.1743946075439453,
+      "band_gap_rmse": 1.4495724146249815,
+      "band_gap_r2": 0.23671865463256836,
+      "band_gap_n": 164
+    },
+    {
+      "fold_id": 2,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 9,
+      "total_epochs": 25,
+      "total_time_s": 108.5,
+      "best_val_loss": 1.1979895134766896,
+      "formation_energy_mae": 0.33771222829818726,
+      "formation_energy_rmse": 0.4824465386267604,
+      "formation_energy_r2": 0.3466538190841675,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.08902713656425476,
+      "energy_above_hull_rmse": 0.2989821566860019,
+      "energy_above_hull_r2": 0.0682176947593689,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 1.1421964168548584,
+      "band_gap_rmse": 1.4125844069385993,
+      "band_gap_r2": 0.27939653396606445,
+      "band_gap_n": 163
+    },
+    {
+      "fold_id": 3,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 61,
+      "total_epochs": 77,
+      "total_time_s": 326.8,
+      "best_val_loss": 1.096792769219194,
+      "formation_energy_mae": 0.28589025139808655,
+      "formation_energy_rmse": 0.5460316558593611,
+      "formation_energy_r2": 0.31364601850509644,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.10456101596355438,
+      "energy_above_hull_rmse": 0.428214844096313,
+      "energy_above_hull_r2": 0.011501789093017578,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 0.9608772397041321,
+      "band_gap_rmse": 1.2862019096704376,
+      "band_gap_r2": 0.33838415145874023,
+      "band_gap_n": 163
+    },
+    {
+      "fold_id": 4,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 90,
+      "total_epochs": 100,
+      "total_time_s": 437.7,
+      "best_val_loss": 1.027173666017396,
+      "formation_energy_mae": 0.2459827959537506,
+      "formation_energy_rmse": 0.31875999378918307,
+      "formation_energy_r2": 0.6049220561981201,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.09469377249479294,
+      "energy_above_hull_rmse": 0.26227670947830345,
+      "energy_above_hull_r2": -8.801673889160156,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 1.1312505006790161,
+      "band_gap_rmse": 1.4881133538006321,
+      "band_gap_r2": 0.32460564374923706,
+      "band_gap_n": 163
+    }
+  ],
+  "aggregate": {
+    "formation_energy": {
+      "mae": {
+        "mean": 0.2972,
+        "std": 0.0305,
+        "ci95": 0.0267,
+        "values": [
+          0.3112,
+          0.305,
+          0.3377,
+          0.2859,
+          0.246
+        ]
+      },
+      "rmse": {
+        "mean": 0.4472,
+        "std": 0.0816,
+        "ci95": 0.0715,
+        "values": [
+          0.4981,
+          0.3907,
+          0.4824,
+          0.546,
+          0.3188
+        ]
+      },
+      "r2": {
+        "mean": 0.4424,
+        "std": 0.1054,
+        "ci95": 0.0924,
+        "values": [
+          0.4465,
+          0.5003,
+          0.3467,
+          0.3136,
+          0.6049
+        ]
+      }
+    },
+    "energy_above_hull": {
+      "mae": {
+        "mean": 0.0933,
+        "std": 0.0092,
+        "ci95": 0.008,
+        "values": [
+          0.1001,
+          0.0782,
+          0.089,
+          0.1046,
+          0.0947
+        ]
+      },
+      "rmse": {
+        "mean": 0.3096,
+        "std": 0.0693,
+        "ci95": 0.0607,
+        "values": [
+          0.3326,
+          0.2257,
+          0.299,
+          0.4282,
+          0.2623
+        ]
+      },
+      "r2": {
+        "mean": -1.6881,
+        "std": 3.5572,
+        "ci95": 3.118,
+        "values": [
+          0.1139,
+          0.1676,
+          0.0682,
+          0.0115,
+          -8.8017
+        ]
+      }
+    },
+    "band_gap": {
+      "mae": {
+        "mean": 1.0971,
+        "std": 0.075,
+        "ci95": 0.0658,
+        "values": [
+          1.0768,
+          1.1744,
+          1.1422,
+          0.9609,
+          1.1313
+        ]
+      },
+      "rmse": {
+        "mean": 1.4116,
+        "std": 0.068,
+        "ci95": 0.0596,
+        "values": [
+          1.4216,
+          1.4496,
+          1.4126,
+          1.2862,
+          1.4881
+        ]
+      },
+      "r2": {
+        "mean": 0.299,
+        "std": 0.0368,
+        "ci95": 0.0322,
+        "values": [
+          0.3159,
+          0.2367,
+          0.2794,
+          0.3384,
+          0.3246
+        ]
+      }
+    }
+  },
+  "timestamp": "2026-06-28T20:12:51"
+}
