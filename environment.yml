@@ -1,0 +1,32 @@
+name: scandium-labs
+channels:
+  - pytorch
+  - pyg
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.10
+  - pip>=24.0
+  - numpy>=1.24
+  - pandas>=2.0
+  - scikit-learn>=1.2
+  - scipy>=1.10
+  - pyyaml>=6.0
+  - tqdm>=4.64
+  - streamlit>=1.20
+  - fastapi>=0.100
+  - uvicorn>=0.22
+  - celery>=5.3
+  - redis>=4.5
+  - sqlalchemy>=2.0
+  - python-dotenv>=1.0
+  - plotly>=5.15
+  - pytest>=7.4
+  - pytest-cov>=4.1
+  - pre-commit>=3.5
+  - pip:
+    - pymatgen>=2024.0.0
+    - mp-api>=0.30.0
+    - torch>=2.3.0
+    - torch-geometric>=2.5.0
+    - wandb>=0.16.0

@@ -1,8 +1,9 @@
-import streamlit as st
-import requests
-import json
+import os
 
-API_BASE = "http://localhost:8000"
+import requests
+import streamlit as st
+
+API_BASE = os.environ.get("API_HOST", "http://localhost:8000")
 
 def show():
     st.markdown("""
@@ -116,8 +117,47 @@ def show():
             st.error(f"Error: {e}")
 
 
+def _family_of(formula):
+    from pymatgen.core import Composition
+    try:
+        comp = Composition(formula)
+        els = {str(e) for e in comp.elements}
+        if any(e in els for e in ['F','Cl','Br','I']): return 'halide'
+        if 'O' in els and 'P' in els: return 'phosphate'
+        if 'O' in els: return 'oxide'
+        if 'S' in els: return 'sulfide'
+        return 'other'
+    except Exception:
+        return 'unknown'
+
+def rerank_for_family_diversity(results, top_k=10, max_per_family=4):
+    """Ensures top-K results don't exceed max_per_family from any one chemical family."""
+    from collections import Counter
+    ranked = sorted(results, key=lambda r: r.get("energy_above_hull", float('inf')))
+    selected, seen_families = [], Counter()
+    remaining = []
+
+    for r in ranked:
+        fam = _family_of(r.get("material", r.get("formula", "")))
+        if seen_families[fam] < max_per_family and len(selected) < top_k:
+            selected.append(r)
+            seen_families[fam] += 1
+        else:
+            remaining.append(r)
+
+    selected.extend(remaining)
+    return selected
+
+
 def show_batch_results(results):
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+    # Family-diversity rerank toggle
+    rerank = st.checkbox("Enforce family diversity in ranking", value=True,
+                         help="Limits top candidates to 4 per chemical family to counteract model bias")
+    if rerank:
+        results = rerank_for_family_diversity(results)
+
     st.markdown("""
     <div style="margin-bottom:1rem;">
         <div style="font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:#999; margin-bottom:0.5rem;">Candidates</div>
@@ -126,7 +166,6 @@ def show_batch_results(results):
     """, unsafe_allow_html=True)
 
     import pandas as pd
-    import numpy as np
 
     rows = []
     for r in results:

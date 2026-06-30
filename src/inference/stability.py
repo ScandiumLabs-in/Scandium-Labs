@@ -1,6 +1,6 @@
 import os
-import numpy as np
 from pathlib import Path
+
 from pymatgen.analysis.phase_diagram import PhaseDiagram
 from pymatgen.core import Composition
 from pymatgen.core.entries import ComputedEntry
@@ -8,6 +8,7 @@ from pymatgen.core.entries import ComputedEntry
 
 def _get_mp_api_key():
     from dotenv import load_dotenv
+
     env_path = Path(__file__).parents[2] / ".env"
     if env_path.exists():
         load_dotenv(str(env_path))
@@ -19,17 +20,18 @@ def compute_hull_energy(composition, predicted_formation_energy):
     if api_key:
         try:
             from pymatgen.ext.matproj import MPRester
+
             with MPRester(api_key) as mpr:
                 elements = [str(el) for el in composition.elements]
                 entries = mpr.get_entries_in_chemsys(elements)
             pd = PhaseDiagram(entries)
             dummy_entry = ComputedEntry(
                 Composition(composition.alphabetical_formula),
-                predicted_formation_energy * composition.num_atoms
+                predicted_formation_energy * composition.num_atoms,
             )
             e_above_hull = pd.get_e_above_hull(dummy_entry)
             return {
-                "energy_above_hull": float(e_above_hull) if e_above_hull is not None else None,
+                "energy_above_hull": (float(e_above_hull) if e_above_hull is not None else None),
                 "source": "mp_convex_hull",
                 "num_competing_phases": len(entries),
                 "available": True,
@@ -45,11 +47,15 @@ def hull_consistency_flag(formation_energy, energy_above_hull):
     return {
         "suspicious": suspicious,
         "reason": (
-            "formation_energy is near zero but energy_above_hull is "
-            "large. These are predicted by independent heads and may be "
-            "inconsistent. Recommend verifying against a convex-hull phase "
-            "diagram before rejecting."
-        ) if suspicious else None,
+            (
+                "formation_energy is near zero but energy_above_hull is "
+                "large. These are predicted by independent heads and may be "
+                "inconsistent. Recommend verifying against a convex-hull phase "
+                "diagram before rejecting."
+            )
+            if suspicious
+            else None
+        ),
     }
 
 

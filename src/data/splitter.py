@@ -1,4 +1,5 @@
 import re
+
 import numpy as np
 from sklearn.model_selection import GroupShuffleSplit
 
@@ -7,8 +8,8 @@ def composition_based_split(dataset, val_ratio=0.1, test_ratio=0.1):
     formulas = [s.composition.reduced_formula for s in dataset.structures]
 
     def get_element_group(formula):
-        elements = sorted(re.findall(r'[A-Z][a-z]?', formula))
-        return '-'.join(elements)
+        elements = sorted(re.findall(r"[A-Z][a-z]?", formula))
+        return "-".join(elements)
 
     groups = [get_element_group(f) for f in formulas]
 
@@ -23,5 +24,5 @@ def composition_based_split(dataset, val_ratio=0.1, test_ratio=0.1):
     return (
         [train_idx[i] for i in train_idx2],
         [train_idx[i] for i in val_idx],
-        test_idx
+        test_idx,
     )

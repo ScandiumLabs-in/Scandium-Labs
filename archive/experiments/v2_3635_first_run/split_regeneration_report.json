@@ -1,0 +1,21 @@
+{
+  "method": "StratifiedGroupKFold (formula groups + Eah quantile bins)",
+  "eah_bins": 9,
+  "n_structures": 3635,
+  "train": 2925,
+  "val": 355,
+  "test": 355,
+  "zero_formula_overlap_between_splits": true,
+  "ks_train_vs_test": {
+    "statistic": 0.06449981942939698,
+    "pvalue": 0.13685906640732212
+  },
+  "ks_train_vs_val": {
+    "statistic": 0.04966895389430592,
+    "pvalue": 0.40125883461922424
+  },
+  "ks_val_vs_test": {
+    "statistic": 0.09014084507042253,
+    "pvalue": 0.11176353030358875
+  }
+}

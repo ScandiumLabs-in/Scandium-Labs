@@ -1,16 +1,24 @@
 import os
-import requests
+
 import pandas as pd
-from pathlib import Path
+import requests
 
 
 class MaterialsProjectCollector:
     def __init__(self, api_key: str = None):
-        self.api_key = api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
+        self.api_key = (
+            api_key or os.environ.get("MP_API_KEY") or os.environ.get("MATERIALS_PROJECT_API_KEY")
+        )
 
-    def collect(self, elements: list = None, fields: list = None,
-                max_results: int = 50000, num_chunks: int = None) -> pd.DataFrame:
+    def collect(
+        self,
+        elements: list = None,
+        fields: list = None,
+        max_results: int = 50000,
+        num_chunks: int = None,
+    ) -> pd.DataFrame:
         from mp_api.client import MPRester
+
         if not self.api_key:
             return pd.DataFrame()
         if num_chunks is None:
@@ -18,12 +26,20 @@ class MaterialsProjectCollector:
         with MPRester(self.api_key) as mpr:
             docs = mpr.materials.summary.search(
                 elements=elements or ["Li"],
-                fields=fields or [
-                    "material_id", "formula_pretty", "structure",
-                    "formation_energy_per_atom", "energy_above_hull",
-                    "band_gap", "volume", "density", "symmetry", "is_stable"
+                fields=fields
+                or [
+                    "material_id",
+                    "formula_pretty",
+                    "structure",
+                    "formation_energy_per_atom",
+                    "energy_above_hull",
+                    "band_gap",
+                    "volume",
+                    "density",
+                    "symmetry",
+                    "is_stable",
                 ],
-                num_chunks=num_chunks
+                num_chunks=num_chunks,
             )
         return pd.DataFrame([d.dict() for d in docs])
 
@@ -31,6 +47,7 @@ class MaterialsProjectCollector:
 class JARVISCollector:
     def collect(self, dataset_name: str = "dft_3d") -> pd.DataFrame:
         from jarvis.db.figshare import data
+
         return pd.DataFrame(data(dataset_name))
 
 
@@ -48,9 +65,9 @@ class OQMDCollector:
                 params={
                     "fields": "name,entry,delta_e,stability,unit_cell,band_gap",
                     "limit": min(batch_size, limit - len(all_entries)),
-                    "offset": local_offset
+                    "offset": local_offset,
                 },
-                timeout=30
+                timeout=30,
             )
             if resp.status_code != 200:
                 break
@@ -73,7 +90,7 @@ class AFLOWCollector:
                     "species([*])": "Li",
                     "$paging": page * 100,
                     "$limit": min(100, max_results - len(entries)),
-                    "$select": "auid,compound,Egap,enthalpy_formation_atom,nspecies"
+                    "$select": "auid,compound,Egap,enthalpy_formation_atom,nspecies",
                 }
                 resp = requests.get(url, params=params, timeout=30)
                 if resp.status_code != 200:
@@ -86,6 +103,7 @@ class AFLOWCollector:
             except Exception:
                 break
         return pd.DataFrame(entries)
+
 
 SULFIDE_FILTERS = {
     "elements": ["Li", "S"],
@@ -105,7 +123,9 @@ KNOWN_SULFIDES = [
 
 
 class NOMADCollector:
-    def collect(self, elements: list = None, page_size: int = 100, max_entries: int = 10000) -> pd.DataFrame:
+    def collect(
+        self, elements: list = None, page_size: int = 100, max_entries: int = 10000
+    ) -> pd.DataFrame:
         url = "https://nomad-lab.eu/prod/v1/api/v1/entries/query"
         all_entries = []
         page_after_value = None
@@ -113,9 +133,7 @@ class NOMADCollector:
             body = {
                 "query": {"elements": elements or ["Li", "S"]},
                 "pagination": {"page_size": min(page_size, max_entries - len(all_entries))},
-                "required": {
-                    "include": ["entry_id", "formula", "results.material.symmetry"]
-                }
+                "required": {"include": ["entry_id", "formula", "results.material.symmetry"]},
             }
             if page_after_value:
                 body["pagination"]["page_after_value"] = page_after_value

@@ -1,0 +1,63 @@
+{
+  "project": "Scandium Labs SSB - Phase 3 Summary",
+  "date": "2026-06-30",
+  "v2_baseline": {
+    "checkpoint": "checkpoints/best_model.pt",
+    "architecture": "hidden_dim=128, 2 ALIGNN, 1 Transformer, 714K params",
+    "test_metrics": {
+      "formation_energy": {"mae": 0.249, "r2": 0.683, "rmse": 0.386, "bias": 0.016, "nll": 0.563},
+      "energy_above_hull": {"mae": 0.115, "r2": 0.413, "rmse": 0.232, "bias": -0.002, "nll": 0.201},
+      "band_gap": {"mae": 0.783, "r2": 0.350, "rmse": 1.089, "bias": 0.026, "nll": 1.578}
+    },
+    "temperature_scaling": {
+      "formation_energy": 0.387,
+      "energy_above_hull": 1.009,
+      "band_gap": 0.973
+    }
+  },
+  "phase2_complete": true,
+  "phase2_sections": ["A1_target_distribution", "A2_benchmark_overlap", "B1_embedding_extraction", "B2_pca_umap", "C1_calibration", "C2_temperature_scaling", "D1_lofo_proxy", "D2_lofo_full", "E_ablation", "F_decision_framework"],
+  "phase3_attempts": [
+    {
+      "name": "log-eah_from_scratch",
+      "config": "hidden_dim=128, 2 ALIGNN",
+      "result": "FAILED - all tasks degraded, all R² negative",
+      "cause": "multi-task interference from log-transformed EAH targets"
+    },
+    {
+      "name": "log-eah_finetune_full",
+      "config": "LR=5e-5, fine-tuned from v2 checkpoint",
+      "result": "FAILED - Ef/BG severely degraded (R²=-0.53, -1.39)",
+      "cause": "fine-tuning disrupted shared encoder features"
+    },
+    {
+      "name": "log-eah_frozen_backbone",
+      "config": "EAH head only, backbone frozen",
+      "result": "FAILED - EAH head did not converge (val_loss stuck at 3.94)",
+      "cause": "frozen backbone features not suited for log-raw target space"
+    },
+    {
+      "name": "v3_architecture_upgrade",
+      "config": "hidden_dim=256, 4 ALIGNN, 2 Transformer (~5M params)",
+      "result": "BLOCKED - CUDA OOM on GTX 1650 4GB",
+      "cause": "insufficient VRAM for larger model at batch_size=4"
+    }
+  ],
+  "log_eah_conclusion": "log-transform of EAH targets degrades multi-task performance. The shared encoder cannot simultaneously produce features optimal for linearly-scaled Ef/BG and log-scaled EAH. Separate models per task or post-hoc calibration are recommended instead.",
+  "deliverables": {
+    "phase2_reports": "experiments/reports/phase2_*/",
+    "final_evaluation": "checkpoints/final_eval/test_results.json",
+    "temperatures": "checkpoints/final_eval/temperatures.json",
+    "benchmark": "benchmark_v001_a4ffffa2f1f6.json",
+    "v3_config": "config/model_config_v3.yaml",
+    "log_eah_config": "scripts/phase3_config_log_eah.yaml",
+    "best_checkpoint": "checkpoints/best_model.pt"
+  },
+  "recommendations": [
+    "1. Apply temperature scaling (Ef: 0.387, Eah: 1.009, BG: 0.973) during inference",
+    "2. For EAH improvement: train a separate model exclusively for EAH with log-transform",
+    "3. For architecture upgrade: use cloud GPU (e.g., T4) for v3 model training",
+    "4. Add more training data for EAH (currently many zeros, high skew)",
+    "5. Use ensemble methods to improve calibration and reduce bias"
+  ]
+}

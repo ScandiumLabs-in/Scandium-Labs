@@ -1,8 +1,9 @@
 import torch
 
 
-def integrated_gradients(model, crystal_graph, line_graph,
-                         target_task='log_ionic_conductivity', n_steps=50):
+def integrated_gradients(
+    model, crystal_graph, line_graph, target_task="log_ionic_conductivity", n_steps=50
+):
     baseline_x = torch.zeros_like(crystal_graph.x)
     input_x = crystal_graph.x.clone().requires_grad_(True)
     attributions = torch.zeros_like(input_x)

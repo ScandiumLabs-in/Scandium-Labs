@@ -1,10 +1,14 @@
+import os
+
 from celery import Celery
+
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
 
 try:
     celery_app = Celery(
         'scandium',
-        broker='redis://redis:6379/0',
-        backend='redis://redis:6379/0'
+        broker=REDIS_URL,
+        backend=REDIS_URL,
     )
     celery_app.conf.update(
         task_serializer='json',
@@ -27,7 +31,8 @@ if celery_app is not None:
         from src.inference.engine import InferenceEngine
         from src.inference.ranking import ParetoRanker
 
-        engine = InferenceEngine(model_path='/models/best_model.pt')
+        model_path = os.environ.get("MODEL_PATH", "checkpoints/best_model.pt")
+        engine = InferenceEngine(model_path=model_path)
         ranker = ParetoRanker()
 
         self.update_state(state='PROCESSING', meta={'progress': 0})

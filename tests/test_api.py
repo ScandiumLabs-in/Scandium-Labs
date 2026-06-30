@@ -1,7 +1,8 @@
 import pytest
-from httpx import AsyncClient, ASGITransport
-from api.main import app
+from httpx import ASGITransport, AsyncClient
+
 from api.auth import create_access_token
+from api.main import app
 
 
 @pytest.fixture

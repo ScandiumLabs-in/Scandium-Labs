@@ -1,0 +1,58 @@
+model:
+  name: "ScandiumPINNGNN-v3-Li"
+  hidden_dim: 128
+  num_alignn_layers: 4
+  num_transformer_layers: 2
+  num_attention_heads: 4
+  dropout: 0.15
+  mc_dropout_samples: 20
+  use_two_stage_eah: true
+  use_gradient_checkpointing: auto
+  # auto = enabled when VRAM < 6 GB, disabled when VRAM >= 8 GB
+
+graph:
+  cutoff: 8.0
+  max_neighbors: 16
+  num_rbf: 64
+  num_sbf: 32
+
+tasks:
+  - name: "formation_energy"
+    weight: 1.0
+    scale: "linear"
+  - name: "energy_above_hull"
+    weight: 1.0
+    scale: "linear"
+    two_stage: true
+  - name: "band_gap"
+    weight: 1.0
+    scale: "linear"
+
+gradnorm:
+  enabled: true
+  alpha: 1.5
+
+training:
+  batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 0.0005
+  warmup_steps: 500
+  max_epochs: 150
+  patience: 40
+  scheduler: "cosine_with_restarts"
+  optimizer: "AdamW"
+  weight_decay: 0.00001
+  gradient_clip: 1.0
+  mixed_precision: true
+  normalize_targets: true
+  dataset: "v3_li_10000"
+
+bucketing:
+  enabled: true
+  bucket_size_mult: 2.0
+
+logging:
+  tensorboard: false
+  wandb: false
+  plot: true
+  save_epoch_checkpoints: 10

@@ -399,7 +399,7 @@ PAGES = {
 }
 
 def main():
-    st.markdown(f"""
+    st.markdown("""
     <div style="display:flex; align-items:baseline; gap:1.5rem; margin-bottom:3rem;">
         <span style="font-size:2rem; font-weight:900; letter-spacing:-0.03em; color:#000;">Scandium</span>
         <span style="font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:#999;">Labs</span>

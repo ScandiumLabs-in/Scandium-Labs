@@ -1,0 +1,97 @@
+{
+  "project": "Scandium Labs SSB — Phase 4 Complete",
+  "date": "2026-06-30",
+
+  "implemented_fixes": {
+    "fix_c_r2_verification": {
+      "status": "completed",
+      "finding": "Eah R²=0.41 is real — test set σ(Eah)=0.302 (adequate variance). Earlier confusion from double-denormalizing cache targets."
+    },
+    "fix_a1_gradnorm": {
+      "status": "completed",
+      "file": "src/training/losses.py",
+      "implementation": "GradNormLoss class with manual gradient descent weight update",
+      "behavior": "Weights stabilized at Ef≈0.72, Eah≈1.43, BG≈0.78 — EAH task has largest gradients, receives highest weight"
+    },
+    "fix_a3_two_stage_eah": {
+      "status": "completed",
+      "file": "src/models/two_stage_eah.py",
+      "implementation": "TwoStageEahHead (stability classifier + magnitude regressor) + TwoStageEahLoss + two_stage_metrics",
+      "behavior": "Random initialization from checkpoint; trained alongside GradNorm"
+    },
+    "fix_b_gradient_checkpointing": {
+      "status": "completed",
+      "file": "src/models/scandium_model.py",
+      "implementation": "use_gradient_checkpointing flag with torch.utils.checkpoint.checkpoint on ALIGNN and Transformer layers"
+    },
+    "model_modifications": {
+      "file": "src/models/scandium_model.py",
+      "changes": ["lg_edge_feat_dim default 0 (backward compatible)", "use_two_stage_eah flag", "use_gradient_checkpointing flag", "forward() handles TwoStageEahHead dict output"]
+    }
+  },
+
+  "phase4_training_results": {
+    "model": "checkpoints/phase4_final/best_model.pt",
+    "architecture": "hidden_dim=128, 2 ALIGNN, 1 Transformer, 728K params",
+    "config": "GradNorm + Two-Stage Eah, LR=0.001, GRAD_ACCUM=4, 200 max epochs (stopped at ~80)",
+    "test_metrics": {
+      "formation_energy": {"mae": 0.268, "r2": 0.654, "rmse": 0.386, "bias": 0.016},
+      "energy_above_hull": {"mae": 0.120, "r2": 0.369, "rmse": 0.240, "bias": -0.020},
+      "band_gap": {"mae": 0.804, "r2": 0.281, "rmse": 1.146, "bias": 0.024}
+    },
+    "two_stage_eah_metrics": {
+      "stability_f1": 0.891,
+      "precision": 0.876,
+      "recall": 0.907,
+      "eah_mae_unstable": 0.141,
+      "threshold": "Eah < 1e-3 eV/atom"
+    }
+  },
+
+  "comparison_v2_vs_phase4": {
+    "v2_baseline": {
+      "checkpoint": "checkpoints/best_model.pt",
+      "eah_mae": 0.113,
+      "eah_spearman": 0.566,
+      "enrichment_at_10": 1.60
+    },
+    "phase4": {
+      "checkpoint": "checkpoints/phase4_final/best_model.pt",
+      "eah_mae": 0.120,
+      "eah_spearman": 0.638,
+      "enrichment_at_10": 2.29,
+      "stability_f1": 0.891
+    },
+    "conclusion": "Phase 4 marginally worse on absolute MAE but significantly better on ranking (Spearman +0.072) and screening (Enrichment@10 +43%). The Two-Stage head adds stability classification capability (F1=0.89) that v2 lacks entirely."
+  },
+
+  "publication_readiness": {
+    "eah_mae": {"value": 0.120, "target": "<0.10", "status": "not_met"},
+    "stability_f1": {"value": 0.891, "target": ">0.75", "status": "met"},
+    "enrichment_at_10": {"value": 2.29, "target": ">3.0", "status": "not_met"},
+    "temperature_scaling": {"status": "available", "location": "checkpoints/final_eval/temperatures.json"},
+    "calibration": {"status": "not_verified", "reason": "Two-stage Eah head uncertainty not validated for new architecture"}
+  },
+
+  "remaining_gaps": [
+    "Eah MAE (0.120) just above 0.10 target — needs more epochs or LR tuning",
+    "Enrichment@10 (2.29x) below 3.0x target — stability classifier needs improvement",
+    "Two-stage Eah uncertainty not evaluated for calibration",
+    "v3 architecture (hidden_dim=192, GC) not trained — needs Colab or cloud GPU",
+    "LOFO experiments not re-run with Phase 4 model"
+  ],
+
+  "files_created_or_modified": [
+    "src/training/losses.py — added GradNormLoss class",
+    "src/models/two_stage_eah.py — new: TwoStageEahHead, TwoStageEahLoss, two_stage_metrics",
+    "src/models/scandium_model.py — added use_two_stage_eah, use_gc, lg_edge_feat_dim=0 default",
+    "src/inference/engine.py — updated valid_keys",
+    "scripts/phase4_train.py — new: integrated GradNorm + Two-Stage Eah training",
+    "scripts/phase3_freeze_backbone.py — new: frozen backbone experiment (log-EAH)",
+    "scripts/phase3_config_log_eah.yaml — new: 3-task log-EAH config",
+    "scripts/phase2_*.py — all Phase 2 analysis scripts",
+    "config/model_config_v3.yaml — v3 arch config (untrained)",
+    "checkpoints/phase4_final/test_results.json — Phase 4 final metrics",
+    "checkpoints/final_eval/temperatures.json — T scaling values"
+  ]
+}

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Scandium Labs: AI-Driven Solid Electrolyte Discovery"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - given-names: Scandium
+    family-names: Labs
+    affiliation: "Scandium Labs"
+    email: "info@scandiumlabs.com"
+repository-code: "https://github.com/scandium-labs/scandium-labs"
+abstract: "Graph neural network framework for screening solid-state electrolyte materials using multitask learning with uncertainty estimation."
+keywords:
+  - materials science
+  - solid electrolyte
+  - graph neural networks
+  - machine learning
+  - battery materials
+license: MIT

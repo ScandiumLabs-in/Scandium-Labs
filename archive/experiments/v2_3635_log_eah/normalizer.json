@@ -1,0 +1,29 @@
+{
+  "formation_energy": {
+    "mean": -0.9855779874337437,
+    "std": 0.7837755498961069,
+    "min": -3.938207599750001,
+    "max": 4.711580352499997
+  },
+  "energy_above_hull": {
+    "mean": 0.18403489851314225,
+    "std": 0.35564632665581575,
+    "min": 0.0,
+    "max": 4.711805742500001,
+    "log_version": "energy_above_hull_log"
+  },
+  "band_gap": {
+    "mean": 1.3032298789924306,
+    "std": 1.3210505212352146,
+    "min": 0.0,
+    "max": 5.5854
+  },
+  "energy_above_hull_log": {
+    "mean": -3.3668181449874157,
+    "std": 2.3176426526485323,
+    "min": -6.907755278982137,
+    "max": 1.5502834297146681,
+    "description": "log(Eah + 1e-3) \u2014 for log-transform experiment",
+    "eps": 0.001
+  }
+}

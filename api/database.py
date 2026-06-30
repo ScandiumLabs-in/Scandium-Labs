@@ -1,8 +1,19 @@
-from sqlalchemy import create_engine, Column, String, Float, Integer, Boolean, DateTime, JSON
+import os
+import uuid
+from datetime import datetime
+
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    Integer,
+    String,
+    create_engine,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
-import uuid
 
 Base = declarative_base()
 
@@ -58,7 +69,13 @@ class Job(Base):
     completed_at = Column(DateTime, nullable=True)
 
 
-def get_engine(db_url="postgresql://user:pass@postgres:5432/scandium"):
+DEFAULT_DB_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://user:pass@postgres:5432/scandium",
+)
+
+
+def get_engine(db_url=DEFAULT_DB_URL):
     engine = create_engine(db_url, pool_size=10)
     Base.metadata.create_all(engine)
     return engine

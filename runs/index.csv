@@ -1,0 +1,2 @@
+run_id,date,dataset,architecture,hidden_dim,alignn_layers,transformer_layers,batch_size,best_mae_ef,best_r2_ef,best_mae_eah,best_r2_eah,best_mae_bg,best_r2_bg,gpu_hours,status
+SL-20260630-002,2026-06-30T17:31:48.835830,v3_li_10000,ScandiumPINNGNN-v3-Li,128,4,2,16,0.5742859244346619,0.5275540351867676,0.12561039626598358,0.37399256229400635,1.094860553741455,0.23946768045425415,3.654,running

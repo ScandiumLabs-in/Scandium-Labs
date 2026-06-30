@@ -1,80 +1,108 @@
 import torch
 import torch.nn as nn
-from torch_geometric.nn import global_mean_pool
 
-from src.models.alignn import ALIGNNLayer
-from src.models.transformer import GraphTransformerLayer
-from src.models.pinn import PINNConstraintModule, AttentionGlobalPool
+from src.models.gnn.alignn import ALIGNNLayer
+from src.models.gnn.layers import (
+    AttentionGlobalPool,
+    GraphTransformerLayer,
+    PINNConstraintModule,
+)
+from src.models.heads.two_stage_eah import TwoStageEahHead
 
 
 class ScandiumPINNGNN(nn.Module):
-    def __init__(self, atom_feat_dim=92, edge_feat_dim=64, hidden_dim=256,
-                 num_transformer_layers=4, num_attention_heads=8,
-                 num_alignn_layers=4, dropout=0.1, mc_dropout_samples=20,
-                 use_pretrained_alignn=True, tasks=None):
+    def __init__(
+        self,
+        atom_feat_dim=92,
+        edge_feat_dim=64,
+        hidden_dim=256,
+        num_transformer_layers=4,
+        num_attention_heads=8,
+        num_alignn_layers=4,
+        dropout=0.1,
+        mc_dropout_samples=20,
+        use_pretrained_alignn=True,
+        tasks=None,
+        lg_edge_feat_dim=0,
+        use_two_stage_eah=False,
+        use_gradient_checkpointing=False,
+    ):
         super().__init__()
 
         self.hidden_dim = hidden_dim
         self.mc_dropout_samples = mc_dropout_samples
         self.tasks = tasks or [
-            "log_ionic_conductivity", "formation_energy",
-            "energy_above_hull", "activation_energy", "band_gap"
+            "log_ionic_conductivity",
+            "formation_energy",
+            "energy_above_hull",
+            "activation_energy",
+            "band_gap",
         ]
 
         self.atom_encoder = nn.Sequential(
             nn.Linear(atom_feat_dim, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.SiLU(),
-            nn.Linear(hidden_dim, hidden_dim)
+            nn.Linear(hidden_dim, hidden_dim),
         )
         self.edge_encoder = nn.Sequential(
             nn.Linear(edge_feat_dim, hidden_dim // 2),
             nn.SiLU(),
-            nn.Linear(hidden_dim // 2, hidden_dim // 2)
+            nn.Linear(hidden_dim // 2, hidden_dim // 2),
+        )
+        self.lg_edge_encoder = (
+            nn.Linear(lg_edge_feat_dim, hidden_dim // 4)
+            if lg_edge_feat_dim and lg_edge_feat_dim > 0
+            else None
         )
 
-        self.alignn_layers = nn.ModuleList([
-            ALIGNNLayer(hidden_dim, hidden_dim // 2, hidden_dim)
-            for _ in range(num_alignn_layers)
-        ])
+        self.alignn_layers = nn.ModuleList(
+            [ALIGNNLayer(hidden_dim, hidden_dim // 2, hidden_dim) for _ in range(num_alignn_layers)]
+        )
 
-        self.transformer_layers = nn.ModuleList([
-            GraphTransformerLayer(hidden_dim, num_attention_heads, dropout)
-            for _ in range(num_transformer_layers)
-        ])
+        self.transformer_layers = nn.ModuleList(
+            [
+                GraphTransformerLayer(hidden_dim, num_attention_heads, dropout)
+                for _ in range(num_transformer_layers)
+            ]
+        )
 
         self.pinn_module = PINNConstraintModule(hidden_dim)
         self.attention_pool = AttentionGlobalPool(hidden_dim)
 
-        self.global_feat_encoder = nn.Sequential(
-            nn.Linear(16, hidden_dim // 4),
-            nn.SiLU()
-        )
+        self.global_feat_encoder = nn.Sequential(nn.Linear(16, hidden_dim // 4), nn.SiLU())
         self.global_combiner = nn.Sequential(
             nn.Linear(hidden_dim + hidden_dim // 4, hidden_dim),
             nn.LayerNorm(hidden_dim),
-            nn.SiLU()
+            nn.SiLU(),
         )
 
         self.task_heads = nn.ModuleDict()
+        self.use_two_stage_eah = use_two_stage_eah
+        self.use_gc = use_gradient_checkpointing
         for task in self.tasks:
-            self.task_heads[task] = nn.Sequential(
-                nn.Linear(hidden_dim, hidden_dim // 2),
-                nn.SiLU(),
-                nn.Dropout(dropout),
-                nn.Linear(hidden_dim // 2, hidden_dim // 4),
-                nn.SiLU(),
-                nn.Linear(hidden_dim // 4, 1)
-            )
+            if task == "energy_above_hull" and use_two_stage_eah:
+                self.task_heads[task] = TwoStageEahHead(hidden_dim, dropout)
+            else:
+                self.task_heads[task] = nn.Sequential(
+                    nn.Linear(hidden_dim, hidden_dim // 2),
+                    nn.SiLU(),
+                    nn.Dropout(dropout),
+                    nn.Linear(hidden_dim // 2, hidden_dim // 4),
+                    nn.SiLU(),
+                    nn.Linear(hidden_dim // 4, 1),
+                )
 
-        self.uncertainty_heads = nn.ModuleDict({
-            task: nn.Sequential(
-                nn.Linear(hidden_dim, hidden_dim // 4),
-                nn.SiLU(),
-                nn.Linear(hidden_dim // 4, 1)
-            )
-            for task in self.tasks
-        })
+        self.uncertainty_heads = nn.ModuleDict(
+            {
+                task: nn.Sequential(
+                    nn.Linear(hidden_dim, hidden_dim // 4),
+                    nn.SiLU(),
+                    nn.Linear(hidden_dim // 4, 1),
+                )
+                for task in self.tasks
+            }
+        )
 
         self._init_weights()
 
@@ -88,16 +116,44 @@ class ScandiumPINNGNN(nn.Module):
     def encode(self, crystal_graph, line_graph):
         node_feats = self.atom_encoder(crystal_graph.x)
         edge_feats = self.edge_encoder(crystal_graph.edge_attr)
-        lg_feats = edge_feats.clone()
+        lg_feats = edge_feats
+        lg_edge_feats = (
+            self.lg_edge_encoder(line_graph.edge_attr)
+            if self.lg_edge_encoder is not None
+            else line_graph.edge_attr
+        )
 
         for layer in self.alignn_layers:
-            node_feats, edge_feats = layer(
-                node_feats, edge_feats, crystal_graph.edge_index,
-                lg_feats, line_graph.edge_attr, line_graph.edge_index
-            )
+            if self.use_gc and self.training:
+                node_feats, edge_feats = torch.utils.checkpoint.checkpoint(
+                    layer,
+                    node_feats,
+                    edge_feats,
+                    crystal_graph.edge_index,
+                    lg_feats,
+                    lg_edge_feats,
+                    line_graph.edge_index,
+                    use_reentrant=False,
+                )
+            else:
+                node_feats, edge_feats = layer(
+                    node_feats,
+                    edge_feats,
+                    crystal_graph.edge_index,
+                    lg_feats,
+                    lg_edge_feats,
+                    line_graph.edge_index,
+                )
 
         for layer in self.transformer_layers:
-            node_feats = layer(node_feats.unsqueeze(0)).squeeze(0)
+            if self.use_gc and self.training:
+                node_feats = torch.utils.checkpoint.checkpoint(
+                    layer,
+                    node_feats.unsqueeze(0),
+                    use_reentrant=False,
+                ).squeeze(0)
+            else:
+                node_feats = layer(node_feats.unsqueeze(0)).squeeze(0)
 
         node_feats = self.pinn_module(node_feats, crystal_graph)
         return node_feats
@@ -105,25 +161,38 @@ class ScandiumPINNGNN(nn.Module):
     def pool(self, node_feats, crystal_graph):
         graph_feats = self.attention_pool(node_feats, crystal_graph.batch)
 
-        if hasattr(crystal_graph, 'global_feat'):
+        if hasattr(crystal_graph, "global_feat"):
             global_encoded = self.global_feat_encoder(crystal_graph.global_feat)
-            graph_feats = self.global_combiner(
-                torch.cat([graph_feats, global_encoded], dim=-1)
-            )
+            graph_feats = self.global_combiner(torch.cat([graph_feats, global_encoded], dim=-1))
         return graph_feats
 
     def forward(self, crystal_graph, line_graph, return_uncertainty=False):
         node_feats = self.encode(crystal_graph, line_graph)
         graph_feats = self.pool(node_feats, crystal_graph)
 
-        predictions = {}
+        predictions = {"graph_feats": graph_feats}
         uncertainties = {}
 
         for task in self.tasks:
-            predictions[task] = self.task_heads[task](graph_feats).squeeze(-1)
-            if return_uncertainty:
-                log_var = self.uncertainty_heads[task](graph_feats).squeeze(-1)
-                uncertainties[task] = torch.exp(0.5 * log_var)
+            head_out = self.task_heads[task](graph_feats)
+            if isinstance(head_out, dict):
+                predictions[task] = head_out["eah_pred"]
+                if return_uncertainty:
+                    log_var = head_out.get("log_var")
+                    if log_var is None:
+                        log_var = self.uncertainty_heads[task](graph_feats).squeeze(-1)
+                    uncertainties[task] = torch.exp(0.5 * log_var)
+                p_unstable = head_out.get("p_unstable")
+                if p_unstable is not None:
+                    predictions["p_unstable"] = p_unstable
+                eah_mag = head_out.get("eah_magnitude")
+                if eah_mag is not None:
+                    predictions["eah_magnitude"] = eah_mag
+            else:
+                predictions[task] = head_out.squeeze(-1)
+                if return_uncertainty:
+                    log_var = self.uncertainty_heads[task](graph_feats).squeeze(-1)
+                    uncertainties[task] = torch.exp(0.5 * log_var)
 
         if return_uncertainty:
             return predictions, uncertainties
@@ -137,8 +206,9 @@ class ScandiumPINNGNN(nn.Module):
         with torch.no_grad():
             for _ in range(self.mc_dropout_samples):
                 preds = self.forward(crystal_graph, line_graph)
-                for task, pred in preds.items():
-                    all_preds[task].append(pred.unsqueeze(0))
+                for task in self.tasks:
+                    if task in preds:
+                        all_preds[task].append(preds[task].unsqueeze(0))
 
         self.eval()
 
@@ -146,8 +216,8 @@ class ScandiumPINNGNN(nn.Module):
         for task in self.tasks:
             stacked = torch.cat(all_preds[task], dim=0)
             results[task] = {
-                'mean': stacked.mean(0),
-                'std': stacked.std(0),
-                'samples': stacked
+                "mean": stacked.mean(0),
+                "std": stacked.std(0),
+                "samples": stacked,
             }
         return results

@@ -1,0 +1,54 @@
+graph:
+  cutoff: 8.0
+  max_neighbors: 16
+  num_rbf: 64
+  num_sbf: 32
+  rbf_type: bessel
+log_eah: true
+log_eah_eps: 0.001
+model:
+  dropout: 0.1
+  hidden_dim: 128
+  mc_dropout_samples: 20
+  name: ScandiumPINNGNN-v2-log-eah
+  num_alignn_layers: 2
+  num_attention_heads: 4
+  num_transformer_layers: 1
+  use_pretrained_alignn: false
+pinn:
+  lambda_arrhenius: 0.05
+  lambda_data: 1.0
+  lambda_physics: 0.1
+  lambda_thermodynamic: 0.05
+tasks:
+- name: log_ionic_conductivity
+  scale: log10
+  unit: log(S/cm)
+  weight: 1.0
+- name: formation_energy
+  scale: linear
+  unit: eV/atom
+  weight: 1.0
+- name: energy_above_hull
+  scale: linear
+  unit: eV/atom
+  weight: 0.8
+- name: activation_energy
+  scale: linear
+  unit: eV
+  weight: 0.6
+- name: band_gap
+  scale: linear
+  unit: eV
+  weight: 0.4
+training:
+  batch_size: 8
+  gradient_clip: 1.0
+  learning_rate: 0.001
+  max_epochs: 100
+  mixed_precision: true
+  optimizer: AdamW
+  patience: 30
+  scheduler: cosine_with_restarts
+  warmup_steps: 1000
+  weight_decay: 1.0e-05

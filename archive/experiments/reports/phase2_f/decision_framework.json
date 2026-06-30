@@ -1,0 +1,78 @@
+{
+  "train_test_shift": {
+    "formation_energy": {
+      "ks_p": 0.000787,
+      "severity": "HIGH",
+      "action": "Stratified splitting or reweighting"
+    },
+    "energy_above_hull": {
+      "ks_p": 0.137,
+      "severity": "LOW",
+      "action": "None needed"
+    },
+    "band_gap": {
+      "ks_p": 0.058,
+      "severity": "LOW",
+      "action": "None needed"
+    }
+  },
+  "label_coverage": {
+    "formation_energy": {
+      "coverage": 1.0,
+      "status": "OK"
+    },
+    "energy_above_hull": {
+      "coverage": 1.0,
+      "status": "OK"
+    },
+    "band_gap": {
+      "coverage": 1.0,
+      "status": "OK"
+    },
+    "log_ionic_conductivity": {
+      "coverage": 0.0,
+      "status": "CRITICAL \u2014 no labels"
+    },
+    "activation_energy": {
+      "coverage": 0.0,
+      "status": "CRITICAL \u2014 no labels"
+    }
+  },
+  "eah_properties": {
+    "zero_fraction": 0.203,
+    "skew": 4.77,
+    "r2_score": -1.69,
+    "verdict": "Broken target \u2014 switch to log-EAH or robust regression"
+  },
+  "embedding_quality": {
+    "pca_2d_var": 0.751,
+    "pc1_vs_ef": -0.746,
+    "pc1_vs_eah": -0.288,
+    "pc1_vs_bg": 0.464,
+    "verdict": "Embeddings capture Ef well, Eah/BG moderately"
+  },
+  "calibration": {
+    "formation_energy": {
+      "ece": 0.472,
+      "ece_level": "POOR",
+      "needs_ts": true
+    },
+    "energy_above_hull": {
+      "ece": 0.285,
+      "ece_level": "POOR",
+      "needs_ts": true
+    },
+    "band_gap": {
+      "ece": 0.272,
+      "ece_level": "POOR",
+      "needs_ts": true
+    }
+  },
+  "lofo": {
+    "hardest_family": "sulfide",
+    "proxy_hardest_ef_r2": 0.4,
+    "proxy_hardest_eah_r2": 0.161,
+    "proxy_hardest_bg_r2": 0.341,
+    "verdict": "Sulfide performance is consistently worst. Need targeted data or architecture improvements."
+  }
+}

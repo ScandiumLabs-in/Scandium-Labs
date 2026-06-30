@@ -1,4 +1,3 @@
-import numpy as np
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 
@@ -18,7 +17,7 @@ class OODDetector:
         score = self.detector.score_samples(X)[0]
         is_ood = self.detector.predict(X)[0] == -1
         return {
-            'ood_score': float(score),
-            'is_ood': bool(is_ood),
-            'confidence': 'LOW' if is_ood else 'HIGH'
+            "ood_score": float(score),
+            "is_ood": bool(is_ood),
+            "confidence": "LOW" if is_ood else "HIGH",
         }

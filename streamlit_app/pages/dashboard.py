@@ -1,12 +1,13 @@
-import streamlit as st
-import requests
-import pandas as pd
 import os
 import sys
 
+import pandas as pd
+import requests
+import streamlit as st
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-API_BASE = "http://localhost:8000"
+API_BASE = os.environ.get("API_HOST", "http://localhost:8000")
 
 _ENGINE = None
 
@@ -34,7 +35,7 @@ def show():
     status_ok = health.get("status") == "healthy" or local_model_loaded
     model_ok = health.get("model_loaded", False) or local_model_loaded
 
-    st.markdown(f"""
+    st.markdown("""
     <div style="margin-bottom:3rem;">
         <div style="font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:#999; margin-bottom:0.5rem;">System Status</div>
         <h1 style="margin:0;">Solid Electrolyte<br><span class="red-accent">Discovery Platform</span></h1>

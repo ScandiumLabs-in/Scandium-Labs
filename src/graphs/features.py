@@ -13,21 +13,28 @@ def _safe(e, attr, default=0.0):
 
 ATOMIC_FEATURES = {}
 _feature_spec = [
-    ("atomic_number",       lambda e: e.Z),
-    ("atomic_mass",         lambda e: float(_safe(e, "atomic_mass", 1.0))),
-    ("electronegativity",   lambda e: _safe(e, "X", 0.0)),
-    ("atomic_radius",       lambda e: _safe(e, "atomic_radius", 0)),
-    ("ionic_radius",        lambda e: _safe(e, "average_ionic_radius", 0)),
-    ("covalent_radius",     lambda e: _safe(e, "atomic_radius_calculated", 0)),
-    ("valence_electrons",   lambda e: _safe_valence(e)),
-    ("electron_affinity",   lambda e: _safe(e, "electron_affinity", 0.0)),
-    ("first_ionization_e",  lambda e: _safe(e, "ionization_energies", (0.0,))[0] if _safe(e, "ionization_energies", (0.0,)) else 0.0),
-    ("melting_point",       lambda e: _safe(e, "melting_point", 0.0)),
-    ("group",               lambda e: _safe(e, "group", 0)),
-    ("period",              lambda e: _safe(e, "row", 0)),
-    ("is_metal",            lambda e: int(_safe(e, "is_metal", False))),
+    ("atomic_number", lambda e: e.Z),
+    ("atomic_mass", lambda e: float(_safe(e, "atomic_mass", 1.0))),
+    ("electronegativity", lambda e: _safe(e, "X", 0.0)),
+    ("atomic_radius", lambda e: _safe(e, "atomic_radius", 0)),
+    ("ionic_radius", lambda e: _safe(e, "average_ionic_radius", 0)),
+    ("covalent_radius", lambda e: _safe(e, "atomic_radius_calculated", 0)),
+    ("valence_electrons", lambda e: _safe_valence(e)),
+    ("electron_affinity", lambda e: _safe(e, "electron_affinity", 0.0)),
+    (
+        "first_ionization_e",
+        lambda e: (
+            _safe(e, "ionization_energies", (0.0,))[0]
+            if _safe(e, "ionization_energies", (0.0,))
+            else 0.0
+        ),
+    ),
+    ("melting_point", lambda e: _safe(e, "melting_point", 0.0)),
+    ("group", lambda e: _safe(e, "group", 0)),
+    ("period", lambda e: _safe(e, "row", 0)),
+    ("is_metal", lambda e: int(_safe(e, "is_metal", False))),
     ("is_transition_metal", lambda e: int(_safe(e, "is_transition_metal", False))),
-    ("mendeleev_number",    lambda e: _safe(e, "mendeleev_no", 0)),
+    ("mendeleev_number", lambda e: _safe(e, "mendeleev_no", 0)),
 ]
 
 
@@ -65,7 +72,7 @@ class GaussianRBF:
 
     def expand(self, distances: np.ndarray) -> np.ndarray:
         diff = distances[:, None] - self.centers[None, :]
-        return np.exp(-diff ** 2 / self.width)
+        return np.exp(-(diff**2) / self.width)
 
 
 class BesselRBF:
@@ -81,8 +88,12 @@ class BesselRBF:
     def _envelope(self, d):
         x = d / self.cutoff
         p = 6
-        return (1 - (p + 1) * (p + 2) / 2 * x ** p + p * (p + 2) * x ** (p + 1)
-                - p * (p + 1) / 2 * x ** (p + 2)) * (d < self.cutoff)
+        return (
+            1
+            - (p + 1) * (p + 2) / 2 * x**p
+            + p * (p + 2) * x ** (p + 1)
+            - p * (p + 1) / 2 * x ** (p + 2)
+        ) * (d < self.cutoff)
 
 
 class SphericalBesselRBF:
@@ -116,9 +127,7 @@ def compute_bond_angles(positions, edge_src, edge_dst, edge_vectors):
                 if i != j:
                     v1 = edge_vectors[i]
                     v2 = edge_vectors[j]
-                    cos_angle = np.dot(v1, v2) / (
-                        np.linalg.norm(v1) * np.linalg.norm(v2) + 1e-8
-                    )
+                    cos_angle = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2) + 1e-8)
                     cos_angle = np.clip(cos_angle, -1, 1)
                     angle = np.arccos(cos_angle)
                     angles.append(angle)
@@ -130,6 +139,7 @@ def compute_bond_angles(positions, edge_src, edge_dst, edge_vectors):
 
 def compute_soap(structure_ase, species, r_cut=6.0, n_max=8, l_max=6):
     from dscribe.descriptors import SOAP
+
     soap = SOAP(
         species=species,
         r_cut=r_cut,
@@ -138,7 +148,7 @@ def compute_soap(structure_ase, species, r_cut=6.0, n_max=8, l_max=6):
         sigma=0.5,
         rbf="gto",
         periodic=True,
-        compression={"mode": "mu1nu1"}
+        compression={"mode": "mu1nu1"},
     )
     soap_features = soap.create(structure_ase)
     return soap_features.mean(axis=0)

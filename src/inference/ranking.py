@@ -4,23 +4,25 @@ import numpy as np
 class ParetoRanker:
     def __init__(self):
         self.objective_names = [
-            'ionic_conductivity',
-            'neg_energy_above_hull',
-            'confidence',
+            "ionic_conductivity",
+            "neg_energy_above_hull",
+            "confidence",
         ]
 
     def rank(self, candidates):
         if not candidates:
             return []
 
-        obj_matrix = np.array([
+        obj_matrix = np.array(
             [
-                np.log10(max(c.get('ionic_conductivity', {}).get('value', 1e-10), 1e-10)),
-                -c.get('energy_above_hull', {}).get('value', 1.0),
-                c.get('ood', {}).get('ood_score', -1)
+                [
+                    np.log10(max(c.get("ionic_conductivity", {}).get("value", 1e-10), 1e-10)),
+                    -c.get("energy_above_hull", {}).get("value", 1.0),
+                    c.get("ood", {}).get("ood_score", -1),
+                ]
+                for c in candidates
             ]
-            for c in candidates
-        ])
+        )
 
         pareto_ranks = self._pareto_rank(obj_matrix)
         weights = np.array([0.5, 0.3, 0.2])
@@ -33,9 +35,9 @@ class ParetoRanker:
         ranked_candidates = []
         for rank_idx, orig_idx in enumerate(sorted_indices):
             candidate = dict(candidates[orig_idx])
-            candidate['rank'] = rank_idx + 1
-            candidate['pareto_rank'] = int(pareto_ranks[orig_idx])
-            candidate['composite_score'] = float(weighted_scores[orig_idx])
+            candidate["rank"] = rank_idx + 1
+            candidate["pareto_rank"] = int(pareto_ranks[orig_idx])
+            candidate["composite_score"] = float(weighted_scores[orig_idx])
             ranked_candidates.append(candidate)
 
         return ranked_candidates

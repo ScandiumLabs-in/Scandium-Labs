@@ -1,8 +1,9 @@
-import pytest
-import numpy as np
 from src.training.data_audit import (
-    audit_label_coverage, gate_predictions,
-    fit_activation_energy, REQUIRED_TASKS, MIN_VIABLE_LABELS,
+    MIN_VIABLE_LABELS,
+    REQUIRED_TASKS,
+    audit_label_coverage,
+    fit_activation_energy,
+    gate_predictions,
 )
 
 

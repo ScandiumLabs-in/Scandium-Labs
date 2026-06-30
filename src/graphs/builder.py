@@ -1,12 +1,16 @@
 import numpy as np
-import torch
 import pandas as pd
-from torch_geometric.data import Data
+import torch
 from pymatgen.optimization.neighbors import find_points_in_spheres
+from torch_geometric.data import Data
 
 from src.graphs.features import (
-    get_atom_features, BesselRBF, GaussianRBF,
-    SphericalBesselRBF, compute_bond_angles, get_global_features
+    BesselRBF,
+    GaussianRBF,
+    SphericalBesselRBF,
+    compute_bond_angles,
+    get_atom_features,
+    get_global_features,
 )
 
 
@@ -14,7 +18,9 @@ class CrystalGraphBuilder:
     def __init__(self, cutoff=8.0, max_neighbors=32, rbf_type="bessel", num_rbf=64):
         self.cutoff = cutoff
         self.max_neighbors = max_neighbors
-        self.rbf = BesselRBF(num_rbf, cutoff) if rbf_type == "bessel" else GaussianRBF(num_rbf, cutoff)
+        self.rbf = (
+            BesselRBF(num_rbf, cutoff) if rbf_type == "bessel" else GaussianRBF(num_rbf, cutoff)
+        )
         self.num_rbf = num_rbf
 
     def build(self, structure) -> Data:
@@ -63,26 +69,28 @@ class CrystalGraphBuilder:
         return data
 
     def _limit_neighbors(self, src, dst, offsets, dists):
-        df = pd.DataFrame({
-            'src': src, 'dst': dst,
-            'offset_x': offsets[:, 0],
-            'offset_y': offsets[:, 1],
-            'offset_z': offsets[:, 2],
-            'dist': dists
-        })
-        df_sorted = df.sort_values(['dst', 'dist'])
-        df_limited = df_sorted.groupby('dst').head(self.max_neighbors)
+        df = pd.DataFrame(
+            {
+                "src": src,
+                "dst": dst,
+                "offset_x": offsets[:, 0],
+                "offset_y": offsets[:, 1],
+                "offset_z": offsets[:, 2],
+                "dist": dists,
+            }
+        )
+        df_sorted = df.sort_values(["dst", "dist"])
+        df_limited = df_sorted.groupby("dst").head(self.max_neighbors)
         return (
-            df_limited['src'].values,
-            df_limited['dst'].values,
-            df_limited[['offset_x', 'offset_y', 'offset_z']].values,
-            df_limited['dist'].values
+            df_limited["src"].values,
+            df_limited["dst"].values,
+            df_limited[["offset_x", "offset_y", "offset_z"]].values,
+            df_limited["dist"].values,
         )
 
 
 class ALIGNNGraphBuilder(CrystalGraphBuilder):
-    def __init__(self, cutoff=8.0, max_neighbors=32, rbf_type="bessel",
-                 num_rbf=64, num_sbf=None):
+    def __init__(self, cutoff=8.0, max_neighbors=32, rbf_type="bessel", num_rbf=64, num_sbf=None):
         super().__init__(cutoff, max_neighbors, rbf_type, num_rbf)
         self.num_sbf = num_sbf if num_sbf is not None else num_rbf // 2
 
@@ -94,8 +102,7 @@ class ALIGNNGraphBuilder(CrystalGraphBuilder):
         edge_vecs = crystal_graph.edge_vec.numpy()
 
         angles, lg_edges = compute_bond_angles(
-            crystal_graph.pos.numpy(),
-            edge_src, edge_dst, edge_vecs
+            crystal_graph.pos.numpy(), edge_src, edge_dst, edge_vecs
         )
 
         sbf = SphericalBesselRBF(num_sbf=self.num_sbf)
@@ -105,7 +112,7 @@ class ALIGNNGraphBuilder(CrystalGraphBuilder):
             x=crystal_graph.edge_attr,
             edge_index=torch.tensor(lg_edges, dtype=torch.long),
             edge_attr=torch.tensor(angle_feats, dtype=torch.float32),
-            num_nodes=crystal_graph.edge_index.shape[1]
+            num_nodes=crystal_graph.edge_index.shape[1],
         )
 
         return crystal_graph, line_graph
@@ -122,5 +129,5 @@ class FeatureEngineer:
             padding = graph.x.new_zeros(graph.x.shape[0], pad_width)
             graph.x = torch.cat([graph.x, padding], dim=1)
         elif current_dim > self.target_atom_dim:
-            graph.x = graph.x[:, :self.target_atom_dim]
+            graph.x = graph.x[:, : self.target_atom_dim]
         return graph

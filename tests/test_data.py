@@ -1,5 +1,5 @@
 import pytest
-import numpy as np
+
 from src.data.cleaner import DataCleaner, PropertyNormalizer
 
 

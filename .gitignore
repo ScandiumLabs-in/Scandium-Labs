@@ -1,24 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environments
 venv/
 venv_gpu/
-__pycache__/
-*.pyc
-checkpoints/
-data/processed/
-*.log
-.DS_Store
-dist/
-*.egg-info/
-wandb/
-mlruns/
 .env
-streamlit_logs.txt
-scripts/run_training.py
-scripts/train_gpu.py
-session_summary.md
+.venv/
+
+# Node
 frontend/node_modules/
-benchmark_report_*.csv
-api_logs.txt
-datasets/*/dataset_cache.pt
-datasets/*/split_indices.pt
-datasets/*/prebuilt_graphs.pt
-datasets/*/raw/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data
+datasets/v*_raw/
+datasets/v2_1000_smoketest/
+datasets/v2_10000_log_eah/
+datasets/v1_817/
+# Large binary dataset files (too big for GitHub)
+datasets/**/*.pt
+datasets/**/*.db
+datasets/**/prebuilt_graphs.pt
+datasets/**/raw/
+data/benchmark_cifs/
+data/processed/
+
+# Run artifacts (plots, binary checkpoints inside runs)
+runs/*/plots/
+runs/*/checkpoints/
+
+# Archive binaries
+archive/**/*.pt
+archive/**/*.h5
+
+# Checkpoints
+checkpoints/epoch_*.pt
+checkpoints/phase4_final/
+checkpoints/phase5_final/
+checkpoints/v3_freeze_eah/
+checkpoints/v3_upgraded/
+checkpoints/v3_li_10k_fresh/
+
+# Experiments (only keep reports)
+experiments/v2_3635_first_run/
+experiments/v2_3635_log_eah/
+experiments/v2_3635_corrected_split/
+experiments/learning_curves/
+
+# Logs
+logs/*.log
+*.log
+*.log.*
+
+# Outputs
+outputs/
+
+# Notebooks
+notebooks/.ipynb_checkpoints/
+*.ipynb
+
+# ML
+*.h5
+*.onnx
+
+# OS
+.DS_Store
+Thumbs.db
+*.orig
+
+# Docker
+docker-compose.override.yml

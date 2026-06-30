@@ -1,4 +1,3 @@
-import json
 import numpy as np
 
 STATUS_NO_LABELS = "insufficient_training_data"
@@ -25,6 +24,7 @@ def fit_activation_energy(temperatures_K: list, sigmas: list) -> dict:
     Ea = -slope * kB
 
     return {"Ea": Ea, "ln_A": intercept, "n_points": len(T)}
+
 
 REQUIRED_TASKS = [
     "log_ionic_conductivity",

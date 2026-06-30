@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 
 def compute_metrics(y_true, y_pred, task=""):
@@ -15,17 +15,17 @@ def compute_metrics(y_true, y_pred, task=""):
     r2 = r2_score(y_true, y_pred)
     mape = np.mean(np.abs((y_true - y_pred) / (np.abs(y_true) + 1e-8))) * 100
 
-    metrics = {'MAE': mae, 'RMSE': rmse, 'R2': r2, 'MAPE': mape}
+    metrics = {"MAE": mae, "RMSE": rmse, "R2": r2, "MAPE": mape}
 
-    if task == 'log_ionic_conductivity':
+    if task == "log_ionic_conductivity":
         within_1om = np.mean(np.abs(y_true - y_pred) < 1.0)
-        metrics['Within_1_OOM'] = within_1om
+        metrics["Within_1_OOM"] = within_1om
 
-    if task == 'energy_above_hull':
+    if task == "energy_above_hull":
         threshold = 0.025
         true_stable = y_true < threshold
         pred_stable = y_pred < threshold
-        metrics['Stability_Accuracy'] = np.mean(true_stable == pred_stable)
+        metrics["Stability_Accuracy"] = np.mean(true_stable == pred_stable)
 
     return metrics
 

@@ -1,0 +1,332 @@
+{
+  "n_folds": 5,
+  "n_total": 817,
+  "config": {
+    "atom_feat_dim": 92,
+    "edge_feat_dim": 64,
+    "hidden_dim": 128,
+    "num_alignn_layers": 2,
+    "num_transformer_layers": 1,
+    "num_attention_heads": 4,
+    "dropout": 0.1,
+    "mc_dropout_samples": 20,
+    "use_pretrained_alignn": false,
+    "tasks": [
+      "formation_energy",
+      "energy_above_hull",
+      "band_gap"
+    ]
+  },
+  "batch_size": 8,
+  "max_epochs": 100,
+  "patience": 15,
+  "learning_rate": 0.001,
+  "weight_decay": 1e-05,
+  "task_weights": {
+    "formation_energy": 1.0,
+    "energy_above_hull": 0.8,
+    "band_gap": 0.4
+  },
+  "folds": [
+    {
+      "fold_id": 0,
+      "n_train": 653,
+      "n_val": 164,
+      "best_epoch": 68,
+      "total_epochs": 84,
+      "total_time_s": 886.4,
+      "best_val_loss": 0.9657963046005794,
+      "formation_energy_mae": 0.2994987666606903,
+      "formation_energy_rmse": 0.4840610778965017,
+      "formation_energy_r2": 0.4772140383720398,
+      "formation_energy_n": 164,
+      "energy_above_hull_mae": 0.08256618678569794,
+      "energy_above_hull_rmse": 0.3224519479978448,
+      "energy_above_hull_r2": 0.16705822944641113,
+      "energy_above_hull_n": 164,
+      "band_gap_mae": 1.0410704612731934,
+      "band_gap_rmse": 1.2881462308641587,
+      "band_gap_r2": 0.43829792737960815,
+      "band_gap_n": 164
+    },
+    {
+      "fold_id": 1,
+      "n_train": 653,
+      "n_val": 164,
+      "best_epoch": 89,
+      "total_epochs": 100,
+      "total_time_s": 1058.7,
+      "best_val_loss": 0.7994140684604645,
+      "formation_energy_mae": 0.24745601415634155,
+      "formation_energy_rmse": 0.34020958863817313,
+      "formation_energy_r2": 0.6211338043212891,
+      "formation_energy_n": 164,
+      "energy_above_hull_mae": 0.0795610100030899,
+      "energy_above_hull_rmse": 0.23071285025782964,
+      "energy_above_hull_r2": 0.13044244050979614,
+      "energy_above_hull_n": 164,
+      "band_gap_mae": 0.9851852059364319,
+      "band_gap_rmse": 1.2744279064142707,
+      "band_gap_r2": 0.4100226163864136,
+      "band_gap_n": 164
+    },
+    {
+      "fold_id": 2,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 44,
+      "total_epochs": 60,
+      "total_time_s": 635.8,
+      "best_val_loss": 1.0864143179995673,
+      "formation_energy_mae": 0.3243683874607086,
+      "formation_energy_rmse": 0.5131754924450493,
+      "formation_energy_r2": 0.26077473163604736,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.09778331965208054,
+      "energy_above_hull_rmse": 0.30318445772867353,
+      "energy_above_hull_r2": 0.04184061288833618,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 1.0277979373931885,
+      "band_gap_rmse": 1.3207197746213488,
+      "band_gap_r2": 0.37007492780685425,
+      "band_gap_n": 163
+    },
+    {
+      "fold_id": 3,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 68,
+      "total_epochs": 84,
+      "total_time_s": 876.7,
+      "best_val_loss": 1.0796058447588057,
+      "formation_energy_mae": 0.2884397804737091,
+      "formation_energy_rmse": 0.5350851025588004,
+      "formation_energy_r2": 0.340889573097229,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.11105889827013016,
+      "energy_above_hull_rmse": 0.42740902654949897,
+      "energy_above_hull_r2": 0.015218555927276611,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 0.9788764715194702,
+      "band_gap_rmse": 1.262612796692374,
+      "band_gap_r2": 0.3624298572540283,
+      "band_gap_n": 163
+    },
+    {
+      "fold_id": 4,
+      "n_train": 654,
+      "n_val": 163,
+      "best_epoch": 72,
+      "total_epochs": 88,
+      "total_time_s": 929.8,
+      "best_val_loss": 1.0233244534049715,
+      "formation_energy_mae": 0.23785658180713654,
+      "formation_energy_rmse": 0.31656475570944514,
+      "formation_energy_r2": 0.6103450059890747,
+      "formation_energy_n": 163,
+      "energy_above_hull_mae": 0.08770564943552017,
+      "energy_above_hull_rmse": 0.26263943329576533,
+      "energy_above_hull_r2": -8.828804016113281,
+      "energy_above_hull_n": 163,
+      "band_gap_mae": 1.1508675813674927,
+      "band_gap_rmse": 1.4811930231008852,
+      "band_gap_r2": 0.3308727741241455,
+      "band_gap_n": 163
+    }
+  ],
+  "aggregate": {
+    "formation_energy": {
+      "mae": {
+        "mean": 0.2795,
+        "std": 0.0324,
+        "ci95": 0.0284,
+        "values": [
+          0.2995,
+          0.2475,
+          0.3244,
+          0.2884,
+          0.2379
+        ]
+      },
+      "rmse": {
+        "mean": 0.4378,
+        "std": 0.0911,
+        "ci95": 0.0799,
+        "values": [
+          0.4841,
+          0.3402,
+          0.5132,
+          0.5351,
+          0.3166
+        ]
+      },
+      "r2": {
+        "mean": 0.4621,
+        "std": 0.1433,
+        "ci95": 0.1256,
+        "values": [
+          0.4772,
+          0.6211,
+          0.2608,
+          0.3409,
+          0.6103
+        ]
+      },
+      "mae_physical": {
+        "mean": 0.1681,
+        "std": 0.0195,
+        "ci95": 0.0171,
+        "values": [
+          0.1801,
+          0.1488,
+          0.195,
+          0.1734,
+          0.143
+        ],
+        "unit": "eV/atom"
+      },
+      "rmse_physical": {
+        "mean": 0.2632,
+        "std": 0.0548,
+        "ci95": 0.048,
+        "values": [
+          0.291,
+          0.2045,
+          0.3085,
+          0.3217,
+          0.1903
+        ],
+        "unit": "eV/atom"
+      }
+    },
+    "energy_above_hull": {
+      "mae": {
+        "mean": 0.0917,
+        "std": 0.0115,
+        "ci95": 0.0101,
+        "values": [
+          0.0826,
+          0.0796,
+          0.0978,
+          0.1111,
+          0.0877
+        ]
+      },
+      "rmse": {
+        "mean": 0.3093,
+        "std": 0.0671,
+        "ci95": 0.0588,
+        "values": [
+          0.3225,
+          0.2307,
+          0.3032,
+          0.4274,
+          0.2626
+        ]
+      },
+      "r2": {
+        "mean": -1.6948,
+        "std": 3.5674,
+        "ci95": 3.127,
+        "values": [
+          0.1671,
+          0.1304,
+          0.0418,
+          0.0152,
+          -8.8288
+        ]
+      },
+      "mae_physical": {
+        "mean": 0.0283,
+        "std": 0.0035,
+        "ci95": 0.0031,
+        "values": [
+          0.0255,
+          0.0246,
+          0.0302,
+          0.0343,
+          0.0271
+        ],
+        "unit": "eV/atom"
+      },
+      "rmse_physical": {
+        "mean": 0.0955,
+        "std": 0.0207,
+        "ci95": 0.0181,
+        "values": [
+          0.0996,
+          0.0712,
+          0.0936,
+          0.1319,
+          0.0811
+        ],
+        "unit": "eV/atom"
+      }
+    },
+    "band_gap": {
+      "mae": {
+        "mean": 1.0368,
+        "std": 0.0619,
+        "ci95": 0.0542,
+        "values": [
+          1.0411,
+          0.9852,
+          1.0278,
+          0.9789,
+          1.1509
+        ]
+      },
+      "rmse": {
+        "mean": 1.3254,
+        "std": 0.0803,
+        "ci95": 0.0704,
+        "values": [
+          1.2881,
+          1.2744,
+          1.3207,
+          1.2626,
+          1.4812
+        ]
+      },
+      "r2": {
+        "mean": 0.3823,
+        "std": 0.0377,
+        "ci95": 0.033,
+        "values": [
+          0.4383,
+          0.41,
+          0.3701,
+          0.3624,
+          0.3309
+        ]
+      },
+      "mae_physical": {
+        "mean": 1.7543,
+        "std": 0.1047,
+        "ci95": 0.0917,
+        "values": [
+          1.7616,
+          1.6671,
+          1.7391,
+          1.6564,
+          1.9474
+        ],
+        "unit": "eV"
+      },
+      "rmse_physical": {
+        "mean": 2.2427,
+        "std": 0.1359,
+        "ci95": 0.1191,
+        "values": [
+          2.1796,
+          2.1564,
+          2.2348,
+          2.1364,
+          2.5063
+        ],
+        "unit": "eV"
+      }
+    }
+  },
+  "timestamp": "2026-06-29T04:09:54"
+}

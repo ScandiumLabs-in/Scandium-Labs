@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def validate_structure(structure) -> dict:
     results = {"passed": True, "checks": [], "warnings": [], "errors": []}
 
@@ -17,8 +14,6 @@ def validate_structure(structure) -> dict:
         results["checks"].append(f"Lattice volume: {volume:.2f} Å³")
 
     if n_atoms > 0:
-        frac_coords = structure.frac_coords
-        cart_coords = structure.cart_coords
         min_dist = float("inf")
         for i in range(n_atoms):
             for j in range(i + 1, n_atoms):
@@ -39,7 +34,9 @@ def validate_structure(structure) -> dict:
             )
         results["checks"].append(f"Net charge: {charge:.2f}")
     except Exception:
-        results["warnings"].append("Could not compute net charge (oxidation states may be unassigned)")
+        results["warnings"].append(
+            "Could not compute net charge (oxidation states may be unassigned)"
+        )
 
     formula = structure.composition.reduced_formula
     n_elements = len(structure.composition)

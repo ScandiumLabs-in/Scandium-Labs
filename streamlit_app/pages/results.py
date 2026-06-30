@@ -1,9 +1,10 @@
-import streamlit as st
-import requests
-import time
-import pandas as pd
+import os
 
-API_BASE = "http://localhost:8000"
+import pandas as pd
+import requests
+import streamlit as st
+
+API_BASE = os.environ.get("API_HOST", "http://localhost:8000")
 
 def auto_refresh(interval=5):
     if st.button("⟳ Refresh", use_container_width=True):

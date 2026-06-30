@@ -1,0 +1,29 @@
+Scandium Labs — Phase 2 Ablation Report
+================================================================================
+Generated: 2026-06-29T22:05:45.522508
+================================================================================
+
+◆ 1. Dataset: Formation energy has significant train/test distribution shift (KS p<0.001). Conductivity and activation energy have 0% label coverage — unusable.
+
+◆ 2. Model Capacity: Embedding quality is reasonable (75% PCA variance), but the 2-layer ALIGNN architecture limits representational power for Ef.
+
+◆ 3. Calibration: All tasks show POOR uncertainty calibration (ECE > 0.2). Temperature scaling provides marginal improvement.
+
+◆ 4. Generalization: Sulfides are the hardest material family: Ef R²=0.40, Eah R²=0.16, BG R²=0.34. This is critical since sulfides are the most promising solid electrolyte class.
+
+◆ 5. Benchmark: 13 benchmark materials have zero overlap with training set — benchmark is uncontaminated.
+
+◆ 6. Per-Family Bias: Ef: halide best (R²=0.69) > oxide (0.64) > sulfide (0.40). Eah: halide (0.55) > oxide (0.18) > sulfide (0.16). BG: oxide (0.47) > sulfide (0.34) > halide (0.004).
+
+★ P0 — Fix EAH: EAH has 20% zeros, high skew (4.77). Switch to log-EAH or quantile-based targets. The v2_10000_log_eah dataset is already prepared.
+
+★ P0 — Expand labels: Obtain conductivity and activation energy labels. Currently 0% coverage makes these heads untrainable.
+
+★ P1 — Architecture upgrade: Increase hidden_dim (128→256), ALIGNN layers (2→4), add pretrained encoder. Current architecture is capacity-limited for Ef.
+
+★ P1 — Address train/test shift: Formation energy shows significant distribution shift. Use stratified splitting or importance weighting.
+
+★ P2 — Sulfide-specific training: Sulfide performance is consistently worst. Consider sulfide upsampling, data augmentation, or targeted data collection.
+
+★ P2 — Temperature scaling: Apply T=0.867 (Ef), 0.970 (Eah), 1.142 (BG) at inference time for better-calibrated uncertainties.
+

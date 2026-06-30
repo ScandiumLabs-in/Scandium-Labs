@@ -1,16 +1,17 @@
 import os
 import sys
-import pytest
-import numpy as np
-import torch
 from pathlib import Path
+
+import numpy as np
+import pytest
+import torch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from src.data.cleaner import PropertyNormalizer
-from src.inference.stability import hull_consistency_flag, compute_hull_energy
 from src.graphs.builder import ALIGNNGraphBuilder
 from src.graphs.features import get_atom_features
+from src.inference.stability import compute_hull_energy, hull_consistency_flag
 
 
 def _pad_atom_features(x, target_dim=92):
@@ -104,6 +105,7 @@ class TestReferenceMaterials:
     @pytest.mark.parametrize("material", REFERENCE_MATERIALS, ids=[m["name"] for m in REFERENCE_MATERIALS])
     def test_pipeline_runs(self, material):
         from pymatgen.core import Structure
+
         from src.models.scandium_model import ScandiumPINNGNN
 
         structure = Structure.from_file(material["cif"])
@@ -184,8 +186,9 @@ class TestArrheniusLoss:
 
 class TestFineTuner:
     def test_shadow_compare_returns_dict(self):
-        from src.training.fine_tuner import shadow_compare
         from unittest.mock import MagicMock
+
+        from src.training.fine_tuner import shadow_compare
 
         old = MagicMock()
         old.predict_single.return_value = {"recommendation": "REJECT", "energy_above_hull": {"value": 0.36}, "ionic_conductivity": {"value": 2.07}}

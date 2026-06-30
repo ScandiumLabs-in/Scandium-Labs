@@ -1,6 +1,6 @@
-import pytest
 import torch
-from src.models.gnn_layers import CrystalMPNN
+
+from src.models.gnn.layers import CrystalMPNN
 from src.models.scandium_model import ScandiumPINNGNN
 
 

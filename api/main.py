@@ -1,8 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
+import uuid
+from datetime import datetime, timezone
+
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.security import HTTPBearer
 from pydantic import BaseModel
-from datetime import datetime
-import uuid
 
 from api.auth import verify_token
 
@@ -77,7 +78,7 @@ async def screen_materials(
         task_id = None
 
     try:
-        from api.database import get_engine, get_session, Job
+        from api.database import Job, get_engine, get_session
         engine = get_engine()
         session = get_session(engine)
         job = Job(
@@ -95,7 +96,7 @@ async def screen_materials(
     return ScreeningResult(
         job_id=job_id,
         status="queued",
-        created_at=datetime.utcnow().isoformat(),
+        created_at=datetime.now(timezone.utc).isoformat(),
     )
 
 
@@ -109,8 +110,8 @@ async def screen_from_cif(
         raise HTTPException(400, "Only CIF and POSCAR files accepted")
 
     content = await file.read()
+
     from pymatgen.core import Structure
-    from io import StringIO
 
     try:
         structure = Structure.from_str(content.decode(), fmt='cif')
@@ -138,7 +139,7 @@ async def screen_from_cif(
 
 @app.get("/job/{job_id}")
 async def get_job_status(job_id: str, user_id: str = Depends(verify_token)):
-    from api.database import get_engine, get_session, Job
+    from api.database import Job, get_engine, get_session
     from api.tasks import celery_app
 
     try:
