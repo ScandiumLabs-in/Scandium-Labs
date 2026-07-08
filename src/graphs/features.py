@@ -160,7 +160,7 @@ def get_global_features(structure) -> np.ndarray:
         structure.volume / len(structure),
         structure.density,
         float(structure.composition.total_electrons),
-        structure.ntypesp,
+        structure.n_elems,
         len(structure),
         sga.get_space_group_number() / 230,
         structure.lattice.a,

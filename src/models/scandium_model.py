@@ -26,6 +26,8 @@ class ScandiumPINNGNN(nn.Module):
         lg_edge_feat_dim=0,
         use_two_stage_eah=False,
         use_gradient_checkpointing=False,
+        name=None,
+        **kwargs,
     ):
         super().__init__()
 

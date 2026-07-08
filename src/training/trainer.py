@@ -6,7 +6,7 @@ from pathlib import Path
 import torch
 import wandb
 import yaml
-from torch.cuda.amp import GradScaler, autocast
+from torch.amp import GradScaler, autocast
 
 from src.data.cleaner import PropertyNormalizer
 from src.models.heads.pretrained import PretrainedEncoder
@@ -26,7 +26,7 @@ class ScandiumTrainer:
 
         self.data_dir = Path(data_dir)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.scaler = GradScaler()
+        self.scaler = GradScaler("cuda") if self.device.type == "cuda" else None
         self.best_val_loss = float("inf")
         self.patience_counter = 0
         self.mse = torch.nn.MSELoss()
@@ -84,7 +84,8 @@ class ScandiumTrainer:
 
             optimizer.zero_grad()
 
-            with autocast():
+            device_type = self.device.type
+            with autocast(device_type):
                 predictions = model(crystal_graph, line_graph)
 
                 raw_targets = {}
@@ -97,8 +98,11 @@ class ScandiumTrainer:
 
                 losses = loss_fn(predictions, targets, crystal_graph, model)
 
-            self.scaler.scale(losses["total"]).backward()
-            self.scaler.unscale_(optimizer)
+            if self.scaler is not None:
+                self.scaler.scale(losses["total"]).backward()
+                self.scaler.unscale_(optimizer)
+            else:
+                losses["total"].backward()
 
             for task in model.tasks:
                 if task in model.task_heads:
@@ -109,8 +113,11 @@ class ScandiumTrainer:
             torch.nn.utils.clip_grad_norm_(
                 model.parameters(), self.config["training"]["gradient_clip"]
             )
-            self.scaler.step(optimizer)
-            self.scaler.update()
+            if self.scaler is not None:
+                self.scaler.step(optimizer)
+                self.scaler.update()
+            else:
+                optimizer.step()
             scheduler.step()
 
             total_loss += losses["total"].item()
