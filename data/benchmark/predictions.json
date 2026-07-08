@@ -2,7 +2,8 @@
   "metadata": {
     "model_checkpoint": "checkpoints/best_model.pt",
     "git_commit": "9be788d",
-    "timestamp": "2026-06-30T02:26:39",
+    "timestamp": "2026-07-08T22:47:33.417542",
+    "api_source": "Materials Project",
     "n_total": 54,
     "n_success": 54,
     "n_errors": 0
@@ -11,12 +12,12 @@
     {
       "material_id": "LiF_rocksalt",
       "formula": "LiF",
-      "family": "halide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -3.1,
-        "energy_above_hull": 0.0,
-        "band_gap": 9.0
+        "formation_energy": -2.876853394166666,
+        "energy_above_hull": 0.2875420599999998,
+        "band_gap": 7.5592999999999995
       },
       "prediction": {
         "formation_energy": {
@@ -39,12 +40,12 @@
     {
       "material_id": "LiCl_rocksalt",
       "formula": "LiCl",
-      "family": "halide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -2.3,
-        "energy_above_hull": 0.0,
-        "band_gap": 7.0
+        "formation_energy": -2.1369242841666667,
+        "energy_above_hull": 0.0038527562499997003,
+        "band_gap": 6.646699999999999
       },
       "prediction": {
         "formation_energy": {
@@ -68,11 +69,11 @@
       "material_id": "LiBr_rocksalt",
       "formula": "LiBr",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.8358945341666666,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.9350000000000005
       },
       "prediction": {
         "formation_energy": {
@@ -96,11 +97,11 @@
       "material_id": "LiI_rocksalt",
       "formula": "LiI",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.3935849916666665,
+        "energy_above_hull": 0.02873937250000047,
+        "band_gap": 4.2306
       },
       "prediction": {
         "formation_energy": {
@@ -124,11 +125,11 @@
       "material_id": "NaF_rocksalt",
       "formula": "NaF",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.927366668189655,
+        "energy_above_hull": 0.0,
+        "band_gap": 6.0951
       },
       "prediction": {
         "formation_energy": {
@@ -151,12 +152,12 @@
     {
       "material_id": "NaCl_rocksalt",
       "formula": "NaCl",
-      "family": "halide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -2.4,
-        "energy_above_hull": 0.0,
-        "band_gap": 6.0
+        "formation_energy": -2.0412481956896547,
+        "energy_above_hull": 0.05877064000000054,
+        "band_gap": 4.3847000000000005
       },
       "prediction": {
         "formation_energy": {
@@ -180,11 +181,11 @@
       "material_id": "NaBr_rocksalt",
       "formula": "NaBr",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.8350720331896548,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.0895
       },
       "prediction": {
         "formation_energy": {
@@ -208,11 +209,11 @@
       "material_id": "NaI_rocksalt",
       "formula": "NaI",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.3318022431896552,
+        "energy_above_hull": 0.11824016999999998,
+        "band_gap": 2.7455000000000003
       },
       "prediction": {
         "formation_energy": {
@@ -236,11 +237,11 @@
       "material_id": "KF_rocksalt",
       "formula": "KF",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.9238859911249993,
+        "energy_above_hull": 0.0,
+        "band_gap": 5.949400000000001
       },
       "prediction": {
         "formation_energy": {
@@ -264,11 +265,11 @@
       "material_id": "KCl_rocksalt",
       "formula": "KCl",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.2477488536249997,
+        "energy_above_hull": 0.0,
+        "band_gap": 5.0448
       },
       "prediction": {
         "formation_energy": {
@@ -292,11 +293,11 @@
       "material_id": "KBr_rocksalt",
       "formula": "KBr",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.0181922211250005,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.3207
       },
       "prediction": {
         "formation_energy": {
@@ -320,11 +321,11 @@
       "material_id": "KI_rocksalt",
       "formula": "KI",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.6495974361249996,
+        "energy_above_hull": 0.020391854999999737,
+        "band_gap": 4.4744
       },
       "prediction": {
         "formation_energy": {
@@ -348,11 +349,11 @@
       "material_id": "RbF_rocksalt",
       "formula": "RbF",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.8214060062499984,
+        "energy_above_hull": 0.05158332500000107,
+        "band_gap": 5.905
       },
       "prediction": {
         "formation_energy": {
@@ -376,11 +377,11 @@
       "material_id": "RbCl_rocksalt",
       "formula": "RbCl",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.24487251375,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.8388
       },
       "prediction": {
         "formation_energy": {
@@ -404,11 +405,11 @@
       "material_id": "RbBr_rocksalt",
       "formula": "RbBr",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.0285863762500003,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.192
       },
       "prediction": {
         "formation_energy": {
@@ -432,11 +433,11 @@
       "material_id": "RbI_rocksalt",
       "formula": "RbI",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.6958504512500008,
+        "energy_above_hull": 0.0,
+        "band_gap": 3.7765
       },
       "prediction": {
         "formation_energy": {
@@ -459,12 +460,12 @@
     {
       "material_id": "MgO_rocksalt",
       "formula": "MgO",
-      "family": "oxide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -3.0,
-        "energy_above_hull": 0.0,
-        "band_gap": 7.8
+        "formation_energy": -2.906228543333335,
+        "energy_above_hull": 0.13208062666666454,
+        "band_gap": 3.4114000000000004
       },
       "prediction": {
         "formation_energy": {
@@ -488,11 +489,11 @@
       "material_id": "CaO_rocksalt",
       "formula": "CaO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.096079155,
+        "energy_above_hull": 0.20994023749999968,
+        "band_gap": 2.0684
       },
       "prediction": {
         "formation_energy": {
@@ -516,11 +517,11 @@
       "material_id": "SrO_rocksalt",
       "formula": "SrO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.6602446575,
+        "energy_above_hull": 0.4153788699999996,
+        "band_gap": 2.7434000000000003
       },
       "prediction": {
         "formation_energy": {
@@ -544,11 +545,11 @@
       "material_id": "BaO_rocksalt",
       "formula": "BaO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.7802067300000006,
+        "energy_above_hull": 0.04343597749999972,
+        "band_gap": 2.5282
       },
       "prediction": {
         "formation_energy": {
@@ -572,11 +573,11 @@
       "material_id": "MnO_rocksalt",
       "formula": "MnO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.9772052277155172,
+        "energy_above_hull": 0.05536453875000191,
+        "band_gap": 0.9851000000000001
       },
       "prediction": {
         "formation_energy": {
@@ -600,11 +601,11 @@
       "material_id": "FeO_rocksalt",
       "formula": "FeO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.1925727681250002,
+        "energy_above_hull": 0.1682073175000003,
+        "band_gap": 0.5488999999999997
       },
       "prediction": {
         "formation_energy": {
@@ -628,11 +629,11 @@
       "material_id": "CoO_rocksalt",
       "formula": "CoO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.8700932445000007,
+        "energy_above_hull": 0.4017379017500007,
+        "band_gap": 0.2197
       },
       "prediction": {
         "formation_energy": {
@@ -656,11 +657,11 @@
       "material_id": "NiO_rocksalt",
       "formula": "NiO",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": 0.09570726250000039,
+        "energy_above_hull": 1.3137925625000006,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -684,11 +685,11 @@
       "material_id": "CsCl_cscl",
       "formula": "CsCl",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.2558037748275876,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.9883999999999995
       },
       "prediction": {
         "formation_energy": {
@@ -712,11 +713,11 @@
       "material_id": "CsBr_cscl",
       "formula": "CsBr",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.0517134273275843,
+        "energy_above_hull": 0.0,
+        "band_gap": 4.2433
       },
       "prediction": {
         "formation_energy": {
@@ -740,11 +741,11 @@
       "material_id": "CsI_cscl",
       "formula": "CsI",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.6966935473275866,
+        "energy_above_hull": 0.03245251000000149,
+        "band_gap": 3.6769999999999996
       },
       "prediction": {
         "formation_energy": {
@@ -768,11 +769,11 @@
       "material_id": "TlCl_cscl",
       "formula": "TlCl",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.3245142266666687,
+        "energy_above_hull": 0.0013070874999989712,
+        "band_gap": 2.1811
       },
       "prediction": {
         "formation_energy": {
@@ -796,11 +797,11 @@
       "material_id": "Si_zincblende",
       "formula": "Si",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": 0.6645676274999985,
+        "energy_above_hull": 0.6645676274999985,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -824,11 +825,11 @@
       "material_id": "GaAs_zincblende",
       "formula": "GaAs",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.09357818125000072,
+        "energy_above_hull": 0.35269887499999975,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -852,11 +853,11 @@
       "material_id": "ZnS_zincblende",
       "formula": "ZnS",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.9507823234300601,
+        "energy_above_hull": 0.011916026190476714,
+        "band_gap": 1.9863999999999997
       },
       "prediction": {
         "formation_energy": {
@@ -880,11 +881,11 @@
       "material_id": "CdTe_zincblende",
       "formula": "CdTe",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.4529950900000017,
+        "energy_above_hull": 0.10774491499999783,
+        "band_gap": 0.02499999999999991
       },
       "prediction": {
         "formation_energy": {
@@ -908,11 +909,11 @@
       "material_id": "InP_zincblende",
       "formula": "InP",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.3543398839880929,
+        "energy_above_hull": 0.00393371500000228,
+        "band_gap": 0.5137999999999998
       },
       "prediction": {
         "formation_energy": {
@@ -936,11 +937,11 @@
       "material_id": "GaSb_zincblende",
       "formula": "GaSb",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.21480667750000038,
+        "energy_above_hull": 0.014465242500001807,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -964,11 +965,11 @@
       "material_id": "AlAs_zincblende",
       "formula": "AlAs",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -0.001772031250000694,
+        "energy_above_hull": 0.6252707449999999,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -992,11 +993,11 @@
       "material_id": "CaF2_fluorite",
       "formula": "CaF2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -4.2222155699999995,
+        "energy_above_hull": 0.0,
+        "band_gap": 7.1157
       },
       "prediction": {
         "formation_energy": {
@@ -1020,11 +1021,11 @@
       "material_id": "SrF2_fluorite",
       "formula": "SrF2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -4.05854996,
+        "energy_above_hull": 0.17096475333333316,
+        "band_gap": 5.9375
       },
       "prediction": {
         "formation_energy": {
@@ -1048,11 +1049,11 @@
       "material_id": "BaF2_fluorite",
       "formula": "BaF2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -4.161918590000002,
+        "energy_above_hull": 0.0,
+        "band_gap": 6.6029
       },
       "prediction": {
         "formation_energy": {
@@ -1076,11 +1077,11 @@
       "material_id": "CeO2_fluorite",
       "formula": "CeO2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.4977297216666656,
+        "energy_above_hull": 0.4294464749999989,
+        "band_gap": 0.8878000000000004
       },
       "prediction": {
         "formation_energy": {
@@ -1104,11 +1105,11 @@
       "material_id": "ZrO2_fluorite",
       "formula": "ZrO2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.750962673333332,
+        "energy_above_hull": 0.06265508166666578,
+        "band_gap": 3.4353999999999996
       },
       "prediction": {
         "formation_energy": {
@@ -1132,11 +1133,11 @@
       "material_id": "UO2_fluorite",
       "formula": "UO2",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.6246211466666645,
+        "energy_above_hull": 0.1258230933333344,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -1159,12 +1160,12 @@
     {
       "material_id": "Li2O_antifluorite",
       "formula": "Li2O",
-      "family": "oxide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -2.5,
-        "energy_above_hull": 0.0,
-        "band_gap": 5.0
+        "formation_energy": -1.8997470075163398,
+        "energy_above_hull": 0.16185090637254884,
+        "band_gap": 2.723
       },
       "prediction": {
         "formation_energy": {
@@ -1188,11 +1189,11 @@
       "material_id": "Na2O_antifluorite",
       "formula": "Na2O",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.3520595381417624,
+        "energy_above_hull": 0.0736791477777774,
+        "band_gap": 2.6124
       },
       "prediction": {
         "formation_energy": {
@@ -1216,11 +1217,11 @@
       "material_id": "K2O_antifluorite",
       "formula": "K2O",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.1078759170833337,
+        "energy_above_hull": 0.07153035500000016,
+        "band_gap": 1.3903999999999999
       },
       "prediction": {
         "formation_energy": {
@@ -1243,12 +1244,12 @@
     {
       "material_id": "Li2S_antifluorite",
       "formula": "Li2S",
-      "family": "sulfide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -1.8,
-        "energy_above_hull": 0.0,
-        "band_gap": 3.5
+        "formation_energy": -1.4419439997222228,
+        "energy_above_hull": 0.061509288333333245,
+        "band_gap": 3.8953999999999995
       },
       "prediction": {
         "formation_energy": {
@@ -1272,11 +1273,11 @@
       "material_id": "Na2S_antifluorite",
       "formula": "Na2S",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.2692445342708336,
+        "energy_above_hull": 0.0,
+        "band_gap": 2.4395
       },
       "prediction": {
         "formation_energy": {
@@ -1300,11 +1301,11 @@
       "material_id": "SrTiO3_perovskite",
       "formula": "SrTiO3",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.4219387426666663,
+        "energy_above_hull": 0.1297235489999995,
+        "band_gap": 4.0748999999999995
       },
       "prediction": {
         "formation_energy": {
@@ -1328,11 +1329,11 @@
       "material_id": "BaTiO3_perovskite",
       "formula": "BaTiO3",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -1.6856224356666671,
+        "energy_above_hull": 1.806655541999998,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -1356,11 +1357,11 @@
       "material_id": "LaMnO3_perovskite",
       "formula": "LaMnO3",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.9670204090862073,
+        "energy_above_hull": 0.16824439152381032,
+        "band_gap": 1.1017818945194318
       },
       "prediction": {
         "formation_energy": {
@@ -1384,11 +1385,11 @@
       "material_id": "CaTiO3_perovskite",
       "formula": "CaTiO3",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -3.5446375646666666,
+        "energy_above_hull": 0.011449592499999994,
+        "band_gap": 2.1378
       },
       "prediction": {
         "formation_energy": {
@@ -1412,11 +1413,11 @@
       "material_id": "PbTiO3_perovskite",
       "formula": "TiPbO3",
       "family": "unknown",
-      "source": "benchmark_v001",
+      "source": "MP",
       "reference": {
-        "formation_energy": null,
-        "energy_above_hull": null,
-        "band_gap": null
+        "formation_energy": -2.7018506426666624,
+        "energy_above_hull": 0.02873914300000102,
+        "band_gap": 2.4549
       },
       "prediction": {
         "formation_energy": {
@@ -1439,12 +1440,12 @@
     {
       "material_id": "LiCoO2_layered",
       "formula": "LiCoO2",
-      "family": "oxide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -1.5,
-        "energy_above_hull": 0.0,
-        "band_gap": 2.5
+        "formation_energy": -1.7450637045833348,
+        "energy_above_hull": 0.0005960662499990832,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -1467,12 +1468,12 @@
     {
       "material_id": "LiNiO2_layered",
       "formula": "LiCoO2",
-      "family": "oxide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -1.5,
-        "energy_above_hull": 0.0,
-        "band_gap": 2.5
+        "formation_energy": -1.7450637045833348,
+        "energy_above_hull": 0.0005960662499990832,
+        "band_gap": 0.0
       },
       "prediction": {
         "formation_energy": {
@@ -1495,12 +1496,12 @@
     {
       "material_id": "Li2S_li_superionic",
       "formula": "Li2S",
-      "family": "sulfide",
-      "source": "benchmark_v001",
+      "family": "unknown",
+      "source": "MP",
       "reference": {
-        "formation_energy": -1.8,
-        "energy_above_hull": 0.0,
-        "band_gap": 3.5
+        "formation_energy": -1.4419439997222228,
+        "energy_above_hull": 0.061509288333333245,
+        "band_gap": 3.8953999999999995
       },
       "prediction": {
         "formation_energy": {
