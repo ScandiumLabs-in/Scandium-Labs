@@ -55,6 +55,12 @@ def _metric_table(global_metrics: dict) -> str:
     return "\n".join(lines)
 
 
+def _fmt_metric(val, fmt: str) -> str:
+    if isinstance(val, (int, float)):
+        return fmt.format(val)
+    return "—"
+
+
 def _family_table(family_metrics: list[dict]) -> str:
     lines = [
         "| Family | N | Ef MAE | Eah MAE | BG MAE | Ef R² | Eah R² | BG R² |",
@@ -69,8 +75,8 @@ def _family_table(family_metrics: list[dict]) -> str:
         bg = m.get("band_gap", {})
         lines.append(
             f"| {fm['family'].title()} | {fm['n']} "
-            f"| {ef.get('mae', '—'):.4f} | {eah.get('mae', '—'):.4f} | {bg.get('mae', '—'):.4f} "
-            f"| {ef.get('r2', '—'):.3f} | {eah.get('r2', '—'):.3f} | {bg.get('r2', '—'):.3f} |"
+            f"| {_fmt_metric(ef.get('mae'), '{:.4f}')} | {_fmt_metric(eah.get('mae'), '{:.4f}')} | {_fmt_metric(bg.get('mae'), '{:.4f}')} "
+            f"| {_fmt_metric(ef.get('r2'), '{:.3f}')} | {_fmt_metric(eah.get('r2'), '{:.3f}')} | {_fmt_metric(bg.get('r2'), '{:.3f}')} |"
         )
     return "\n".join(lines)
 
@@ -271,7 +277,7 @@ The benchmark covers the following solid electrolyte families:
 
 ### 5.2 Outlier Analysis
 
-"""[Worst predictions table omitted — see Section 4.4]
+Worst predictions table omitted — see Section 4.4 for the top-10 outliers.
 
 ### 5.3 Distribution Shift
 

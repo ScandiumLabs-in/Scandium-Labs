@@ -73,8 +73,9 @@ def plot_parity(ref, pred, families, property_name, output_dir):
     """Parity plot with KDE density and family coloring."""
     fig, ax = plt.subplots(figsize=(6, 6))
 
-    if len(set(families)) < len(families) * 0.3:
-        # Few families — color by family
+    if len(ref) < 5:
+        ax.scatter(ref, pred, alpha=0.7, s=30, c="#1f77b4", edgecolors="none")
+    elif len(set(families)) < len(families) * 0.3:
         unique_fams = list(set(families))
         for fam in unique_fams:
             mask = [f == fam for f in families]
@@ -82,11 +83,13 @@ def plot_parity(ref, pred, families, property_name, output_dir):
                       c=COLORS.get(fam, "#666"), label=fam, edgecolors="none")
         ax.legend(fontsize=8, framealpha=0.8)
     else:
-        # Many families — use KDE density coloring
-        xy = np.vstack([ref, pred])
-        z = gaussian_kde(xy)(xy)
-        idx = z.argsort()
-        ax.scatter(ref[idx], pred[idx], c=z[idx], s=15, cmap="viridis", alpha=0.7, edgecolors="none")
+        try:
+            xy = np.vstack([ref, pred])
+            z = gaussian_kde(xy)(xy)
+            idx = z.argsort()
+            ax.scatter(ref[idx], pred[idx], c=z[idx], s=15, cmap="viridis", alpha=0.7, edgecolors="none")
+        except Exception:
+            ax.scatter(ref, pred, alpha=0.6, s=20, c="#1f77b4", edgecolors="none")
 
     lims = [min(ref.min(), pred.min()) - 0.1, max(ref.max(), pred.max()) + 0.1]
     ax.plot(lims, lims, "k--", alpha=0.4, lw=1)

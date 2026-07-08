@@ -1,0 +1,404 @@
+{
+  "metadata": {
+    "analysis_timestamp": "2026-07-08T22:44:22.369209",
+    "n_total": 54,
+    "n_success": 54,
+    "model_checkpoint": "checkpoints/best_model.pt",
+    "git_commit": "9be788d"
+  },
+  "global_metrics": {
+    "formation_energy": {
+      "n": 9,
+      "mae": 1.0004111111111111,
+      "rmse": 1.0522031051296343,
+      "median_ae": 0.9518,
+      "r2": -2.449140051153846,
+      "pearson_r": 0.28301705165543234,
+      "spearman_r": 0.1176512129542425,
+      "bias": 0.7102777777777778,
+      "within_1sigma_pct": 33.33333333333333,
+      "within_2sigma_pct": 100.0,
+      "max_error": 1.5070999999999999,
+      "p25_error": 0.7010000000000001,
+      "p75_error": 1.339,
+      "outlier_indices": [
+        2,
+        5,
+        8,
+        0,
+        4
+      ]
+    },
+    "energy_above_hull": {
+      "n": 9,
+      "mae": 0.6194555555555554,
+      "rmse": 0.6855157271880946,
+      "median_ae": 0.5536,
+      "r2": 0.0,
+      "pearson_r": NaN,
+      "spearman_r": NaN,
+      "bias": 0.6194555555555554,
+      "within_1sigma_pct": 22.22222222222222,
+      "within_2sigma_pct": 55.55555555555556,
+      "max_error": 1.0858,
+      "p25_error": 0.4266,
+      "p75_error": 0.7967,
+      "outlier_indices": [
+        5,
+        8,
+        2,
+        1,
+        6
+      ]
+    },
+    "band_gap": {
+      "n": 9,
+      "mae": 2.6674222222222226,
+      "rmse": 3.024226913517642,
+      "median_ae": 2.0446,
+      "r2": -0.8098842528583987,
+      "pearson_r": 0.8141142260737522,
+      "spearman_r": 0.8235584906796976,
+      "bias": -2.6674222222222226,
+      "within_1sigma_pct": 22.22222222222222,
+      "within_2sigma_pct": 55.55555555555556,
+      "max_error": 5.9204,
+      "p25_error": 1.4470999999999998,
+      "p75_error": 3.2614,
+      "outlier_indices": [
+        0,
+        1,
+        3,
+        2,
+        6
+      ]
+    }
+  },
+  "family_metrics": [
+    {
+      "family": "halide",
+      "n": 3,
+      "metrics": {
+        "formation_energy": {
+          "n": 3,
+          "mae": 1.1622999999999999,
+          "rmse": 1.1896367246628974,
+          "median_ae": 1.0752000000000002,
+          "r2": -10.172912131578936,
+          "pearson_r": 0.8397782010886486,
+          "spearman_r": 0.5,
+          "bias": 1.1622999999999999,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 1.5070999999999999,
+          "p25_error": 0.9899,
+          "p75_error": 1.29115,
+          "outlier_indices": [
+            2,
+            0,
+            1
+          ]
+        },
+        "energy_above_hull": {
+          "n": 3,
+          "mae": 0.5574333333333333,
+          "rmse": 0.6002805149816764,
+          "median_ae": 0.6152,
+          "r2": 0.0,
+          "pearson_r": NaN,
+          "spearman_r": NaN,
+          "bias": 0.5574333333333333,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 33.33333333333333,
+          "max_error": 0.7967,
+          "p25_error": 0.43779999999999997,
+          "p75_error": 0.70595,
+          "outlier_indices": [
+            2,
+            1,
+            0
+          ]
+        },
+        "band_gap": {
+          "n": 3,
+          "mae": 4.226733333333333,
+          "rmse": 4.406877450833716,
+          "median_ae": 3.806,
+          "r2": -11.484651414285715,
+          "pearson_r": 0.027027014174064667,
+          "spearman_r": 0.5,
+          "bias": -4.226733333333333,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 5.9204,
+          "p25_error": 3.3799,
+          "p75_error": 4.8632,
+          "outlier_indices": [
+            0,
+            1,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "family": "sulfide",
+      "n": 2,
+      "metrics": {
+        "formation_energy": {
+          "n": 2,
+          "mae": 1.3492,
+          "rmse": 1.3492385556305453,
+          "median_ae": 1.3492,
+          "r2": 0.0,
+          "pearson_r": 0.0,
+          "spearman_r": 0.0,
+          "bias": 1.3492,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 1.3594,
+          "p25_error": 1.3441,
+          "p75_error": 1.3542999999999998,
+          "outlier_indices": [
+            0,
+            1
+          ]
+        },
+        "energy_above_hull": {
+          "n": 2,
+          "mae": 1.0803500000000001,
+          "rmse": 1.0803637466150002,
+          "median_ae": 1.0803500000000001,
+          "r2": 0.0,
+          "pearson_r": 0.0,
+          "spearman_r": 0.0,
+          "bias": 1.0803500000000001,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 1.0858,
+          "p25_error": 1.077625,
+          "p75_error": 1.083075,
+          "outlier_indices": [
+            0,
+            1
+          ]
+        },
+        "band_gap": {
+          "n": 2,
+          "mae": 1.3594,
+          "rmse": 1.3602756338330846,
+          "median_ae": 1.3594,
+          "r2": 0.0,
+          "pearson_r": 0.0,
+          "spearman_r": 0.0,
+          "bias": -1.3594,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 1.4082,
+          "p25_error": 1.335,
+          "p75_error": 1.3838,
+          "outlier_indices": [
+            1,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "family": "oxide",
+      "n": 4,
+      "metrics": {
+        "formation_energy": {
+          "n": 4,
+          "mae": 0.7046,
+          "rmse": 0.7206917510281354,
+          "median_ae": 0.6528,
+          "r2": -0.23116231111111119,
+          "pearson_r": 0.027927878085143187,
+          "spearman_r": 0.316227766016838,
+          "bias": 0.05179999999999996,
+          "within_1sigma_pct": 75.0,
+          "within_2sigma_pct": 100.0,
+          "max_error": 0.9518,
+          "p25_error": 0.5937,
+          "p75_error": 0.7637,
+          "outlier_indices": [
+            1,
+            3,
+            2,
+            0
+          ]
+        },
+        "energy_above_hull": {
+          "n": 4,
+          "mae": 0.435525,
+          "rmse": 0.4511110090653962,
+          "median_ae": 0.4702,
+          "r2": 0.0,
+          "pearson_r": NaN,
+          "spearman_r": NaN,
+          "bias": 0.435525,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 0.5536,
+          "p25_error": 0.38197499999999995,
+          "p75_error": 0.52375,
+          "outlier_indices": [
+            2,
+            3,
+            1,
+            0
+          ]
+        },
+        "band_gap": {
+          "n": 4,
+          "mae": 2.15195,
+          "rmse": 2.2556113151427484,
+          "median_ae": 1.94965,
+          "r2": -0.06383322634605326,
+          "pearson_r": 0.9622998788763913,
+          "spearman_r": 0.9486832980505139,
+          "bias": -2.15195,
+          "within_1sigma_pct": 0.0,
+          "within_2sigma_pct": 0.0,
+          "max_error": 3.2614,
+          "p25_error": 1.7528,
+          "p75_error": 2.3487999999999998,
+          "outlier_indices": [
+            0,
+            2,
+            3,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "family": "unknown",
+      "n": 45,
+      "metrics": {}
+    }
+  ],
+  "error_diagnostics": {
+    "worst_10_errors": [
+      {
+        "material_id": "LiF_rocksalt",
+        "formula": "LiF",
+        "family": "halide",
+        "property": "band_gap",
+        "reference": 9.0,
+        "prediction": 3.0796,
+        "error": -5.9204,
+        "abs_error": 5.9204
+      },
+      {
+        "material_id": "LiCl_rocksalt",
+        "formula": "LiCl",
+        "family": "halide",
+        "property": "band_gap",
+        "reference": 7.0,
+        "prediction": 3.194,
+        "error": -3.806,
+        "abs_error": 3.806
+      },
+      {
+        "material_id": "MgO_rocksalt",
+        "formula": "MgO",
+        "family": "oxide",
+        "property": "band_gap",
+        "reference": 7.8,
+        "prediction": 4.5386,
+        "error": -3.2614,
+        "abs_error": 3.2614
+      },
+      {
+        "material_id": "NaCl_rocksalt",
+        "formula": "NaCl",
+        "family": "halide",
+        "property": "band_gap",
+        "reference": 6.0,
+        "prediction": 3.0462,
+        "error": -2.9538,
+        "abs_error": 2.9538
+      },
+      {
+        "material_id": "LiCoO2_layered",
+        "formula": "LiCoO2",
+        "family": "oxide",
+        "property": "band_gap",
+        "reference": 2.5,
+        "prediction": 0.4554,
+        "error": -2.0446,
+        "abs_error": 2.0446
+      },
+      {
+        "material_id": "LiNiO2_layered",
+        "formula": "LiCoO2",
+        "family": "oxide",
+        "property": "band_gap",
+        "reference": 2.5,
+        "prediction": 0.6453,
+        "error": -1.8547,
+        "abs_error": 1.8547
+      },
+      {
+        "material_id": "NaCl_rocksalt",
+        "formula": "NaCl",
+        "family": "halide",
+        "property": "formation_energy",
+        "reference": -2.4,
+        "prediction": -0.8929,
+        "error": 1.5070999999999999,
+        "abs_error": 1.5070999999999999
+      },
+      {
+        "material_id": "Li2O_antifluorite",
+        "formula": "Li2O",
+        "family": "oxide",
+        "property": "band_gap",
+        "reference": 5.0,
+        "prediction": 3.5529,
+        "error": -1.4470999999999998,
+        "abs_error": 1.4470999999999998
+      },
+      {
+        "material_id": "Li2S_li_superionic",
+        "formula": "Li2S",
+        "family": "sulfide",
+        "property": "band_gap",
+        "reference": 3.5,
+        "prediction": 2.0918,
+        "error": -1.4082,
+        "abs_error": 1.4082
+      },
+      {
+        "material_id": "Li2S_antifluorite",
+        "formula": "Li2S",
+        "family": "sulfide",
+        "property": "formation_energy",
+        "reference": -1.8,
+        "prediction": -0.4406,
+        "error": 1.3594,
+        "abs_error": 1.3594
+      }
+    ],
+    "bias_by_property": {
+      "formation_energy": {
+        "mean_bias": 0.7102777777777777,
+        "std_bias": 0.7762968844710806,
+        "n": 9
+      },
+      "energy_above_hull": {
+        "mean_bias": 0.6194555555555556,
+        "std_bias": 0.29360965057977956,
+        "n": 9
+      },
+      "band_gap": {
+        "mean_bias": -2.6674222222222226,
+        "std_bias": 1.4250638978093249,
+        "n": 9
+      }
+    },
+    "n_total_errors": 27
+  }
+}

@@ -1,25 +1,25 @@
 # Training Summary — SL-20260708-002
 
-**Current Epoch:** 30
+**Current Epoch:** 34
 **Status:** Running
-**Last Updated:** 2026-07-08T22:11:00.375792
+**Last Updated:** 2026-07-08T22:39:02.521428
 
 ## Latest Epoch
 
 | Metric | Value |
 |--------|-------|
-| Train Loss | 2.3587 |
-| Val Loss | 3.5001 |
-| Epoch Time | 442.4s |
-| formation_energy MAE | 0.5939 |
-| formation_energy R² | 0.5075 |
-| energy_above_hull MAE | 0.1375 |
-| energy_above_hull R² | 0.3547 |
-| band_gap MAE | 1.1167 |
-| band_gap R² | 0.2359 |
-| GradNorm Weights | {'band_gap': 0.0103, 'energy_above_hull': 2.7159, 'formation_energy': 0.0075} |
+| Train Loss | 2.3500 |
+| Val Loss | 3.4934 |
+| Epoch Time | 430.5s |
+| formation_energy MAE | 0.5872 |
+| formation_energy R² | 0.5096 |
+| energy_above_hull MAE | 0.1291 |
+| energy_above_hull R² | 0.3738 |
+| band_gap MAE | 1.1071 |
+| band_gap R² | 0.2306 |
+| GradNorm Weights | {'band_gap': 0.3038, 'energy_above_hull': 2.7186, 'formation_energy': 0.1558} |
 | GPU Memory | 1517 MB |
-| Throughput | 37.6 g/s |
+| Throughput | 38.7 g/s |
 
 ## Best So Far
 
@@ -27,10 +27,10 @@
 |--------|-----------|-------|
 | Train Loss (min) | 2.2825 | 28 |
 | Val Loss (min) | 3.4760 | 27 |
-| formation_energy MAE min | 0.5939 | 30 |
-| formation_energy R2 max | 0.5075 | 30 |
+| formation_energy MAE min | 0.5872 | 34 |
+| formation_energy R2 max | 0.5096 | 34 |
 | energy_above_hull MAE min | 0.1254 | 4 |
-| energy_above_hull R2 max | 0.3743 | 13 |
+| energy_above_hull R2 max | 0.3743 | 32 |
 | band_gap MAE min | 1.1026 | 16 |
 | band_gap R2 max | 0.2409 | 27 |
 
@@ -48,4 +48,4 @@
 | phase5_final | 0.247115358710289 | 0.7055881023406982 | 0.11814559996128082 | 0.4091660976409912 | 0.7613657116889954 | 0.36457592248916626 |
 | v3_li_10k_fresh | 0.3267255425453186 | 0.5527583360671997 | 0.10293980687856674 | 0.18435430526733398 | 1.2493455410003662 | 0.03730195760726929 |
 | v3_upgraded | 0.7673068046569824 | -0.5295946598052979 | 0.18706099689006805 | -0.0471644401550293 | 1.7981042861938477 | -1.3906745910644531 |
-| **SL-20260708-002 (best so far)** | 0.5939074754714966 | 0.5074830651283264 | 0.12542763352394104 | 0.37425464391708374 | 1.102565050125122 | 0.24088793992996216 |
+| **SL-20260708-002 (best so far)** | 0.5871963500976562 | 0.5096248388290405 | 0.12542763352394104 | 0.3743433952331543 | 1.102565050125122 | 0.24088793992996216 |
