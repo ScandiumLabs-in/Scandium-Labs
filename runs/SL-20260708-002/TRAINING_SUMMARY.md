@@ -1,38 +1,38 @@
 # Training Summary — SL-20260708-002
 
-**Current Epoch:** 12
+**Current Epoch:** 26
 **Status:** Running
-**Last Updated:** 2026-07-08T20:03:25.625930
+**Last Updated:** 2026-07-08T21:42:25.554188
 
 ## Latest Epoch
 
 | Metric | Value |
 |--------|-------|
-| Train Loss | 2.4561 |
-| Val Loss | 3.7040 |
-| Epoch Time | 418.8s |
-| formation_energy MAE | 0.6258 |
-| formation_energy R² | 0.4727 |
-| energy_above_hull MAE | 0.1304 |
-| energy_above_hull R² | 0.3541 |
-| band_gap MAE | 1.1443 |
-| band_gap R² | 0.1829 |
-| GradNorm Weights | {'band_gap': 0.0387, 'energy_above_hull': 3.1295, 'formation_energy': 0.0537} |
-| GPU Memory | 1512 MB |
-| Throughput | 39.7 g/s |
+| Train Loss | 2.2842 |
+| Val Loss | 3.4976 |
+| Epoch Time | 426.9s |
+| formation_energy MAE | 0.5979 |
+| formation_energy R² | 0.4999 |
+| energy_above_hull MAE | 0.1382 |
+| energy_above_hull R² | 0.3702 |
+| band_gap MAE | 1.1059 |
+| band_gap R² | 0.2367 |
+| GradNorm Weights | {'band_gap': 0.0113, 'energy_above_hull': 3.8163, 'formation_energy': 0.0086} |
+| GPU Memory | 1517 MB |
+| Throughput | 39.0 g/s |
 
 ## Best So Far
 
 | Metric | Best Value | Epoch |
 |--------|-----------|-------|
-| Train Loss (min) | 2.4554 | 9 |
-| Val Loss (min) | 3.7040 | 12 |
-| formation_energy MAE min | 0.6254 | 9 |
-| formation_energy R2 max | 0.4774 | 9 |
+| Train Loss (min) | 2.2842 | 26 |
+| Val Loss (min) | 3.4812 | 25 |
+| formation_energy MAE min | 0.5943 | 25 |
+| formation_energy R2 max | 0.5035 | 25 |
 | energy_above_hull MAE min | 0.1254 | 4 |
-| energy_above_hull R2 max | 0.3713 | 10 |
-| band_gap MAE min | 1.1443 | 12 |
-| band_gap R2 max | 0.1844 | 11 |
+| energy_above_hull R2 max | 0.3743 | 13 |
+| band_gap MAE min | 1.1026 | 16 |
+| band_gap R2 max | 0.2398 | 19 |
 
 ## Comparison vs Previous Experiments
 
@@ -48,4 +48,4 @@
 | phase5_final | 0.247115358710289 | 0.7055881023406982 | 0.11814559996128082 | 0.4091660976409912 | 0.7613657116889954 | 0.36457592248916626 |
 | v3_li_10k_fresh | 0.3267255425453186 | 0.5527583360671997 | 0.10293980687856674 | 0.18435430526733398 | 1.2493455410003662 | 0.03730195760726929 |
 | v3_upgraded | 0.7673068046569824 | -0.5295946598052979 | 0.18706099689006805 | -0.0471644401550293 | 1.7981042861938477 | -1.3906745910644531 |
-| **SL-20260708-002 (best so far)** | 0.6254261136054993 | 0.47737008333206177 | 0.12542763352394104 | 0.37130022048950195 | 1.1443041563034058 | 0.1843705177307129 |
+| **SL-20260708-002 (best so far)** | 0.5942801237106323 | 0.5034934878349304 | 0.12542763352394104 | 0.37425464391708374 | 1.102565050125122 | 0.23977214097976685 |

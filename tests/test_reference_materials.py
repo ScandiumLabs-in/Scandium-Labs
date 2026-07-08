@@ -155,6 +155,8 @@ class TestReferenceMaterials:
 
         normalizer = PropertyNormalizer.load(str(REPO_ROOT / "data" / "normalizer.json"))
         for task, val in preds.items():
+            if task == "graph_feats":
+                continue
             v = val.item()
             stat = normalizer.stats.get(task)
             if stat:
