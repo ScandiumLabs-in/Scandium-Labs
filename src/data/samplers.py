@@ -44,7 +44,7 @@ class SizeBucketedBatchSampler(Sampler[list[int]]):
         shuffle: bool = True,
         drop_last: bool = False,
     ):
-        super().__init__(None)
+        super().__init__()
         self.batch_size = batch_size
         self.shuffle_flag = shuffle
         self.drop_last = drop_last

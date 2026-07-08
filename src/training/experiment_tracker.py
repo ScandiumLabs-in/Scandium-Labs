@@ -18,6 +18,7 @@ import numpy as np
 import torch
 import yaml
 from sklearn.metrics import (
+    auc,
     confusion_matrix,
     mean_absolute_error,
     mean_squared_error,
@@ -516,42 +517,75 @@ class ExperimentTracker:
         save_epoch_checkpoints: int = 0,
         enable_plots: bool = True,
         primary_metric: str = "avg_r2",
+        resume_from: str | Path | None = None,
     ):
         self.config = config
         self.registry = RunRegistry(run_dir)
-        self.run_id = self.registry.allocate_run_id()
-        self.run_dir = Path(run_dir) / self.run_id
-        self.run_dir.mkdir(parents=True, exist_ok=True)
 
-        self.metrics = MetricsStore(self.run_dir)
-        self.checkpoints = CheckpointManager(self.run_dir, save_interval=save_epoch_checkpoints)
-        self.plots = PlotGenerator(self.run_dir, enabled=enable_plots)
-        self.primary_metric = primary_metric
+        if resume_from is not None:
+            resume_from = Path(resume_from)
+            self.run_dir = resume_from
+            self.run_id = resume_from.name
+            self._resuming = True
 
-        self._epoch_t0: float | None = None
-        self._training_t0: float | None = None
-        self._best_epoch_info: dict[str, Any] = {}
-        self._previous_results: list[dict] = []
+            self.metrics = MetricsStore(self.run_dir)
+            self.checkpoints = CheckpointManager(self.run_dir, save_interval=save_epoch_checkpoints)
+            self.plots = PlotGenerator(self.run_dir, enabled=enable_plots)
+            self.primary_metric = primary_metric
+
+            self._epoch_t0: float | None = None
+            self._training_t0: float | None = None
+            self._best_epoch_info: dict[str, Any] = {}
+            self._previous_results: list[dict] = []
+
+            # Load existing metadata for training_t0 restoration
+            meta_path = self.run_dir / "run_metadata.json"
+            if meta_path.exists():
+                try:
+                    old_meta = json.loads(meta_path.read_text())
+                    old_sec = old_meta.get("training_time_s", 0)
+                    if old_sec:
+                        self._training_t0 = time.perf_counter() - old_sec
+                except Exception:
+                    pass
+
+            self.metadata = self._collect_metadata()
+            self.registry.update_status(self.run_id, status="running")
+            logger.info(f"Experiment {self.run_id} resumed at {self.run_dir}")
+        else:
+            self.run_id = self.registry.allocate_run_id()
+            self.run_dir = Path(run_dir) / self.run_id
+            self.run_dir.mkdir(parents=True, exist_ok=True)
+            self._resuming = False
+
+            self.metrics = MetricsStore(self.run_dir)
+            self.checkpoints = CheckpointManager(self.run_dir, save_interval=save_epoch_checkpoints)
+            self.plots = PlotGenerator(self.run_dir, enabled=enable_plots)
+            self.primary_metric = primary_metric
+
+            self._epoch_t0: float | None = None
+            self._training_t0: float | None = None
+            self._best_epoch_info: dict[str, Any] = {}
+            self._previous_results: list[dict] = []
+            self._val_epoch_data: dict | None = None
+
+            self.metadata = self._collect_metadata()
+            self.registry.register(self.run_id, self.metadata)
+
+            config_path = self.run_dir / "config.yaml"
+            with open(config_path, "w") as f:
+                yaml.dump(config, f, default_flow_style=False)
+
+            meta_path = self.run_dir / "run_metadata.json"
+            with open(meta_path, "w") as f:
+                json.dump(self.metadata, f, indent=2)
+
+            logger.info(f"Experiment {self.run_id} initialized at {self.run_dir}")
+
         self._val_epoch_data: dict | None = None
 
-        # Metadata
-        self.metadata = self._collect_metadata()
-        self.registry.register(self.run_id, self.metadata)
-
-        # Save config
-        config_path = self.run_dir / "config.yaml"
-        with open(config_path, "w") as f:
-            yaml.dump(config, f, default_flow_style=False)
-
-        # Save metadata
-        meta_path = self.run_dir / "run_metadata.json"
-        with open(meta_path, "w") as f:
-            json.dump(self.metadata, f, indent=2)
-
-        # Load previous experiment results
+        # Load previous experiment results for comparison
         self._previous_results = self.registry.load_all_results()
-
-        logger.info(f"Experiment {self.run_id} initialized at {self.run_dir}")
 
     def _collect_metadata(self) -> dict:
         meta = {

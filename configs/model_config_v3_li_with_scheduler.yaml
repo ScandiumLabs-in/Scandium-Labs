@@ -8,7 +8,6 @@ model:
   mc_dropout_samples: 20
   use_two_stage_eah: true
   use_gradient_checkpointing: auto
-  # auto = enabled when VRAM < 6 GB, disabled when VRAM >= 8 GB
 
 graph:
   cutoff: 8.0
@@ -38,7 +37,7 @@ training:
   learning_rate: 0.0005
   max_epochs: 150
   patience: 40
-  # scheduler: "cosine_with_restarts"  # not yet implemented — LR is constant
+  scheduler: "cosine_with_restarts"
   optimizer: "AdamW"
   weight_decay: 0.00001
   gradient_clip: 1.0

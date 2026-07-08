@@ -1,0 +1,50 @@
+bucketing:
+  bucket_size_mult: 2.0
+  enabled: true
+gradnorm:
+  alpha: 1.5
+  enabled: false
+graph:
+  cutoff: 8.0
+  max_neighbors: 16
+  num_rbf: 64
+  num_sbf: 32
+logging:
+  plot: true
+  save_epoch_checkpoints: 10
+  tensorboard: false
+  wandb: false
+model:
+  dropout: 0.15
+  hidden_dim: 128
+  mc_dropout_samples: 20
+  name: ScandiumPINNGNN-v3-Li
+  num_alignn_layers: 4
+  num_attention_heads: 4
+  num_transformer_layers: 2
+  use_gradient_checkpointing: auto
+  use_two_stage_eah: true
+tasks:
+- name: formation_energy
+  scale: linear
+  weight: 1.0
+- name: energy_above_hull
+  scale: linear
+  two_stage: true
+  weight: 1.0
+- name: band_gap
+  scale: linear
+  weight: 1.0
+training:
+  batch_size: 16
+  dataset: v3_li_10000
+  gradient_accumulation_steps: 2
+  gradient_clip: 1.0
+  learning_rate: 0.0005
+  max_epochs: 150
+  mixed_precision: true
+  normalize_targets: true
+  optimizer: AdamW
+  patience: 40
+  scheduler: cosine_with_restarts
+  weight_decay: 1.0e-05

@@ -66,6 +66,8 @@ class LazyGraphDataset(Dataset):
         graph_builder=None,
         feature_engineer=None,
         cache_dir=None,
+        memory_cache=True,
+        prebuilt_list=None,
     ):
         self.structures = structure_list
         self.targets = targets
@@ -73,12 +75,17 @@ class LazyGraphDataset(Dataset):
         self.cache_dir = cache_dir
         self.graph_builder = graph_builder
         self.feature_engineer = feature_engineer
+        self.memory_cache = memory_cache
+        self._cache: dict[int, tuple] = {}
 
         n_structures = len(structure_list) if structure_list is not None else 0
         self._len = n_structures
 
         self._prebuilt_list = None
-        if graph_dir is None:
+        if prebuilt_list is not None:
+            self._prebuilt_list = prebuilt_list
+            self._len = len(prebuilt_list)
+        elif graph_dir is None:
             parent = cache_dir or (graph_dir if graph_dir else None)
             if parent is not None:
                 parent = str(parent)
@@ -110,13 +117,22 @@ class LazyGraphDataset(Dataset):
         return self._len
 
     def __getitem__(self, idx):
+        if self.memory_cache and idx in self._cache:
+            return self._cache[idx]
+
         if self.graph_dir is not None:
             path = os.path.join(self.graph_dir, f"{idx}.pt")
             if os.path.exists(path):
-                return torch.load(path, weights_only=False, map_location="cpu")
+                data = torch.load(path, weights_only=False, map_location="cpu")
+                if self.memory_cache:
+                    self._cache[idx] = data
+                return data
 
         if self._prebuilt_list is not None:
-            return self._prebuilt_list[idx]
+            data = self._prebuilt_list[idx]
+            if self.memory_cache:
+                self._cache[idx] = data
+            return data
 
         if self.structures is None or self.graph_builder is None:
             raise RuntimeError(
@@ -135,4 +151,7 @@ class LazyGraphDataset(Dataset):
         ):
             torch.save((crystal_graph, line_graph), os.path.join(self.cache_dir, f"{idx}.pt"))
 
-        return crystal_graph, line_graph
+        data = (crystal_graph, line_graph)
+        if self.memory_cache:
+            self._cache[idx] = data
+        return data

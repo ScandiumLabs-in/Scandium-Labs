@@ -50,6 +50,7 @@ checkpoints/phase5_final/
 checkpoints/v3_freeze_eah/
 checkpoints/v3_upgraded/
 checkpoints/v3_li_10k_fresh/
+checkpoints/ablation_*/
 
 # Experiments (only keep reports)
 experiments/v2_3635_first_run/

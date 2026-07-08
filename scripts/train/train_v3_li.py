@@ -6,13 +6,14 @@ with GradNorm + TwoStageEah + ExperimentTracker).  Does NOT use ScandiumTrainer.
 Sibling: train.py (config-based delegator to ScandiumTrainer).
 """
 
+import argparse
 import json
-import multiprocessing as mp
 import os
 import sys
 import time
 import warnings
 
+import multiprocessing as mp
 try:
     mp.set_start_method("fork", force=True)
 except RuntimeError:
@@ -49,6 +50,19 @@ def compute_task_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, default="configs/model_config_v3_li.yaml",
+                        help="Path to config YAML (default: configs/model_config_v3_li.yaml)")
+    parser.add_argument("--resume", type=str, default=None,
+                        help="Path to checkpoint .pt file to resume from")
+    parser.add_argument("--data-dir", type=str, default="datasets/v3_li_10000",
+                        help="Dataset directory (default: datasets/v3_li_10000)")
+    parser.add_argument("--out-dir", type=str, default="checkpoints/v3_li_10k_fresh",
+                        help="Output checkpoint directory (default: checkpoints/v3_li_10k_fresh)")
+    parser.add_argument("--no-gradnorm", action="store_true",
+                        help="Disable GradNorm adaptive weighting, use fixed equal weights")
+    args = parser.parse_args()
+
     from src.data.dataset import LazyGraphDataset, collate_fn
     from src.graphs.builder import ALIGNNGraphBuilder, FeatureEngineer
     from src.models.heads.two_stage_eah import TwoStageEahLoss, two_stage_metrics
@@ -56,11 +70,11 @@ def main():
     from src.training.losses import GradNormLoss
     from src.training.experiment_tracker import ExperimentTracker
 
-    DATA_DIR = Path("datasets/v3_li_10000")
-    OUT_DIR = Path("checkpoints/v3_li_10k_fresh")
+    DATA_DIR = Path(args.data_dir)
+    OUT_DIR = Path(args.out_dir)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    with open("configs/model_config_v3_li.yaml") as f:
+    with open(args.config) as f:
         cfg = yaml.safe_load(f)
 
     LOG_CFG = cfg.get("logging", {})
@@ -71,10 +85,22 @@ def main():
     LR = cfg["training"]["learning_rate"]
     MAX_EPOCHS = cfg["training"]["max_epochs"]
     PATIENCE = cfg["training"]["patience"]
-    NUM_WORKERS = min(3, os.cpu_count() or 1)
+    NUM_WORKERS = 4
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}  Workers: {NUM_WORKERS}", flush=True)
+
+    resume_epoch = -1
+    resume_run_dir = None
+    if args.resume:
+        ckpt_path = Path(args.resume)
+        print(f"Resuming from checkpoint: {ckpt_path}", flush=True)
+        resume_data = torch.load(str(ckpt_path), map_location=device, weights_only=False)
+        resume_epoch = resume_data.get("epoch", -1)
+        resume_run_dir = ckpt_path.parents[1]  # runs/RUN_ID/checkpoints/last.pt → runs/RUN_ID
+        if resume_run_dir.exists():
+            print(f"  Resuming experiment directory: {resume_run_dir}", flush=True)
+        print(f"  Checkpoint epoch: {resume_epoch}", flush=True)
 
     # ── Data ──
     print("Loading dataset_cache.pt...", flush=True)
@@ -102,7 +128,7 @@ def main():
     loader_kwargs = dict(
         collate_fn=collate_fn,
         pin_memory=True,
-        multiprocessing_context="fork" if NUM_WORKERS > 0 else None,
+        multiprocessing_context="fork",
     )
 
     if USE_BUCKETING:
@@ -120,8 +146,6 @@ def main():
             full_dataset,
             batch_sampler=batch_sampler,
             num_workers=NUM_WORKERS,
-            prefetch_factor=2,
-            persistent_workers=True,
             **loader_kwargs,
         )
     else:
@@ -130,8 +154,6 @@ def main():
             batch_size=BATCH_SIZE,
             shuffle=True,
             num_workers=NUM_WORKERS,
-            prefetch_factor=2,
-            persistent_workers=True,
             **loader_kwargs,
         )
     val_loader = DataLoader(
@@ -177,13 +199,23 @@ def main():
         use_gradient_checkpointing=gc_enabled,
     ).to(device)
     total_params = sum(p.numel() for p in model.parameters())
-    print(f"Model: {total_params:,} params (fresh init)", flush=True)
+
+    if args.resume:
+        missing, unexpected = model.load_state_dict(resume_data["model"], strict=False)
+        if missing:
+            print(f"  Missing keys: {missing}", flush=True)
+        if unexpected:
+            print(f"  Unexpected keys: {unexpected}", flush=True)
+        print(f"Model: {total_params:,} params (loaded from checkpoint)", flush=True)
+    else:
+        print(f"Model: {total_params:,} params (fresh init)", flush=True)
 
     # ── Experiment Tracker ──
     tracker = ExperimentTracker(
         config=cfg,
         save_epoch_checkpoints=SAVE_INTERVAL,
         enable_plots=LOG_CFG.get("plot", True),
+        resume_from=resume_run_dir,
     )
     tracker.register_model(model)
     print(f"Experiment: {tracker.run_id} → {tracker.run_dir}", flush=True)
@@ -191,29 +223,83 @@ def main():
     # ── Loss & optimizer ──
     mse_loss = torch.nn.MSELoss()
     gc = cfg.get("gradnorm", {"enabled": True, "alpha": 1.5})
+    USE_GRADNORM = gc.get("enabled", True) and not args.no_gradnorm
     task_weights = {"formation_energy": 1.0, "energy_above_hull": 1.0, "band_gap": 0.4}
     grad_norm = GradNormLoss(
         tasks=["formation_energy", "energy_above_hull", "band_gap"],
         alpha=gc.get("alpha", 1.5),
         initial_weights=task_weights,
     ).to(device)
+    if not USE_GRADNORM:
+        print(f"  GradNorm disabled — using fixed weights: {task_weights}", flush=True)
     optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-5)
+
+    # ── LR Scheduler ──
+    scheduler_cfg = cfg.get("training", {}).get("scheduler", None)
+    scheduler = None
+    if scheduler_cfg == "cosine_with_restarts":
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer, T_0=10, T_mult=2, eta_min=1e-6
+        )
+        print(f"  Using CosineAnnealingWarmRestarts scheduler (T_0=10, T_mult=2)", flush=True)
+    elif scheduler_cfg == "cosine":
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer, T_max=MAX_EPOCHS, eta_min=1e-6
+        )
+        print(f"  Using CosineAnnealingLR scheduler (T_max={MAX_EPOCHS})", flush=True)
+
+    if args.resume and resume_data.get("optimizer"):
+        optimizer.load_state_dict(resume_data["optimizer"])
+        print(f"  Optimizer state restored from checkpoint", flush=True)
+
+    if USE_GRADNORM and args.resume and resume_data.get("config", {}).get("gradnorm_weights"):
+        saved_w = resume_data["config"]["gradnorm_weights"]
+        for k in saved_w:
+            if k in grad_norm.log_weights:
+                grad_norm.log_weights[k].data = torch.tensor(saved_w[k], device=device).log()
+        print(f"  GradNorm weights restored: {saved_w}", flush=True)
 
     eah_two_stage_loss = TwoStageEahLoss(lambda_bce=1.0, lambda_reg=1.0, lambda_stable=0.5)
     scaler = torch.amp.GradScaler("cuda") if device.type == "cuda" else None
     use_amp = scaler is not None
+    if args.resume and resume_data.get("config", {}).get("scaler_state") and scaler is not None:
+        try:
+            scaler.load_state_dict(resume_data["config"]["scaler_state"])
+            print(f"  GradScaler state restored", flush=True)
+        except Exception:
+            pass
+
+    if args.resume and resume_data.get("config", {}).get("rng_states"):
+        rng = resume_data["config"]["rng_states"]
+        torch.set_rng_state(torch.ByteTensor(rng["torch_cpu"]))
+        if torch.cuda.is_available():
+            torch.cuda.set_rng_state(torch.ByteTensor(rng["torch_cuda"]))
+        np.random.set_state(rng["numpy"])
+        import random as _random
+        _random.setstate(rng["random"])
+        print(f"  RNG states restored", flush=True)
 
     # ── Training loop ──
-    best_val_loss = float("inf")
+    start_epoch = resume_epoch + 1 if args.resume else 0
+    if args.resume and resume_data.get("config", {}).get("best_val_loss") is not None:
+        best_val_loss = resume_data["config"]["best_val_loss"]
+    else:
+        restored_best_val, best_ep = tracker.metrics.get_best("val_loss")
+        if restored_best_val is not None:
+            best_val_loss = restored_best_val
+            if args.resume:
+                print(f"  Best val_loss from metrics: {best_val_loss:.4f} @ epoch {best_ep}", flush=True)
+        else:
+            best_val_loss = float("inf")
     t0 = time.time()
-    print(f"\nTraining up to {MAX_EPOCHS} epochs (patience={PATIENCE})...", flush=True)
+    print(f"\nTraining from epoch {start_epoch} to {MAX_EPOCHS - 1} (patience={PATIENCE})...", flush=True)
 
     train_masks = {}
     for task in ["formation_energy", "energy_above_hull", "band_gap"]:
         train_masks[task] = torch.from_numpy(task_masks[task][split["train"]]).to(device)
     train_idx = np.array(split["train"])
 
-    for epoch in range(MAX_EPOCHS):
+    for epoch in range(start_epoch, MAX_EPOCHS):
         tracker.start_epoch()
         epoch_t0 = time.perf_counter()
         model.train()
@@ -242,9 +328,9 @@ def main():
                     if task == "energy_above_hull":
                         with torch.amp.autocast("cuda", enabled=False):
                             eah_out = {
-                                "eah_pred": preds["energy_above_hull"],
-                                "p_unstable": preds["p_unstable"],
-                                "eah_magnitude": preds["eah_magnitude"],
+                                "eah_pred": preds["energy_above_hull"].float(),
+                                "p_unstable": preds["p_unstable"].float(),
+                                "eah_magnitude": preds["eah_magnitude"].float(),
                             }
                             ts_loss = eah_two_stage_loss(eah_out, v)
                         task_losses[task] = ts_loss["total"]
@@ -256,9 +342,17 @@ def main():
                     if task in per_task_losses_sum:
                         per_task_losses_sum[task] += task_losses[task]
 
-                total_loss = grad_norm.compute_total(task_losses) / GRAD_ACCUM
-
-            grad_norm.update_weights(task_losses, model.global_combiner, lr=0.025)
+                if USE_GRADNORM:
+                    total_loss = grad_norm.compute_total(task_losses) / GRAD_ACCUM
+                    if n_batches % 50 == 0 and n_batches > 0:
+                        backbone_params = [
+                            p for n, p in model.named_parameters()
+                            if not n.startswith("task_heads") and not n.startswith("uncertainty_heads")
+                        ]
+                        grad_norm.update_weights(task_losses, backbone_params, lr=0.025)
+                else:
+                    batch_total = sum(task_losses.values())
+                    total_loss = batch_total / GRAD_ACCUM
 
             if use_amp:
                 scaler.scale(total_loss).backward()
@@ -313,9 +407,9 @@ def main():
                     if task == "energy_above_hull":
                         with torch.amp.autocast("cuda", enabled=False):
                             eah_out = {
-                                "eah_pred": preds["energy_above_hull"],
-                                "p_unstable": preds["p_unstable"],
-                                "eah_magnitude": preds["eah_magnitude"],
+                                "eah_pred": preds["energy_above_hull"].float(),
+                                "p_unstable": preds["p_unstable"].float(),
+                                "eah_magnitude": preds["eah_magnitude"].float(),
                             }
                             val_total_loss += eah_two_stage_loss(eah_out, v)["total"]
                     else:
@@ -387,10 +481,20 @@ def main():
         )
 
         # ── Save checkpoint ──
+        import random as _random
+        ckpt_rng = {
+            "torch_cpu": torch.get_rng_state().tolist(),
+            "torch_cuda": torch.cuda.get_rng_state().tolist() if torch.cuda.is_available() else [],
+            "numpy": np.random.get_state(),
+            "random": _random.getstate(),
+        }
         checkpoint_extra = {
             "config": mc,
             "gradnorm_weights": w,
             "optimizer": "AdamW",
+            "scaler_state": scaler.state_dict() if scaler else None,
+            "rng_states": ckpt_rng,
+            "best_val_loss": best_val_loss,
             "train_samples": len(split["train"]),
             "val_samples": len(split["val"]),
             "test_samples": len(split["test"]),
@@ -421,6 +525,10 @@ def main():
                 f"({time.time() - t0:.0f}s)",
                 flush=True,
             )
+
+        # ── LR scheduler step ──
+        if scheduler is not None:
+            scheduler.step()
 
     print(f"\nTraining complete in {time.time() - t0:.0f}s", flush=True)
 
