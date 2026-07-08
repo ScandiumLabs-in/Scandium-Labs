@@ -1,14 +1,19 @@
-# Scandium Labs: Physics-Informed Graph Neural Networks for Solid-State Electrolyte Discovery
+# Scandium Labs: Physics-Informed Graph Neural Networks for Materials Screening
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![PyTorch 2.0+](https://img.shields.io/badge/pytorch-2.0%2B-orange)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![CI](https://github.com/ScandiumLabs-in/Scandium-Labs/actions/workflows/ci.yml/badge.svg)](https://github.com/ScandiumLabs-in/Scandium-Labs/actions/workflows/ci.yml)
 
 ---
 
 ## Overview
 
-Scandium Labs is a deep learning framework for high-throughput screening of solid-state electrolytes (SSEs) using physics-informed graph neural networks (PINNs). The model jointly predicts thermodynamic stability, band gap, and related properties of Li-containing crystalline materials, targeting next-generation all-solid-state batteries.
+Scandium Labs is a deep learning framework for high-throughput screening of Li-containing crystalline materials using physics-informed graph neural networks (PINNs). The model jointly predicts **formation energy**, **energy above hull** (stability), and **band gap** for candidate solid-state electrolyte materials.
+
+**What's trained today:** The model is a surrogate for DFT-relaxed properties — formation energy, hull distance, and band gap — all directly queryable from Materials Project for known structures. The value-add is fast prediction for *new/hypothetical* structures that haven't been DFT-relaxed yet.
+
+**What's architecturally present but not yet data-supported:** Ionic conductivity (`log_ionic_conductivity`) and activation energy heads exist in the model with MC Dropout uncertainty, but there are zero training labels for either property in the current dataset. Predictions for these targets are gated (`None` returned) via `src/training/data_audit.py:gate_predictions()` rather than returning untrained values.
 
 The system is trained on ~10k Li-containing materials (Li ≥ 5 at.%) curated from the Materials Project, with family-balanced splits across halides, oxides, sulfides, and phosphates. The architecture combines an **ALIGNN** (Atomistic Line Graph Graph Neural Network) backbone with graph transformers, physics-informed constraints, multi-task regression heads, and automatic loss balancing via **GradNorm**.
 
@@ -21,6 +26,7 @@ The system is trained on ~10k Li-containing materials (Li ≥ 5 at.%) curated fr
 - **Two-Stage EaH Head** — Stability classifier + magnitude regressor prevents energy-above-hull collapse to zero
 - **GradNorm Loss Balancing** — Automatic per-task weight adaptation during training via gradient normalization
 - **Uncertainty Quantification** — Monte Carlo Dropout with configurable samples yields prediction intervals
+- **Data Leakage Prevention** — `GroupShuffleSplit` by chemical family prevents composition leakage across splits
 - **LazyGraphDataset** — On-disk pre-cached graph loading eliminates on-the-fly graph building overhead
 - **Performance Optimized** — Gradient checkpointing saves 2.4× VRAM at 33% speed cost; DataLoader with 4 workers achieves 12.8 graphs/s on a 4 GB GPU
 - **Memory-Efficient** — Runs on GTX 1650 (4 GB VRAM); model uses 470 MB VRAM with 1.28M parameters
@@ -101,13 +107,15 @@ pip install -e ".[dev]"
 
 ## Dataset
 
-The primary dataset (`v3_li_10000`) contains **10,000 Li-containing crystalline structures** from the Materials Project, filtered at **Li ≥ 5 at.%**. Chemical family stratification ensures balanced representation.
+The primary dataset (`v3_li_10000`) contains **10,000 Li-containing crystalline structures** from the Materials Project, filtered at **Li ≥ 5 at.%**. Chemical family stratification ensures composition-based splitting prevents leakage.
 
-| Property | Key | Unit | Coverage |
-|----------|-----|------|----------|
-| Formation Energy | `formation_energy` | eV/atom | ~100% |
-| Energy Above Hull | `energy_above_hull` | eV/atom | ~100% |
-| Band Gap | `band_gap` | eV | ~100% |
+| Target | Unit | Labeled | Status |
+|--------|------|---------|--------|
+| Formation Energy | eV/atom | 10,000 | **Trained** |
+| Energy Above Hull | eV/atom | 10,000 | **Trained** (two-stage) |
+| Band Gap | eV | 10,000 | **Trained** |
+| Log Ionic Conductivity | log₁₀(S/cm) | 0 | Gated — no training labels |
+| Activation Energy | eV | 0 | Gated — no training labels |
 
 Split: **8,310 train / 586 val / 1,104 test** (83/6/11%). See `docs/DATASETS.md` for full details.
 
@@ -163,7 +171,21 @@ trainer.train()
 | `mixed_precision` | True | AMP fp16 training |
 | `normalize_targets` | True | Z-score normalization |
 
-### Performance (GTX 1650, 4 GB)
+### Test Set Performance
+
+Results from the best tracked run (`SL-20260701-007`, GradNorm ON, no scheduler, 150 epochs) on the held-out test set (1,104 samples):
+
+| Task | MAE | R² | Notes |
+|------|-----|----|-------|
+| Formation Energy | 0.327 eV/atom | 0.553 | ~5-10× above SOTA GNN baselines (0.02-0.05 eV/atom) |
+| Energy Above Hull | 0.103 eV/atom | 0.184 | Two-stage stability F1: 0.954 |
+| Band Gap | 1.249 eV | 0.037 | Regression weak; magnitude direction correct |
+
+Training instability: Across 8 tracked runs with identical configs, formation energy R² ranges from **0.30 to 0.68** and band gap R² from **0.10 to 0.34**, indicating sensitivity to initialization and data ordering.
+
+**Limitations:** The 10k training set is small relative to published benchmarks (50-130k). Performance gaps vs SOTA are expected and documented. Conductivity/activation energy predictions are gated (untrained). See `docs/RESULTS.md` for full analysis.
+
+### Runtime Performance (GTX 1650, 4 GB)
 
 | Metric | Value |
 |--------|-------|
@@ -175,7 +197,7 @@ trainer.train()
 | Throughput (GC off) | 17.0 graphs/s |
 | Peak VRAM (GC on) | 470 MB (11.5%) |
 | Peak VRAM (GC off) | 1,127 MB (27.5%) |
-| Epoch time (8,310 samples) | ~353 s |
+| Epoch time (8,310 samples) | ~200-353 s |
 
 ## Evaluation
 

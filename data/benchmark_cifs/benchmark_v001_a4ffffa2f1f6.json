@@ -1,0 +1,986 @@
+{
+  "benchmark_version": "v001",
+  "benchmark_hash": "a4ffffa2f1f6",
+  "timestamp": "2026-06-30T02:26:39",
+  "checkpoint": "checkpoints/best_model.pt",
+  "git_commit": "9be788d",
+  "n_materials": 54,
+  "materials": {
+    "LiF_rocksalt": {
+      "formula": "LiF",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.0248,
+          "uncertainty": 0.222439
+        },
+        "energy_above_hull": {
+          "value": 0.2604,
+          "uncertainty": 0.125294
+        },
+        "band_gap": {
+          "value": 3.0796,
+          "uncertainty": 0.153859
+        }
+      }
+    },
+    "LiCl_rocksalt": {
+      "formula": "LiCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.3954,
+          "uncertainty": 0.194152
+        },
+        "energy_above_hull": {
+          "value": 0.6152,
+          "uncertainty": 0.48693
+        },
+        "band_gap": {
+          "value": 3.194,
+          "uncertainty": 0.160513
+        }
+      }
+    },
+    "LiBr_rocksalt": {
+      "formula": "LiBr",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.557,
+          "uncertainty": 0.238983
+        },
+        "energy_above_hull": {
+          "value": 0.2683,
+          "uncertainty": 0.575864
+        },
+        "band_gap": {
+          "value": 3.9092,
+          "uncertainty": 0.290966
+        }
+      }
+    },
+    "LiI_rocksalt": {
+      "formula": "LiI",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.4212,
+          "uncertainty": 0.268856
+        },
+        "energy_above_hull": {
+          "value": 0.3591,
+          "uncertainty": 0.501162
+        },
+        "band_gap": {
+          "value": 2.5269,
+          "uncertainty": 0.309789
+        }
+      }
+    },
+    "NaF_rocksalt": {
+      "formula": "NaF",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.427,
+          "uncertainty": 0.217193
+        },
+        "energy_above_hull": {
+          "value": 0.2416,
+          "uncertainty": 0.151264
+        },
+        "band_gap": {
+          "value": 3.6327,
+          "uncertainty": 0.178891
+        }
+      }
+    },
+    "NaCl_rocksalt": {
+      "formula": "NaCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.8929,
+          "uncertainty": 0.281324
+        },
+        "energy_above_hull": {
+          "value": 0.7967,
+          "uncertainty": 0.597607
+        },
+        "band_gap": {
+          "value": 3.0462,
+          "uncertainty": 0.220508
+        }
+      }
+    },
+    "NaBr_rocksalt": {
+      "formula": "NaBr",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.2765,
+          "uncertainty": 0.20935
+        },
+        "energy_above_hull": {
+          "value": 0.6144,
+          "uncertainty": 0.673198
+        },
+        "band_gap": {
+          "value": 3.3919,
+          "uncertainty": 0.2978
+        }
+      }
+    },
+    "NaI_rocksalt": {
+      "formula": "NaI",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.234,
+          "uncertainty": 0.139479
+        },
+        "energy_above_hull": {
+          "value": 0.129,
+          "uncertainty": 0.06157
+        },
+        "band_gap": {
+          "value": 5.4083,
+          "uncertainty": 0.248315
+        }
+      }
+    },
+    "KF_rocksalt": {
+      "formula": "KF",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.8837,
+          "uncertainty": 0.179832
+        },
+        "energy_above_hull": {
+          "value": 0.4991,
+          "uncertainty": 0.450199
+        },
+        "band_gap": {
+          "value": 3.1728,
+          "uncertainty": 0.117614
+        }
+      }
+    },
+    "KCl_rocksalt": {
+      "formula": "KCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.8675,
+          "uncertainty": 0.170989
+        },
+        "energy_above_hull": {
+          "value": 0.812,
+          "uncertainty": 0.573164
+        },
+        "band_gap": {
+          "value": 2.6832,
+          "uncertainty": 0.143445
+        }
+      }
+    },
+    "KBr_rocksalt": {
+      "formula": "KBr",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.7323,
+          "uncertainty": 0.18632
+        },
+        "energy_above_hull": {
+          "value": 0.2621,
+          "uncertainty": 0.192504
+        },
+        "band_gap": {
+          "value": 4.3837,
+          "uncertainty": 0.172009
+        }
+      }
+    },
+    "KI_rocksalt": {
+      "formula": "KI",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.4069,
+          "uncertainty": 0.270185
+        },
+        "energy_above_hull": {
+          "value": 0.6314,
+          "uncertainty": 0.699784
+        },
+        "band_gap": {
+          "value": 2.9315,
+          "uncertainty": 0.306076
+        }
+      }
+    },
+    "RbF_rocksalt": {
+      "formula": "RbF",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.9039,
+          "uncertainty": 0.272604
+        },
+        "energy_above_hull": {
+          "value": 1.0106,
+          "uncertainty": 0.626064
+        },
+        "band_gap": {
+          "value": 2.6864,
+          "uncertainty": 0.236682
+        }
+      }
+    },
+    "RbCl_rocksalt": {
+      "formula": "RbCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.7919,
+          "uncertainty": 0.11005
+        },
+        "energy_above_hull": {
+          "value": 0.2544,
+          "uncertainty": 0.132376
+        },
+        "band_gap": {
+          "value": 4.4743,
+          "uncertainty": 0.145733
+        }
+      }
+    },
+    "RbBr_rocksalt": {
+      "formula": "RbBr",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.2962,
+          "uncertainty": 0.183836
+        },
+        "energy_above_hull": {
+          "value": 0.5511,
+          "uncertainty": 0.486788
+        },
+        "band_gap": {
+          "value": 3.4714,
+          "uncertainty": 0.190233
+        }
+      }
+    },
+    "RbI_rocksalt": {
+      "formula": "RbI",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.9264,
+          "uncertainty": 0.216397
+        },
+        "energy_above_hull": {
+          "value": 0.4017,
+          "uncertainty": 0.611789
+        },
+        "band_gap": {
+          "value": 3.3708,
+          "uncertainty": 0.200113
+        }
+      }
+    },
+    "MgO_rocksalt": {
+      "formula": "MgO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.439,
+          "uncertainty": 0.171413
+        },
+        "energy_above_hull": {
+          "value": 0.2481,
+          "uncertainty": 0.232595
+        },
+        "band_gap": {
+          "value": 4.5386,
+          "uncertainty": 0.18885
+        }
+      }
+    },
+    "CaO_rocksalt": {
+      "formula": "CaO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.6572,
+          "uncertainty": 0.245131
+        },
+        "energy_above_hull": {
+          "value": 0.7179,
+          "uncertainty": 0.534796
+        },
+        "band_gap": {
+          "value": 4.8548,
+          "uncertainty": 0.340721
+        }
+      }
+    },
+    "SrO_rocksalt": {
+      "formula": "SrO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.0467,
+          "uncertainty": 0.186035
+        },
+        "energy_above_hull": {
+          "value": 0.4967,
+          "uncertainty": 0.562728
+        },
+        "band_gap": {
+          "value": 3.4779,
+          "uncertainty": 0.250429
+        }
+      }
+    },
+    "BaO_rocksalt": {
+      "formula": "BaO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.2155,
+          "uncertainty": 0.125721
+        },
+        "energy_above_hull": {
+          "value": 0.2975,
+          "uncertainty": 0.402087
+        },
+        "band_gap": {
+          "value": 3.0428,
+          "uncertainty": 0.260547
+        }
+      }
+    },
+    "MnO_rocksalt": {
+      "formula": "MnO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.3201,
+          "uncertainty": 0.178852
+        },
+        "energy_above_hull": {
+          "value": 0.2099,
+          "uncertainty": 0.112335
+        },
+        "band_gap": {
+          "value": 3.8459,
+          "uncertainty": 0.119454
+        }
+      }
+    },
+    "FeO_rocksalt": {
+      "formula": "FeO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8314,
+          "uncertainty": 0.084672
+        },
+        "energy_above_hull": {
+          "value": 0.1116,
+          "uncertainty": 0.122431
+        },
+        "band_gap": {
+          "value": 4.8112,
+          "uncertainty": 0.23429
+        }
+      }
+    },
+    "CoO_rocksalt": {
+      "formula": "CoO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8862,
+          "uncertainty": 0.113544
+        },
+        "energy_above_hull": {
+          "value": 0.097,
+          "uncertainty": 0.135729
+        },
+        "band_gap": {
+          "value": 5.1195,
+          "uncertainty": 0.205443
+        }
+      }
+    },
+    "NiO_rocksalt": {
+      "formula": "NiO",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8214,
+          "uncertainty": 0.098114
+        },
+        "energy_above_hull": {
+          "value": 0.1108,
+          "uncertainty": 0.036072
+        },
+        "band_gap": {
+          "value": 6.1047,
+          "uncertainty": 0.177544
+        }
+      }
+    },
+    "CsCl_cscl": {
+      "formula": "CsCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.7155,
+          "uncertainty": 0.102083
+        },
+        "energy_above_hull": {
+          "value": 0.1286,
+          "uncertainty": 0.089162
+        },
+        "band_gap": {
+          "value": 5.4118,
+          "uncertainty": 0.120091
+        }
+      }
+    },
+    "CsBr_cscl": {
+      "formula": "CsBr",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8981,
+          "uncertainty": 0.069467
+        },
+        "energy_above_hull": {
+          "value": -0.0055,
+          "uncertainty": 0.110937
+        },
+        "band_gap": {
+          "value": 4.9504,
+          "uncertainty": 0.187161
+        }
+      }
+    },
+    "CsI_cscl": {
+      "formula": "CsI",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8588,
+          "uncertainty": 0.096442
+        },
+        "energy_above_hull": {
+          "value": -0.0173,
+          "uncertainty": 0.172439
+        },
+        "band_gap": {
+          "value": 4.7001,
+          "uncertainty": 0.252357
+        }
+      }
+    },
+    "TlCl_cscl": {
+      "formula": "TlCl",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.7798,
+          "uncertainty": 0.203833
+        },
+        "energy_above_hull": {
+          "value": 0.3125,
+          "uncertainty": 0.372341
+        },
+        "band_gap": {
+          "value": 0.7067,
+          "uncertainty": 0.096524
+        }
+      }
+    },
+    "Si_zincblende": {
+      "formula": "Si",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.9431,
+          "uncertainty": 0.307568
+        },
+        "energy_above_hull": {
+          "value": 0.569,
+          "uncertainty": 0.582164
+        },
+        "band_gap": {
+          "value": 3.9223,
+          "uncertainty": 0.337375
+        }
+      }
+    },
+    "GaAs_zincblende": {
+      "formula": "GaAs",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.0428,
+          "uncertainty": 0.187131
+        },
+        "energy_above_hull": {
+          "value": 0.075,
+          "uncertainty": 0.271924
+        },
+        "band_gap": {
+          "value": 1.7409,
+          "uncertainty": 0.325514
+        }
+      }
+    },
+    "ZnS_zincblende": {
+      "formula": "ZnS",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.1995,
+          "uncertainty": 0.16955
+        },
+        "energy_above_hull": {
+          "value": 0.0784,
+          "uncertainty": 0.178764
+        },
+        "band_gap": {
+          "value": 4.0268,
+          "uncertainty": 0.226301
+        }
+      }
+    },
+    "CdTe_zincblende": {
+      "formula": "CdTe",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.2228,
+          "uncertainty": 0.11898
+        },
+        "energy_above_hull": {
+          "value": 0.1158,
+          "uncertainty": 0.382881
+        },
+        "band_gap": {
+          "value": 1.5763,
+          "uncertainty": 0.314419
+        }
+      }
+    },
+    "InP_zincblende": {
+      "formula": "InP",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.9891,
+          "uncertainty": 0.196115
+        },
+        "energy_above_hull": {
+          "value": 0.1507,
+          "uncertainty": 0.406271
+        },
+        "band_gap": {
+          "value": 2.6305,
+          "uncertainty": 0.282485
+        }
+      }
+    },
+    "GaSb_zincblende": {
+      "formula": "GaSb",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.1018,
+          "uncertainty": 0.208742
+        },
+        "energy_above_hull": {
+          "value": 0.0992,
+          "uncertainty": 0.23059
+        },
+        "band_gap": {
+          "value": 1.5699,
+          "uncertainty": 0.329585
+        }
+      }
+    },
+    "AlAs_zincblende": {
+      "formula": "AlAs",
+      "n_atoms": 2,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.6332,
+          "uncertainty": 0.257811
+        },
+        "energy_above_hull": {
+          "value": 0.2338,
+          "uncertainty": 0.520947
+        },
+        "band_gap": {
+          "value": 3.3819,
+          "uncertainty": 0.245608
+        }
+      }
+    },
+    "CaF2_fluorite": {
+      "formula": "CaF2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.8747,
+          "uncertainty": 0.14332
+        },
+        "energy_above_hull": {
+          "value": 0.2035,
+          "uncertainty": 0.136247
+        },
+        "band_gap": {
+          "value": 4.6651,
+          "uncertainty": 0.147724
+        }
+      }
+    },
+    "SrF2_fluorite": {
+      "formula": "SrF2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.197,
+          "uncertainty": 0.251848
+        },
+        "energy_above_hull": {
+          "value": 1.4977,
+          "uncertainty": 0.65183
+        },
+        "band_gap": {
+          "value": 2.0802,
+          "uncertainty": 0.310941
+        }
+      }
+    },
+    "BaF2_fluorite": {
+      "formula": "BaF2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.7265,
+          "uncertainty": 0.311443
+        },
+        "energy_above_hull": {
+          "value": 0.8322,
+          "uncertainty": 0.408146
+        },
+        "band_gap": {
+          "value": 3.2058,
+          "uncertainty": 0.172426
+        }
+      }
+    },
+    "CeO2_fluorite": {
+      "formula": "CeO2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.3696,
+          "uncertainty": 0.308594
+        },
+        "energy_above_hull": {
+          "value": 1.3767,
+          "uncertainty": 0.423026
+        },
+        "band_gap": {
+          "value": 0.6789,
+          "uncertainty": 0.250831
+        }
+      }
+    },
+    "ZrO2_fluorite": {
+      "formula": "ZrO2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.2682,
+          "uncertainty": 0.199054
+        },
+        "energy_above_hull": {
+          "value": 1.0194,
+          "uncertainty": 0.463593
+        },
+        "band_gap": {
+          "value": 2.1403,
+          "uncertainty": 0.16084
+        }
+      }
+    },
+    "UO2_fluorite": {
+      "formula": "UO2",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.782,
+          "uncertainty": 0.095236
+        },
+        "energy_above_hull": {
+          "value": 0.0872,
+          "uncertainty": 0.087137
+        },
+        "band_gap": {
+          "value": 5.1613,
+          "uncertainty": 0.27785
+        }
+      }
+    },
+    "Li2O_antifluorite": {
+      "formula": "Li2O",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -1.5482,
+          "uncertainty": 0.181103
+        },
+        "energy_above_hull": {
+          "value": 0.4266,
+          "uncertainty": 0.389037
+        },
+        "band_gap": {
+          "value": 3.5529,
+          "uncertainty": 0.212528
+        }
+      }
+    },
+    "Na2O_antifluorite": {
+      "formula": "Na2O",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.4664,
+          "uncertainty": 0.318158
+        },
+        "energy_above_hull": {
+          "value": 1.0839,
+          "uncertainty": 0.608051
+        },
+        "band_gap": {
+          "value": 2.8518,
+          "uncertainty": 0.215886
+        }
+      }
+    },
+    "K2O_antifluorite": {
+      "formula": "K2O",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.3039,
+          "uncertainty": 0.249343
+        },
+        "energy_above_hull": {
+          "value": 1.2743,
+          "uncertainty": 0.481197
+        },
+        "band_gap": {
+          "value": 2.1693,
+          "uncertainty": 0.118966
+        }
+      }
+    },
+    "Li2S_antifluorite": {
+      "formula": "Li2S",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.4406,
+          "uncertainty": 0.287794
+        },
+        "energy_above_hull": {
+          "value": 1.0858,
+          "uncertainty": 0.494394
+        },
+        "band_gap": {
+          "value": 2.1894,
+          "uncertainty": 0.149014
+        }
+      }
+    },
+    "Na2S_antifluorite": {
+      "formula": "Na2S",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.0905,
+          "uncertainty": 0.25463
+        },
+        "energy_above_hull": {
+          "value": 3.4014,
+          "uncertainty": 0.472986
+        },
+        "band_gap": {
+          "value": 1.679,
+          "uncertainty": 0.16226
+        }
+      }
+    },
+    "SrTiO3_perovskite": {
+      "formula": "SrTiO3",
+      "n_atoms": 5,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.6456,
+          "uncertainty": 0.110677
+        },
+        "energy_above_hull": {
+          "value": 0.1613,
+          "uncertainty": 0.096431
+        },
+        "band_gap": {
+          "value": 1.8724,
+          "uncertainty": 0.103156
+        }
+      }
+    },
+    "BaTiO3_perovskite": {
+      "formula": "BaTiO3",
+      "n_atoms": 5,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.9629,
+          "uncertainty": 0.150468
+        },
+        "energy_above_hull": {
+          "value": 0.1047,
+          "uncertainty": 0.068396
+        },
+        "band_gap": {
+          "value": 2.7353,
+          "uncertainty": 0.124865
+        }
+      }
+    },
+    "LaMnO3_perovskite": {
+      "formula": "LaMnO3",
+      "n_atoms": 5,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.8594,
+          "uncertainty": 0.149195
+        },
+        "energy_above_hull": {
+          "value": 0.1591,
+          "uncertainty": 0.09017
+        },
+        "band_gap": {
+          "value": 1.0174,
+          "uncertainty": 0.115297
+        }
+      }
+    },
+    "CaTiO3_perovskite": {
+      "formula": "CaTiO3",
+      "n_atoms": 5,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.5898,
+          "uncertainty": 0.147826
+        },
+        "energy_above_hull": {
+          "value": 0.2047,
+          "uncertainty": 0.087983
+        },
+        "band_gap": {
+          "value": 1.8608,
+          "uncertainty": 0.127349
+        }
+      }
+    },
+    "PbTiO3_perovskite": {
+      "formula": "TiPbO3",
+      "n_atoms": 5,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.2243,
+          "uncertainty": 0.166561
+        },
+        "energy_above_hull": {
+          "value": 0.245,
+          "uncertainty": 0.148273
+        },
+        "band_gap": {
+          "value": 1.2891,
+          "uncertainty": 0.111572
+        }
+      }
+    },
+    "LiCoO2_layered": {
+      "formula": "LiCoO2",
+      "n_atoms": 4,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.1046,
+          "uncertainty": 0.148683
+        },
+        "energy_above_hull": {
+          "value": 0.5536,
+          "uncertainty": 0.248195
+        },
+        "band_gap": {
+          "value": 0.4554,
+          "uncertainty": 0.07058
+        }
+      }
+    },
+    "LiNiO2_layered": {
+      "formula": "LiCoO2",
+      "n_atoms": 4,
+      "predictions": {
+        "formation_energy": {
+          "value": -2.201,
+          "uncertainty": 0.298242
+        },
+        "energy_above_hull": {
+          "value": 0.5138,
+          "uncertainty": 0.29584
+        },
+        "band_gap": {
+          "value": 0.6453,
+          "uncertainty": 0.082793
+        }
+      }
+    },
+    "Li2S_li_superionic": {
+      "formula": "Li2S",
+      "n_atoms": 3,
+      "predictions": {
+        "formation_energy": {
+          "value": -0.461,
+          "uncertainty": 0.283508
+        },
+        "energy_above_hull": {
+          "value": 1.0749,
+          "uncertainty": 0.320796
+        },
+        "band_gap": {
+          "value": 2.0918,
+          "uncertainty": 0.235278
+        }
+      }
+    }
+  },
+  "summary": {
+    "n_success": 54,
+    "n_fail": 0
+  }
+}

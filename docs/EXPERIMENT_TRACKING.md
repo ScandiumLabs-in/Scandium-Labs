@@ -776,9 +776,9 @@ print(df.groupby("architecture")["best_r2_ef"].max())
 The `scripts/analyze/analyze_training.py` script provides head-to-head comparison with baselines:
 
 ```bash
-./venv/bin/python scripts/analyze/analyze_training.py \
+python scripts/analyze/analyze_training.py \
     --run runs/SL-20260708-001 \
-    --baseline checkpoints/phase5_final/test_results.json
+    --baseline runs/SL-20260701-007/test_results.json
 ```
 
 This generates a `FINAL_REPORT.md` with a "Improvement vs Baseline" section showing deltas and percentage changes.
@@ -908,7 +908,7 @@ python scripts/analyze/analyze_training.py \
 # With baseline comparison
 python scripts/analyze/analyze_training.py \
     --run runs/SL-20260708-001 \
-    --baseline checkpoints/phase5_final/test_results.json \
+    --baseline runs/SL-20260701-007/test_results.json \
     --output reports/final_analysis
 
 # With prediction diagnostics (requires checkpoint + dataset)

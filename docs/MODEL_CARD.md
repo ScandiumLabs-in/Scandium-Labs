@@ -182,24 +182,23 @@ The following results are from the most recent full training run using `configs/
 | SL-20260701-007 | 0.5181 | 0.5897 | 0.1252 | 0.4227 | 1.0453 | 0.3060 | 2026-07-01 |
 | SL-20260707-001 | 0.7403 | 0.3457 | 0.1496 | 0.2016 | 1.1691 | 0.0967 | 2026-07-07 |
 | **SL-20260708-001** | **0.5222** | **0.5871** | **0.1280** | **0.3854** | **1.0252** | **0.3385** | **2026-07-08** |
-| v3_li_10k_fresh | 0.3267 | 0.5528 | 0.1029 | 0.1844 | 1.2493 | 0.0373 | — |
-| phase5_final | 0.2471 | 0.7056 | 0.1181 | 0.4092 | 0.7614 | 0.3646 | — |
 
-### Test Set Results (External Benchmarks)
+### Test Set Results (Tracked Runs)
 
-| Benchmark | Ef MAE | Ef R² | EaH MAE | BG MAE | BG R² | EaH F1 |
-|---|---|---|---|---|---|---|
-| final_eval | 0.2485 | 0.6825 | 0.1154 | 0.7833 | 0.3501 | — |
-| phase4_final | 0.2678 | 0.6535 | 0.1201 | 0.8041 | 0.2805 | — |
-| phase5_final | 0.2471 | 0.7056 | 0.1181 | 0.7614 | 0.3646 | — |
+| Run | Ef MAE | Ef R² | EaH MAE | EaH R² | BG MAE | BG R² | EaH F1 |
+|---|---|---|---|---|---|---|---|
+| **SL-20260701-007** | **0.3267** | **0.5528** | **0.1029** | **0.1844** | **1.2493** | **0.0373** | **0.954** |
+| SL-20260708-001 | 0.3154 | 0.5121 | 0.0973 | 0.1771 | 1.2339 | 0.0692 | 0.954 |
+
+All results traceable to `runs/<run_id>/test_results.json`. Runs without persisted test results are omitted.
 
 ### Performance Summary
 
-| Task | Training (best val) | Typical Range | Notes |
+| Task | Best Val R² | Best Test R² | Notes |
 |---|---|---|---|
-| **Formation energy** | R² = 0.5871 | 0.35-0.71 | Best-predicted property |
-| **Energy above hull** | MAE = 0.128 eV/atom | 0.10-0.19 | Two-stage head improved stability F1 |
-| **Band gap** | MAE = 1.025 eV | 0.76-1.80 | Challenging — DFT gap problem |
+| **Formation energy** | 0.5897 (SL-20260701-007) | 0.5528 | Below SOTA GNNs (0.02-0.05 eV/atom MAE) |
+| **Energy above hull** | F1 0.954 | F1 0.954 | Two-stage head handles zero-inflated target |
+| **Band gap** | R² 0.3385 (SL-20260708-001) | 0.069 | Challenging — DFT gap problem |
 
 ---
 

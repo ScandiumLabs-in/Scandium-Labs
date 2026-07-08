@@ -32,7 +32,6 @@ datasets/**/*.pt
 datasets/**/*.db
 datasets/**/prebuilt_graphs.pt
 datasets/**/raw/
-data/benchmark_cifs/
 data/processed/
 
 # Run artifacts (plots, binary checkpoints inside runs)

@@ -20,10 +20,12 @@ def _pad_atom_features(x, target_dim=92):
     return np.pad(x, (0, target_dim - len(x)), mode='constant')
 
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
 REFERENCE_MATERIALS = [
     {
         "name": "Li6PS5Cl",
-        "cif": "/home/shamique/Scandium Labs SSB/test cif/Li6PS5Cl_mp-985592_primitive.cif",
+        "cif": str(REPO_ROOT / "data" / "benchmark_cifs" / "Li6PS5Cl_mp-985592_primitive.cif"),
         "expected_log10_sigma": -2.844,
         "expected_eah": 0.003,
         "stable": True,
@@ -43,11 +45,11 @@ class TestNormalizerRoundtrip:
         assert abs(denormalized - test_value) < 1e-4
 
     def test_normalizer_file_exists(self):
-        assert Path("data/normalizer.json").exists()
+        assert (REPO_ROOT / "data" / "normalizer.json").exists()
 
     def test_normalizer_file_has_keys(self):
         import json
-        with open("data/normalizer.json") as f:
+        with open(str(REPO_ROOT / "data" / "normalizer.json")) as f:
             stats = json.load(f)
         for key in ["formation_energy", "energy_above_hull", "band_gap"]:
             assert key in stats, f"Missing key: {key}"
@@ -101,6 +103,20 @@ class TestComputeHullEnergy:
         assert result["source"] in ("no_api_key",)
 
 
+def _find_checkpoint() -> str | None:
+    candidates = [
+        REPO_ROOT / "checkpoints" / "best_model.pt",
+        REPO_ROOT / "checkpoints" / "norm_best_model.pt",
+    ]
+    for ckpt_dir in sorted((REPO_ROOT / "runs").glob("SL-*")):
+        candidates.append(ckpt_dir / "checkpoints" / "best_val_loss.pt")
+        candidates.append(ckpt_dir / "checkpoints" / "last.pt")
+    for p in candidates:
+        if p.exists():
+            return str(p)
+    return None
+
+
 class TestReferenceMaterials:
     @pytest.mark.parametrize("material", REFERENCE_MATERIALS, ids=[m["name"] for m in REFERENCE_MATERIALS])
     def test_pipeline_runs(self, material):
@@ -108,10 +124,11 @@ class TestReferenceMaterials:
 
         from src.models.scandium_model import ScandiumPINNGNN
 
+        ckpt_path = _find_checkpoint()
+        if ckpt_path is None:
+            pytest.skip("No model checkpoint found. Run training first or download a checkpoint.")
         structure = Structure.from_file(material["cif"])
 
-        ckpt_path = "checkpoints/best_model.pt"
-        assert os.path.exists(ckpt_path), f"Checkpoint not found: {ckpt_path}"
         ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
         hidden_dim = ckpt["config"]["model"]["hidden_dim"]
         num_sbf = (hidden_dim // 2) // 2
@@ -136,7 +153,7 @@ class TestReferenceMaterials:
         for task in ["log_ionic_conductivity", "formation_energy", "energy_above_hull"]:
             assert task in preds, f"Missing prediction: {task}"
 
-        normalizer = PropertyNormalizer.load("data/normalizer.json")
+        normalizer = PropertyNormalizer.load(str(REPO_ROOT / "data" / "normalizer.json"))
         for task, val in preds.items():
             v = val.item()
             stat = normalizer.stats.get(task)

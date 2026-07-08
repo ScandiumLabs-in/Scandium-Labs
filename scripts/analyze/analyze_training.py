@@ -5,7 +5,7 @@ Usage:
     python scripts/analyze/analyze_training.py \
         --run runs/SL-20260701-007 \
         --output reports/final_analysis \
-        --baseline checkpoints/phase5_final/test_results.json
+        --baseline runs/SL-20260701-007/test_results.json
 
     # With prediction diagnostics (requires checkpoint + dataset)
     python scripts/analyze/analyze_training.py \
