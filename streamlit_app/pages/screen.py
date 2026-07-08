@@ -310,7 +310,7 @@ def show_literature_comparison(known, result):
     <tr>
         <td style="padding:0.5rem 0.75rem; border-bottom:1px solid #eee; font-size:0.8rem; font-weight:600;">Stability</td>
         <td style="padding:0.5rem 0.75rem; border-bottom:1px solid #eee; font-size:0.8rem;">Stable (disordered)</td>
-        <td style="padding:0.5rem 0.75rem; border-bottom:1px solid #eee; font-size:0.8rem;">{eah_pred:.3f} ± {eah_unc:.3f} eV/atom" if eah_pred is not None and eah_unc is not None else "N/A"}</td>
+        <td style="padding:0.5rem 0.75rem; border-bottom:1px solid #eee; font-size:0.8rem;">{f'{eah_pred:.3f} ± {eah_unc:.3f} eV/atom' if (eah_pred is not None and eah_unc is not None) else 'N/A'}</td>
         <td style="padding:0.5rem 0.75rem; border-bottom:1px solid #eee; font-size:0.8rem;">{'⚠' if eah_pred is not None and eah_pred > 0.05 else '✅'}</td>
     </tr>
     """)
