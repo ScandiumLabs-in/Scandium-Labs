@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+      - name: Run ruff lint
+        run: ruff check --output-format=github .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libopenblas-dev
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-2.6.0+cpu.html
+          pip install torch-geometric
+          pip install -e ".[dev]"
+      - name: Run tests
+        run: python -m pytest tests/ -v --tb=short -W ignore
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check docs directory
+        run: |
+          echo "Documentation files: $(ls docs/*.md 2>/dev/null | wc -l)"
+          echo "README exists: $([ -f README.md ] && echo 'yes' || echo 'no')"

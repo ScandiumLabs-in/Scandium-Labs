@@ -44,7 +44,8 @@ archive/**/*.pt
 archive/**/*.h5
 
 # Checkpoints
-checkpoints/epoch_*.pt
+checkpoints/*.pt
+checkpoints/**/*.pt
 checkpoints/phase4_final/
 checkpoints/phase5_final/
 checkpoints/v3_freeze_eah/

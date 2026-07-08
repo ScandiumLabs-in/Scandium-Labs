@@ -1,5 +1,16 @@
 version: "3.9"
 
+x-db-common: &db-common
+  POSTGRES_DB: scandium
+  POSTGRES_USER: ${POSTGRES_USER:-scandium}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+
+x-api-common: &api-common
+  DATABASE_URL: postgresql://${POSTGRES_USER:-scandium}:${POSTGRES_PASSWORD:?}@postgres:5432/scandium
+  REDIS_URL: redis://redis:6379/0
+  JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+  SCANDIUM_ENV: ${SCANDIUM_ENV:-production}
+
 services:
   api:
     build:
@@ -8,12 +19,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://user:pass@postgres:5432/scandium
-      - REDIS_URL=redis://redis:6379/0
-      - MODEL_PATH=/models/best_model.pt
+      <<: *api-common
+      MODEL_PATH: /models/best_model.pt
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     volumes:
       - ./models:/models
     deploy:
@@ -24,11 +36,12 @@ services:
       context: .
       dockerfile: docker/Dockerfile.worker
     environment:
-      - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=postgresql://user:pass@postgres:5432/scandium
+      <<: *api-common
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
     deploy:
       replicas: 4
       resources:
@@ -40,6 +53,8 @@ services:
 
   inference:
     image: pytorch/torchserve:latest-gpu
+    profiles:
+      - torchserve
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -54,11 +69,14 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: scandium
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      <<: *db-common
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scandium} -d scandium"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -66,10 +84,14 @@ services:
 
   flower:
     image: mher/flower
+    profiles:
+      - flower
     ports:
       - "5555:5555"
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      FLOWER_UNAUTHENTICATED_API: "false"
+      FLOWER_BASIC_AUTH: ${FLOWER_USER:-admin}:${FLOWER_PASSWORD:?FLOWER_PASSWORD must be set}
     depends_on:
       - redis
 

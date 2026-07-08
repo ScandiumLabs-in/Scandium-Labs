@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import datetime, timedelta, timezone
 
 import jwt
@@ -7,8 +8,13 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 security = HTTPBearer()
 
-SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret-key-not-for-production")
+_DEV_KEY = "dev-secret-key-not-for-production"
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", _DEV_KEY)
 ALGORITHM = "HS256"
+
+if SECRET_KEY == _DEV_KEY and os.environ.get("SCANDIUM_ENV", "development") != "development":
+    print("FATAL: JWT_SECRET_KEY must be set in production mode", flush=True)
+    sys.exit(1)
 
 
 def create_access_token(user_id: str, expires_delta: timedelta = timedelta(days=7)):

@@ -1,3 +1,4 @@
+import logging
 import uuid
 from datetime import datetime, timezone
 
@@ -6,6 +7,8 @@ from fastapi.security import HTTPBearer
 from pydantic import BaseModel
 
 from api.auth import verify_token
+
+logger = logging.getLogger("scandium.api")
 
 app = FastAPI(
     title="Scandium Labs API",
@@ -29,8 +32,8 @@ def get_inference_engine():
                 use_mc_dropout=True,
                 mc_samples=20
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Inference engine not loaded: %s", exc)
     return inference_engine
 
 
@@ -74,7 +77,8 @@ async def screen_materials(
             top_k=request.top_k
         )
         task_id = task.id
-    except Exception:
+    except Exception as exc:
+        logger.error("Failed to queue Celery task: %s", exc)
         task_id = None
 
     try:
@@ -90,8 +94,8 @@ async def screen_materials(
         session.add(job)
         session.commit()
         session.close()
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.error("Failed to persist job to database: %s", exc)
 
     return ScreeningResult(
         job_id=job_id,
