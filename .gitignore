@@ -81,3 +81,5 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
+# Docker model mounts (copied from checkpoints/)
+models/
